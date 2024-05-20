@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace JewelrySalesSystem.DAL.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(JewelryDbContext))]
     [Migration("20240520045425_Initial")]
     partial class Initial
     {
