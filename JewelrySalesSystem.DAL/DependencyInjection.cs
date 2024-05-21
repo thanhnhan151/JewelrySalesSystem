@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace JewelrySalesSystem.DAL
 {
-    public static class ConfigureServices
+    public static class DependencyInjection
     {
         public static IServiceCollection ConfigureDALServices(this IServiceCollection services,
             IConfiguration configuration)
