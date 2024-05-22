@@ -12,10 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\JewelrySalesSystem.BAL\JewelrySalesSystem.BAL.csproj" />
   </ItemGroup>
 
