@@ -1,6 +1,5 @@
 ﻿using JewelrySalesSystem.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace JewelrySalesSystem.DAL.Persistence
 {
@@ -25,12 +24,78 @@ namespace JewelrySalesSystem.DAL.Persistence
             }
         }
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    base.OnModelCreating(modelBuilder);
-        //}
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Invoice>(entity =>
+            {
+                entity.HasOne(c => c.Customer).WithMany(i => i.Invoices)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(c => c.User).WithMany(i => i.Invoices)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<InvoiceDetail>(entity =>
+            {
+                entity.HasOne(p => p.Product).WithMany(i => i.InvoiceDetails)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(i => i.Invoice).WithMany(i => i.InvoiceDetails)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<Product>(entity =>
+            {
+                entity.HasOne(b => b.Brand).WithMany(i => i.Products)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(g => g.Gender).WithMany(i => i.Products)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(c => c.Colour).WithMany(i => i.Products)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(c => c.Category).WithMany(i => i.Products)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<ProductMaterial>(entity =>
+            {
+                entity.HasOne(p => p.Product).WithMany(m => m.ProductMaterials)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(m => m.Material).WithMany(o => o.ProductMaterials)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<ProductGem>(entity =>
+            {
+                entity.HasOne(p => p.Product).WithMany(g => g.ProductGems)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(g => g.Gem).WithMany(o => o.ProductGems)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            base.OnModelCreating(modelBuilder);
+        }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Brand> Brands { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Colour> Colours { get; set; }
+        public DbSet<Gender> Genders { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
+        public DbSet<InvoiceDetail> InvoiceDetails { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductMaterial> ProductMaterials { get; set; }
+        public DbSet<Material> Materials { get; set; }
+        public DbSet<MaterialPriceList> MaterialPrices { get; set; }
+        public DbSet<Warranty> Warranties { get; set; }
+        public DbSet<ProductGem> ProductGems { get; set; }
+        public DbSet<Gem> Gems { get; set; }
+        public DbSet<GemPriceList> GemPrices { get; set; }
     }
 }
