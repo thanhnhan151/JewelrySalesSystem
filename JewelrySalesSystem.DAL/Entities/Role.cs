@@ -9,6 +9,6 @@ namespace JewelrySalesSystem.DAL.Entities
         [Key]
         public int RoleId { get; set; }
         public string? RoleName { get; set; } = string.Empty;
-        public virtual IEnumerable<User>? Users { get; set; }
+        public virtual ICollection<User> Users { get; set; } = new List<User>();
     }
 }

@@ -17,6 +17,9 @@ namespace JewelrySalesSystem.DAL.Entities
 
         // Role
         public int RoleId { get; set; }
-        public virtual Role? Role { get; set; }
+        public virtual Role Role { get; set; } = null!;
+
+        // Invoices
+        public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
     }
 }
