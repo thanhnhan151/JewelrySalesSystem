@@ -1,4 +1,5 @@
-﻿using JewelrySalesSystem.DAL.Persistence;
+﻿using JewelrySalesSystem.DAL.Infrastructures;
+using JewelrySalesSystem.DAL.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,13 +8,15 @@ namespace JewelrySalesSystem.DAL
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection ConfigureDALServices(this IServiceCollection services,
-            IConfiguration configuration)
+        public static IServiceCollection ConfigureDALServices(this IServiceCollection services
+            /*, IConfiguration configuration*/)
         {
-            services.AddDbContext<JewelryDbContext>(options =>
-            {
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-            });
+            //services.AddDbContext<JewelryDbContext>(options =>
+            //{
+            //    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            //});
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
         }
