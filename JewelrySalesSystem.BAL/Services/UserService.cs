@@ -1,6 +1,8 @@
-﻿namespace JewelrySalesSystem.BAL.Services
+﻿using JewelrySalesSystem.BAL.Interfaces;
+
+namespace JewelrySalesSystem.BAL.Services
 {
-    public class UserService
+    public class UserService : IUserService
     {
     }
 }
