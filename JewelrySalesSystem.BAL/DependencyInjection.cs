@@ -1,4 +1,5 @@
 ﻿using JewelrySalesSystem.BAL.Interfaces;
+using JewelrySalesSystem.BAL.Mappings;
 using JewelrySalesSystem.BAL.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +24,8 @@ namespace JewelrySalesSystem.BAL
             services.AddScoped<IGemService, GemService>();
 
             services.AddScoped<ICategoryService, CategoryService>();
+
+            services.AddAutoMapper(typeof(MappingProfiles));
 
             return services;
         }
