@@ -15,14 +15,35 @@ namespace JewelrySalesSystem.DAL.Repositories
         {
         }
 
-        public Task<PaginatedList<Invoice>> PaginationAsync(
+        public async Task<PaginatedList<Invoice>> PaginationAsync(
             string? searchTerm
             , string? sortColumn
             , string? sortOrder
             , int page
             , int pageSize)
         {
-            throw new NotImplementedException();
+            IQueryable<Invoice> invoicesQuery = _dbSet;
+
+            //if (!string.IsNullOrWhiteSpace(searchTerm))
+            //{
+            //    invoicesQuery = invoicesQuery.Where(c =>
+            //        c.FullName.Contains(searchTerm) ||
+            //        c.PhoneNumber.Contains(searchTerm) ||
+            //        c.Email.Contains(searchTerm));
+            //}
+
+            //if (sortOrder?.ToLower() == "desc")
+            //{
+            //    invoicesQuery = invoicesQuery.OrderByDescending(GetSortProperty(sortColumn));
+            //}
+            //else
+            //{
+            //    invoicesQuery = invoicesQuery.OrderBy(GetSortProperty(sortColumn));
+            //}
+
+            var invoices = await PaginatedList<Invoice>.CreateAsync(invoicesQuery, page, pageSize);
+
+            return invoices;
         }
     }
 }
