@@ -1,4 +1,5 @@
-﻿using JewelrySalesSystem.DAL.Entities;
+﻿using JewelrySalesSystem.DAL.Common;
+using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
 using JewelrySalesSystem.DAL.Interfaces;
 using JewelrySalesSystem.DAL.Persistence;
@@ -12,6 +13,16 @@ namespace JewelrySalesSystem.DAL.Repositories
             JewelryDbContext context, 
             ILogger logger) : base(context, logger)
         {
+        }
+
+        public Task<PaginatedList<Product>> PaginationAsync(
+            string? searchTerm
+            , string? sortColumn
+            , string? sortOrder
+            , int page
+            , int pageSize)
+        {
+            throw new NotImplementedException();
         }
     }
 }
