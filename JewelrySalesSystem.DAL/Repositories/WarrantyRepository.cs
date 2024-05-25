@@ -4,13 +4,14 @@ using JewelrySalesSystem.DAL.Infrastructures;
 using JewelrySalesSystem.DAL.Interfaces;
 using JewelrySalesSystem.DAL.Persistence;
 using Microsoft.Extensions.Logging;
+using System.Linq.Expressions;
 
 namespace JewelrySalesSystem.DAL.Repositories
 {
     public class WarrantyRepository : GenericRepository<Warranty>, IWarrantyRepository
     {
         public WarrantyRepository(
-            JewelryDbContext context, 
+            JewelryDbContext context,
             ILogger logger) : base(context, logger)
         {
         }
@@ -32,18 +33,26 @@ namespace JewelrySalesSystem.DAL.Repositories
             //        c.Email.Contains(searchTerm));
             //}
 
-            //if (sortOrder?.ToLower() == "desc")
-            //{
-            //    warrantiesQuery = warrantiesQuery.OrderByDescending(GetSortProperty(sortColumn));
-            //}
-            //else
-            //{
-            //    warrantiesQuery = warrantiesQuery.OrderBy(GetSortProperty(sortColumn));
-            //}
+            if (sortOrder?.ToLower() == "desc")
+            {
+                warrantiesQuery = warrantiesQuery.OrderByDescending(GetSortProperty(sortColumn));
+            }
+            else
+            {
+                warrantiesQuery = warrantiesQuery.OrderBy(GetSortProperty(sortColumn));
+            }
 
             var warranties = await PaginatedList<Warranty>.CreateAsync(warrantiesQuery, page, pageSize);
 
             return warranties;
         }
+
+        private static Expression<Func<Warranty, object>> GetSortProperty(string? sortColumn)
+        => sortColumn?.ToLower() switch
+        {
+            "date" => warranty => warranty.StartDate,
+            //"dob" => warranty => warranty.DoB,
+            _ => warranty => warranty.WarrantyId
+        };
     }
 }
