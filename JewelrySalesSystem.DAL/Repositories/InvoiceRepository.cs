@@ -4,13 +4,14 @@ using JewelrySalesSystem.DAL.Infrastructures;
 using JewelrySalesSystem.DAL.Interfaces;
 using JewelrySalesSystem.DAL.Persistence;
 using Microsoft.Extensions.Logging;
+using System.Linq.Expressions;
 
 namespace JewelrySalesSystem.DAL.Repositories
 {
     public class InvoiceRepository : GenericRepository<Invoice>, IInvoiceRepository
     {
         public InvoiceRepository(
-            JewelryDbContext context, 
+            JewelryDbContext context,
             ILogger logger) : base(context, logger)
         {
         }
@@ -32,18 +33,26 @@ namespace JewelrySalesSystem.DAL.Repositories
             //        c.Email.Contains(searchTerm));
             //}
 
-            //if (sortOrder?.ToLower() == "desc")
-            //{
-            //    invoicesQuery = invoicesQuery.OrderByDescending(GetSortProperty(sortColumn));
-            //}
-            //else
-            //{
-            //    invoicesQuery = invoicesQuery.OrderBy(GetSortProperty(sortColumn));
-            //}
+            if (sortOrder?.ToLower() == "desc")
+            {
+                invoicesQuery = invoicesQuery.OrderByDescending(GetSortProperty(sortColumn));
+            }
+            else
+            {
+                invoicesQuery = invoicesQuery.OrderBy(GetSortProperty(sortColumn));
+            }
 
             var invoices = await PaginatedList<Invoice>.CreateAsync(invoicesQuery, page, pageSize);
 
             return invoices;
         }
+
+        private static Expression<Func<Invoice, object>> GetSortProperty(string? sortColumn)
+        => sortColumn?.ToLower() switch
+        {
+            "date" => invoice => invoice.OrderDate,
+            //"dob" => invoice => invoice.DoB,
+            _ => invoice => invoice.InvoiceId
+        };
     }
 }
