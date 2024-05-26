@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using JewelrySalesSystem.BAL.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JewelrySalesSystem.API.Controllers
@@ -7,5 +8,15 @@ namespace JewelrySalesSystem.API.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
+        private readonly ILogger<ProductsController> _logger;
+        private readonly IProductService _productService;
+
+        public ProductsController(
+            ILogger<ProductsController> logger,
+            IProductService productService)
+        {
+            _logger = logger;
+            _productService = productService;
+        }
     }
 }
