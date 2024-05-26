@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using JewelrySalesSystem.BAL.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JewelrySalesSystem.API.Controllers
@@ -7,5 +8,15 @@ namespace JewelrySalesSystem.API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
+        private readonly ILogger<UsersController> _logger;
+        private readonly IUserService _userService;
+
+        public UsersController(
+            ILogger<UsersController> logger,
+            IUserService userService)
+        {
+            _logger = logger;
+            _userService = userService;
+        }
     }
 }
