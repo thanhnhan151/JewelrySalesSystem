@@ -1,15 +1,13 @@
 ﻿using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Mappings;
 using JewelrySalesSystem.BAL.Services;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JewelrySalesSystem.BAL
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection ConfigureBALServices(this IServiceCollection services
-            /*, IConfiguration configuration*/)
+        public static IServiceCollection ConfigureBALServices(this IServiceCollection services)
         {           
             services.AddScoped<IWarrantyService, WarrantyService>();
 
