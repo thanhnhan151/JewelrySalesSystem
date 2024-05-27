@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JewelrySalesSystem.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/materials")]
     [ApiController]
     public class MaterialsController : ControllerBase
     {
