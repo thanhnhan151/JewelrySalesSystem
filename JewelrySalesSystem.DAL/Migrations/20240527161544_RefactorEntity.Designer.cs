@@ -4,6 +4,7 @@ using JewelrySalesSystem.DAL.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JewelrySalesSystem.DAL.Migrations
 {
     [DbContext(typeof(JewelryDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240527161544_RefactorEntity")]
+    partial class RefactorEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -475,10 +478,15 @@ namespace JewelrySalesSystem.DAL.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("WarrantyId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Warranty");
                 });
@@ -622,6 +630,13 @@ namespace JewelrySalesSystem.DAL.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("JewelrySalesSystem.DAL.Entities.Warranty", b =>
+                {
+                    b.HasOne("JewelrySalesSystem.DAL.Entities.Product", null)
+                        .WithMany("Warranties")
+                        .HasForeignKey("ProductId");
+                });
+
             modelBuilder.Entity("JewelrySalesSystem.DAL.Entities.Category", b =>
                 {
                     b.Navigation("Products");
@@ -668,6 +683,8 @@ namespace JewelrySalesSystem.DAL.Migrations
                     b.Navigation("ProductGems");
 
                     b.Navigation("ProductMaterials");
+
+                    b.Navigation("Warranties");
                 });
 
             modelBuilder.Entity("JewelrySalesSystem.DAL.Entities.ProductType", b =>
