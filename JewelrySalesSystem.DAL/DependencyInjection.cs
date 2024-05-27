@@ -9,12 +9,9 @@ namespace JewelrySalesSystem.DAL
     public static class DependencyInjection
     {
         public static IServiceCollection ConfigureDALServices(this IServiceCollection services
-            /*, IConfiguration configuration*/)
+            , IConfiguration configuration)
         {
-            //services.AddDbContext<JewelryDbContext>(options =>
-            //{
-            //    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-            //});
+            services.AddDbContext<JewelryDbContext>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
