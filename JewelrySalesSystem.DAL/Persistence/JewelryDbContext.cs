@@ -1,5 +1,6 @@
 ﻿using JewelrySalesSystem.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace JewelrySalesSystem.DAL.Persistence
 {
@@ -20,6 +21,11 @@ namespace JewelrySalesSystem.DAL.Persistence
         {
             if (!optionsBuilder.IsConfigured)
             {
+                //var builder = new ConfigurationBuilder()
+                //                  .SetBasePath(Directory.GetCurrentDirectory())
+                //                  .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                //IConfigurationRoot configuration = builder.Build();
+                //optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
                 optionsBuilder.UseSqlServer("Server=(local);Uid=sa;Pwd=1;Database=JewelrySalesSystem;Trusted_Connection=true;TrustServerCertificate=true;");
             }
         }
@@ -32,6 +38,9 @@ namespace JewelrySalesSystem.DAL.Persistence
                     .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(c => c.User).WithMany(i => i.Invoices)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(c => c.Warranty).WithMany(i => i.Invoices)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
@@ -46,7 +55,7 @@ namespace JewelrySalesSystem.DAL.Persistence
 
             modelBuilder.Entity<Product>(entity =>
             {
-                entity.HasOne(b => b.Brand).WithMany(i => i.Products)
+                entity.HasOne(b => b.ProductType).WithMany(i => i.Products)
                     .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(g => g.Gender).WithMany(i => i.Products)
@@ -82,7 +91,7 @@ namespace JewelrySalesSystem.DAL.Persistence
 
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
-        public DbSet<Brand> Brands { get; set; }
+        public DbSet<ProductType> ProductTypes { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Colour> Colours { get; set; }
         public DbSet<Gender> Genders { get; set; }
