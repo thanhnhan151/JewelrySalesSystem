@@ -10,8 +10,6 @@ namespace JewelrySalesSystem.DAL.Entities
         public int ProductId { get; set; }
         public string ProductName { get; set; } = string.Empty;
         public int PercentPriceRate { get; set; }
-        public float MaterialCost { get; set; }
-        public float GemCost { get; set; }
         public float ProductionCost { get; set; }
         public bool Status { get; set; }
         public string FeaturedImage { get; set; } = string.Empty;
@@ -22,9 +20,9 @@ namespace JewelrySalesSystem.DAL.Entities
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; } = null!;
 
-        // Brand
-        public int BrandId { get; set; }
-        public virtual Brand Brand { get; set; } = null!;
+        // Product Type
+        public int ProductTypeId { get; set; }
+        public virtual ProductType ProductType { get; set; } = null!;
 
         // Gender
         public int GenderId { get; set; }
@@ -42,8 +40,5 @@ namespace JewelrySalesSystem.DAL.Entities
 
         // Product Materials
         public virtual ICollection<ProductMaterial> ProductMaterials { get; set; } = new List<ProductMaterial>();
-
-        // Warranty
-        public virtual ICollection<Warranty> Warranties { get; set; } = new List<Warranty>();
     }
 }

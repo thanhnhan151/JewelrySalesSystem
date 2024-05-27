@@ -3,12 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JewelrySalesSystem.DAL.Entities
 {
-    [Table("Brand")]
-    public class Brand
+    [Table("ProductType")]
+    public class ProductType
     {
         [Key]
-        public int BrandId { get; set; }
-        public string BrandName { get; set; } = string.Empty;
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         // Products
         public virtual ICollection<Product> Products { get; set; } = new List<Product>();

@@ -12,8 +12,7 @@ namespace JewelrySalesSystem.DAL.Entities
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
-        // Product
-        public int ProductId { get; set; }
-        public virtual Product Product { get; set; } = null!;
+        // Invoices
+        public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
     }
 }

@@ -7,8 +7,7 @@ namespace JewelrySalesSystem.DAL.Entities
     public class ProductGem
     {
         [Key]
-        public int Id { get; set; }
-        public float Weight { get; set; }
+        public int Id { get; set; }      
 
         // Product
         public int ProductId { get; set; }
