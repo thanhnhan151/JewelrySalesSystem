@@ -44,5 +44,23 @@ namespace JewelrySalesSystem.API.Controllers
 
             return BadRequest();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateAsync()
+        {
+            return BadRequest();    
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetByIdAsync(int id)
+        {
+            return BadRequest();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateAsync()
+        {
+            return BadRequest();
+        }
     }
 }
