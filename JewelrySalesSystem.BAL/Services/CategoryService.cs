@@ -5,11 +5,11 @@ using JewelrySalesSystem.DAL.Infrastructures;
 
 namespace JewelrySalesSystem.BAL.Services
 {
-    public class CategoryService : ICategoryService
+    public class Categoryservice : ICategoryService
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public CategoryService(IUnitOfWork unitOfWork)
+        public Categoryservice(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
@@ -21,5 +21,22 @@ namespace JewelrySalesSystem.BAL.Services
             int page,
             int pageSize)
         => await _unitOfWork.Categories.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize);
+
+        public async Task<Category> AddAsync(Category category)
+        {
+            var result = _unitOfWork.Categories.AddEntity(category);
+
+            await _unitOfWork.CompleteAsync();
+
+            return result;
+        }
+
+        public async Task UpdateAsync(Category category)
+        {
+            _unitOfWork.Categories.UpdateEntity(category);
+            await _unitOfWork.CompleteAsync();
+        }
+
+        public async Task<Category?> GetByIdAsync(int id) => await _unitOfWork.Categories.GetByIdAsync(id);
     }
 }
