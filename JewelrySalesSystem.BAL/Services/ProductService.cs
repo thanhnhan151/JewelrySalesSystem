@@ -21,5 +21,22 @@ namespace JewelrySalesSystem.BAL.Services
             int page,
             int pageSize)
         => await _unitOfWork.Products.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize);
+
+        public async Task<Product> AddAsync(Product product)
+        {
+            var result = _unitOfWork.Products.AddEntity(product);
+
+            await _unitOfWork.CompleteAsync();
+
+            return result;
+        }
+
+        public async Task UpdateAsync(Product product)
+        {
+            _unitOfWork.Products.UpdateEntity(product);
+            await _unitOfWork.CompleteAsync();
+        }
+
+        public async Task<Product?> GetByIdAsync(int id) => await _unitOfWork.Products.GetByIdAsync(id);
     }
 }
