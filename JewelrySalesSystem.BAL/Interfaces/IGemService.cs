@@ -11,5 +11,11 @@ namespace JewelrySalesSystem.BAL.Interfaces
             , string? sortOrder
             , int page
             , int pageSize);
+
+        Task<Gem> AddAsync(Gem gem);
+
+        Task UpdateAsync(Gem gem);
+
+        Task<Gem?> GetByIdAsync(int id);
     }
 }
