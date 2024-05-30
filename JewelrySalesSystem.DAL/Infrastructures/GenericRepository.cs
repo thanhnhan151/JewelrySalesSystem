@@ -18,11 +18,9 @@ namespace JewelrySalesSystem.DAL.Infrastructures
             _logger = logger;
             _dbSet = _context.Set<TEntity>();
         }
-        public virtual async Task<bool> AddEntityAsync(TEntity entity)
-        {
-            await _dbSet.AddAsync(entity);
-            return true;
-        }
+        public virtual TEntity AddEntity(TEntity entity) => _dbSet.Add(entity).Entity;
+
+        public virtual void UpdateEntity(TEntity entity) => _context.Entry(entity).State = EntityState.Modified;
 
         public virtual async Task<TEntity?> GetByIdAsync(int id)
         {
@@ -33,21 +31,6 @@ namespace JewelrySalesSystem.DAL.Infrastructures
             }
 
             return null;
-        }
-
-        public virtual async Task<bool> UpdateEntityAsync(TEntity entity)
-        {
-            try
-            {
-                _context.Entry(entity).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Message", ex.Message);
-                return false;
-            }
         }     
     }
 }
