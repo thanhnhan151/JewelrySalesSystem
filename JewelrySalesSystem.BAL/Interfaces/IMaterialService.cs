@@ -11,5 +11,11 @@ namespace JewelrySalesSystem.BAL.Interfaces
             , string? sortOrder
             , int page
             , int pageSize);
+
+        Task<Material> AddAsync(Material material);
+
+        Task UpdateAsync(Material material);
+
+        Task<Material?> GetByIdAsync(int id);
     }
 }
