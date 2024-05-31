@@ -8,7 +8,7 @@ namespace JewelrySalesSystem.BAL
     public static class DependencyInjection
     {
         public static IServiceCollection ConfigureBALServices(this IServiceCollection services)
-        {           
+        {
             services.AddScoped<IWarrantyService, WarrantyService>();
 
             services.AddScoped<IUserService, UserService>();
