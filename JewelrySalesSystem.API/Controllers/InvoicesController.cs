@@ -1,5 +1,5 @@
 ﻿using JewelrySalesSystem.BAL.Interfaces;
-using JewelrySalesSystem.BAL.Services;
+using JewelrySalesSystem.DAL.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -46,21 +46,53 @@ namespace JewelrySalesSystem.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync()
+        public async Task<IActionResult> AddAsync(Invoice invoice)
         {
-            return BadRequest();
+            try
+            {
+                await _invoiceService.AddAsync(invoice);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
+            try
+            {
+                var result = await _invoiceService.GetByIdAsync(id);
+
+                if (result is not null)
+                {
+                    return Ok(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
             return BadRequest();
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateAsync()
+        public async Task<IActionResult> UpdateAsync(Invoice invoice)
         {
-            return BadRequest();
+            try
+            {
+                await _invoiceService.UpdateAsync(invoice);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }
