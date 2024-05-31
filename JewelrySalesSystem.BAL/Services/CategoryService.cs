@@ -5,11 +5,11 @@ using JewelrySalesSystem.DAL.Infrastructures;
 
 namespace JewelrySalesSystem.BAL.Services
 {
-    public class Categoryservice : ICategoryService
+    public class CategoryService : ICategoryService
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public Categoryservice(IUnitOfWork unitOfWork)
+        public CategoryService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
