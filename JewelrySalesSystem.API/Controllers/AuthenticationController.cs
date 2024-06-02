@@ -1,4 +1,5 @@
 ﻿using JewelrySalesSystem.BAL.Interfaces;
+using JewelrySalesSystem.BAL.Models.Users;
 using JewelrySalesSystem.DAL.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,12 +28,33 @@ namespace JewelrySalesSystem.API.Controllers
             _configuration = configuration;
         }
 
+        #region Login
+        /// <summary>
+        /// Log into system using username and password
+        /// </summary>    
+        /// <remarks>
+        ///     Sample request:
+        ///
+        ///         {
+        ///           "username": "testingaccount",
+        ///           "password": "test"
+        ///         }
+        ///         
+        /// </remarks>
+        /// <returns>Specific HTTP Status code</returns>
+        /// <response code="200">Return home screen if the access is successful</response>
+        /// <response code="400">If the account is null</response>
         [HttpPost]
-        public async Task<IActionResult> LoginAsync(string email, string password)
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Boolean), StatusCodes.Status400BadRequest)]
+        [HttpPost]
+        public async Task<IActionResult> LoginAsync([FromBody] UserSignInRequest userSignInRequest)
         {
             try
             {
-                var result = await _userService.LoginAsync(email, password);
+                var result = await _userService.LoginAsync(
+                    userSignInRequest.UserName
+                    , userSignInRequest.Password);
 
                 if (result != null)
                 {
@@ -50,6 +72,7 @@ namespace JewelrySalesSystem.API.Controllers
                 ErrorMessage = "Wrong UserName or Password"
             });
         }
+        #endregion
 
         #region Generate Access Token
         private string GenerateAccessToken(User user)
