@@ -8,7 +8,8 @@ namespace JewelrySalesSystem.DAL
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection ConfigureDALServices(this IServiceCollection services
+        public static IServiceCollection ConfigureDALServices(
+            this IServiceCollection services
             , IConfiguration configuration)
         {
             services.AddDbContext<JewelryDbContext>();

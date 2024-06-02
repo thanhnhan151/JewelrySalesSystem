@@ -7,7 +7,8 @@ namespace JewelrySalesSystem.BAL
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection ConfigureBALServices(this IServiceCollection services)
+        public static IServiceCollection ConfigureBALServices(
+            this IServiceCollection services)
         {
             services.AddScoped<IWarrantyService, WarrantyService>();
 
@@ -24,6 +25,8 @@ namespace JewelrySalesSystem.BAL
             services.AddScoped<ICategoryService, CategoryService>();
 
             services.AddAutoMapper(typeof(MappingProfiles));
+
+            services.AddScoped<IEmailService, EmailService>();
 
             return services;
         }
