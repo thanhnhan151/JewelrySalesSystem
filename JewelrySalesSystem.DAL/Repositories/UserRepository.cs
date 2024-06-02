@@ -18,23 +18,24 @@ namespace JewelrySalesSystem.DAL.Repositories
         {
         }
 
-        public async Task<bool> LoginAsync(string email, string passWord)
+        public async Task<User?> LoginAsync(string email, string passWord)
         {
             try
             {
                 var account = await _dbSet.Where(a => a.Email == email
                                                  && a.Password == passWord)
+                                          .Include(u => u.Role)
                                           .FirstOrDefaultAsync();
 
                 if (account != null)
-                    return true;
+                    return account;
 
-                return false;
+                return null;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "{Repo} LoginAsync method error", typeof(UserRepository));
-                return false;
+                return new User();
             }
         }
 
