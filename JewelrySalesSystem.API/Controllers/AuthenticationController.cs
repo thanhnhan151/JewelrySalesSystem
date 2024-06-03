@@ -53,7 +53,7 @@ namespace JewelrySalesSystem.API.Controllers
             try
             {
                 var result = await _userService.LoginAsync(
-                    userSignInRequest.UserName
+                    userSignInRequest.Username
                     , userSignInRequest.Password);
 
                 if (result != null)
