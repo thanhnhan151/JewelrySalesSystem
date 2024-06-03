@@ -14,8 +14,8 @@ namespace JewelrySalesSystem.BAL.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<User?> LoginAsync(string email, string passWord)
-            => await _unitOfWork.Users.LoginAsync(email, passWord);
+        public async Task<User?> LoginAsync(string userName, string passWord)
+            => await _unitOfWork.Users.LoginAsync(userName, passWord);
 
         public async Task<PaginatedList<User>> PaginationAsync(
             string? searchTerm,

@@ -5,7 +5,7 @@ namespace JewelrySalesSystem.BAL.Interfaces
 {
     public interface IUserService
     {
-        Task<User?> LoginAsync(string email, string passWord);
+        Task<User?> LoginAsync(string userName, string passWord);
 
         Task<PaginatedList<User>> PaginationAsync
             (string? searchTerm
