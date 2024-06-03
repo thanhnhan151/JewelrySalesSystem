@@ -28,6 +28,10 @@ namespace JewelrySalesSystem.BAL
 
             services.AddScoped<IEmailService, EmailService>();
 
+            services.AddScoped<IGenderService, GenderService>();
+
+            services.AddScoped<IRoleService, RoleService>();
+
             return services;
         }
     }
