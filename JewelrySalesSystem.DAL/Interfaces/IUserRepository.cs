@@ -6,7 +6,7 @@ namespace JewelrySalesSystem.DAL.Interfaces
 {
     public interface IUserRepository : IGenericRepository<User>
     {
-        Task<User?> LoginAsync(string email, string passWord);
+        Task<User?> LoginAsync(string userName, string passWord);
 
         Task<PaginatedList<User>> PaginationAsync
             (string? searchTerm

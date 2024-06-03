@@ -18,11 +18,11 @@ namespace JewelrySalesSystem.DAL.Repositories
         {
         }
 
-        public async Task<User?> LoginAsync(string email, string passWord)
+        public async Task<User?> LoginAsync(string userName, string passWord)
         {
             try
             {
-                var account = await _dbSet.Where(a => a.Email == email
+                var account = await _dbSet.Where(a => a.UserName == userName
                                                  && a.Password == passWord)
                                           .Include(u => u.Role)
                                           .FirstOrDefaultAsync();
