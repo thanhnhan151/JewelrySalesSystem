@@ -12,7 +12,10 @@ namespace JewelrySalesSystem.DAL
             this IServiceCollection services
             , IConfiguration configuration)
         {
-            services.AddDbContext<JewelryDbContext>();
+            services.AddDbContext<JewelryDbContext>(options =>
+            {
+                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+            });
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
