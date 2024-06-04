@@ -25,6 +25,9 @@ namespace JewelrySalesSystem.DAL.Infrastructures
 
         public ICategoryRepository Categories { get; private set; }
 
+        /*Change here*/
+        public IRoleRepository Roles { get; private set; }
+
         public UnitOfWork(
             JewelryDbContext context,
             ILoggerFactory loggerFactory)
@@ -46,6 +49,9 @@ namespace JewelrySalesSystem.DAL.Infrastructures
             Gems = new GemRepository(_context, _logger);
 
             Categories = new CategoryRepository(_context, _logger);
+
+            /*Change here*/
+            Roles = new RoleRepository(_context, _logger);
         }
 
         public async Task CompleteAsync() => await _context.SaveChangesAsync();       
