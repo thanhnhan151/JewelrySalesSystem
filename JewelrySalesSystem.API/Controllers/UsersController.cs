@@ -31,7 +31,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// <param name="sortOrder">Sort column by ascending or descening</param>
         /// <returns>A list of all users</returns>
         /// <response code="200">Return all users in the system</response>
-        /// <response code="400">If the account is null</response>
+        /// <response code="400">If no users are in the system</response>
         /// <response code="401">Unauthorized</response>
         /// <response code="403">Forbidden</response>
         /// <response code="404">Not Found</response>
