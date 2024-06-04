@@ -1,4 +1,5 @@
-﻿using JewelrySalesSystem.DAL.Entities;
+﻿using JewelrySalesSystem.DAL.Common;
+using JewelrySalesSystem.DAL.Entities;
 
 namespace JewelrySalesSystem.BAL.Interfaces
 {

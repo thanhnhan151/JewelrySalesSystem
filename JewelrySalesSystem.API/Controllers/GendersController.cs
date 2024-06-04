@@ -22,8 +22,15 @@ namespace JewelrySalesSystem.API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddGender(Gender gender)
         {
-            await _genderService.AddGender(gender);
-            return Ok();
+            try
+            {
+                await _genderService.AddGender(gender);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }
