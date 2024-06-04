@@ -1,6 +1,6 @@
 ﻿namespace JewelrySalesSystem.BAL.Models.Users
 {
-    public class GetUserRequest
+    public class GetUserResponse
     {
         public string UserName { get; set; } = string.Empty;
         public string FullName { get; set; } = string.Empty;
