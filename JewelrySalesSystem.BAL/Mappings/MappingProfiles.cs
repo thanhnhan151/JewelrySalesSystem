@@ -9,8 +9,8 @@ namespace JewelrySalesSystem.BAL.Mappings
     {
         public MappingProfiles()
         {
-            CreateMap<User, GetUserRequest>();
-            CreateMap<PaginatedList<User>, PaginatedList<GetUserRequest>>();
+            CreateMap<User, GetUserResponse>();
+            CreateMap<PaginatedList<User>, PaginatedList<GetUserResponse>>();
             CreateMap<CreateUserRequest, User>();
             CreateMap<UpdateUserRequest, User>();
         }
