@@ -23,13 +23,13 @@ namespace JewelrySalesSystem.BAL.Services
         public async Task<User?> LoginAsync(string userName, string passWord)
             => await _unitOfWork.Users.LoginAsync(userName, passWord);
 
-        public async Task<PaginatedList<GetUserRequest>> PaginationAsync(
+        public async Task<PaginatedList<GetUserResponse>> PaginationAsync(
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
             int page,
             int pageSize)
-        => _mapper.Map<PaginatedList<GetUserRequest>>(await _unitOfWork.Users.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize));
+        => _mapper.Map<PaginatedList<GetUserResponse>>(await _unitOfWork.Users.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize));
 
         public async Task<CreateUserRequest> AddAsync(CreateUserRequest createUserRequest)
         {  
@@ -47,6 +47,6 @@ namespace JewelrySalesSystem.BAL.Services
             await _unitOfWork.CompleteAsync();
         }
 
-        public async Task<GetUserRequest?> GetByIdAsync(int id) => _mapper.Map<GetUserRequest>(await _unitOfWork.Users.GetByIdAsync(id));
+        public async Task<GetUserResponse?> GetByIdAsync(int id) => _mapper.Map<GetUserResponse>(await _unitOfWork.Users.GetByIdAsync(id));
     }
 }

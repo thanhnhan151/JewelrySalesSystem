@@ -8,7 +8,7 @@ namespace JewelrySalesSystem.BAL.Interfaces
     {
         Task<User?> LoginAsync(string userName, string passWord);
 
-        Task<PaginatedList<GetUserRequest>> PaginationAsync
+        Task<PaginatedList<GetUserResponse>> PaginationAsync
             (string? searchTerm
             , string? sortColumn
             , string? sortOrder
@@ -19,6 +19,6 @@ namespace JewelrySalesSystem.BAL.Interfaces
 
         Task UpdateAsync(UpdateUserRequest updateUserRequest);
 
-        Task<GetUserRequest?> GetByIdAsync(int id);
+        Task<GetUserResponse?> GetByIdAsync(int id);
     }
 }
