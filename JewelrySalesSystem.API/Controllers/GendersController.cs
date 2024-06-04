@@ -1,4 +1,5 @@
 ﻿using JewelrySalesSystem.BAL.Interfaces;
+using JewelrySalesSystem.DAL.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +18,12 @@ namespace JewelrySalesSystem.API.Controllers
         {
             _logger = logger;
             _genderService = genderService;
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddGender(Gender gender)
+        {
+            await _genderService.AddGender(gender);
+            return Ok();
         }
     }
 }

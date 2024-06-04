@@ -5,5 +5,6 @@ namespace JewelrySalesSystem.DAL.Interfaces
 {
     public interface IGenderRepository : IGenericRepository<Gender>
     {
+
     }
 }

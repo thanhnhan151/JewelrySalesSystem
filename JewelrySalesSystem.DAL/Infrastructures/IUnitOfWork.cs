@@ -18,6 +18,8 @@ namespace JewelrySalesSystem.DAL.Infrastructures
 
         ICategoryRepository Categories { get; }
 
+        IGenderRepository Gender {  get; }
+
         Task CompleteAsync();
     }
 }
