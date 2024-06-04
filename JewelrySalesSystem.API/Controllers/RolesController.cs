@@ -1,4 +1,5 @@
 ﻿using JewelrySalesSystem.BAL.Interfaces;
+using JewelrySalesSystem.DAL.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,5 +19,14 @@ namespace JewelrySalesSystem.API.Controllers
             _logger = logger;
             _roleService = roleService;
         }
+
+        /*Change here*/
+        [HttpPost]
+        public async Task<IActionResult> AddRoleAsync(Role role)
+        {
+            var newRole = await _roleService.AddRoleAsync(role);
+            return Ok(newRole);
+        }
+
     }
 }
