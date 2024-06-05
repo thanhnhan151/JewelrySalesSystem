@@ -1,10 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JewelrySalesSystem.DAL.Entities
 {
     [Table("MaterialPriceList")]
     public class MaterialPriceList
     {
+        [Key]
         public int Id { get; set; }
         public float BuyPrice { get; set; } 
         public float SellPrice { get; set; }
