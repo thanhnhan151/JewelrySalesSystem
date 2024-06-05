@@ -41,8 +41,8 @@ namespace JewelrySalesSystem.API.Controllers
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
-            int page,
-            int pageSize)
+            int page = 1,
+            int pageSize = 5)
         {
             try
             {

@@ -41,8 +41,8 @@ namespace JewelrySalesSystem.API.Controllers
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
-            int page,
-            int pageSize)
+            int page = 1,
+            int pageSize = 5)
         {
             try
             {
@@ -120,7 +120,7 @@ namespace JewelrySalesSystem.API.Controllers
         {
             try
             {
-                var result = await _invoiceService.GetByIdAsync(id);
+                var result = await _invoiceService.GetByIdWithIncludeAsync(id);
 
                 if (result is not null)
                 {

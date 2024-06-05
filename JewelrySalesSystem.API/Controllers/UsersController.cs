@@ -42,7 +42,7 @@ namespace JewelrySalesSystem.API.Controllers
             string? sortColumn,
             string? sortOrder,
             int page = 1,
-            int pageSize = 10)
+            int pageSize = 5)
         {
             try
             {
