@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using JewelrySalesSystem.BAL.Models.Gems;
+using JewelrySalesSystem.BAL.Models.Invoices;
 using JewelrySalesSystem.BAL.Models.Materials;
 using JewelrySalesSystem.BAL.Models.Products;
 using JewelrySalesSystem.BAL.Models.Users;
@@ -35,6 +36,19 @@ namespace JewelrySalesSystem.BAL.Mappings
 
             #region Material
             CreateMap<Material, MaterialItem>();
+            #endregion
+
+            #region Invoice
+            CreateMap<Invoice, GetInvoiceResponse>()
+                .ForMember(i => i.Items, i => i.MapFrom(i => i.InvoiceDetails))
+
+                .ForMember(i => i.Total, i => i.MapFrom(i => i.InvoiceDetails
+                .Sum(i => i.ProductPrice)));
+
+            CreateMap<PaginatedList<Invoice>, PaginatedList<GetInvoiceResponse>>();
+
+            CreateMap<InvoiceDetail, InvoiceItem>()
+                .ForMember(i => i.ProductName, i => i.MapFrom(i => i.Product.ProductName));
             #endregion
         }
     }
