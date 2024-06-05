@@ -1,11 +1,12 @@
-﻿using JewelrySalesSystem.DAL.Common;
+﻿using JewelrySalesSystem.BAL.Models.Materials;
+using JewelrySalesSystem.DAL.Common;
 using JewelrySalesSystem.DAL.Entities;
 
 namespace JewelrySalesSystem.BAL.Interfaces
 {
     public interface IMaterialService
     {
-        Task<PaginatedList<Material>> PaginationAsync
+        Task<PaginatedList<GetMaterialResponse>> PaginationAsync
             (string? searchTerm
             , string? sortColumn
             , string? sortOrder
@@ -16,6 +17,6 @@ namespace JewelrySalesSystem.BAL.Interfaces
 
         Task UpdateAsync(Material material);
 
-        Task<Material?> GetByIdAsync(int id);
+        Task<GetMaterialResponse?> GetByIdWithIncludeAsync(int id);
     }
 }
