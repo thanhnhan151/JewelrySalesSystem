@@ -1,4 +1,6 @@
-﻿using JewelrySalesSystem.BAL.Interfaces;
+﻿using AutoMapper;
+using JewelrySalesSystem.BAL.Interfaces;
+using JewelrySalesSystem.BAL.Models.Materials;
 using JewelrySalesSystem.DAL.Common;
 using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
@@ -8,19 +10,23 @@ namespace JewelrySalesSystem.BAL.Services
     public class MaterialService : IMaterialService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public MaterialService(IUnitOfWork unitOfWork)
+        public MaterialService(
+            IUnitOfWork unitOfWork
+            , IMapper mapper)
         {
+            _mapper = mapper;
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<PaginatedList<Material>> PaginationAsync(
+        public async Task<PaginatedList<GetMaterialResponse>> PaginationAsync(
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
             int page,
             int pageSize)
-        => await _unitOfWork.Materials.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize);
+        => _mapper.Map<PaginatedList<GetMaterialResponse>>(await _unitOfWork.Materials.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize));
 
         public async Task<Material> AddAsync(Material material)
         {
@@ -37,6 +43,6 @@ namespace JewelrySalesSystem.BAL.Services
             await _unitOfWork.CompleteAsync();
         }
 
-        public async Task<Material?> GetByIdAsync(int id) => await _unitOfWork.Materials.GetByIdAsync(id);
+        public async Task<GetMaterialResponse?> GetByIdWithIncludeAsync(int id) => _mapper.Map<GetMaterialResponse>(await _unitOfWork.Materials.GetByIdWithIncludeAsync(id));
     }
 }
