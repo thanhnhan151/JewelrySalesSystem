@@ -120,7 +120,7 @@ namespace JewelrySalesSystem.API.Controllers
         {
             try
             {
-                var result = await _materialService.GetByIdAsync(id);
+                var result = await _materialService.GetByIdWithIncludeAsync(id);
 
                 if (result is not null)
                 {
