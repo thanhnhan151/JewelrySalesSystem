@@ -32,10 +32,24 @@ namespace JewelrySalesSystem.BAL.Mappings
 
             #region Gem
             CreateMap<Gem, GemItem>();
+
+            CreateMap<Gem, GetGemResponse>()
+                .ForMember(g => g.GemPrice, g => g.MapFrom(m => m.GemPrices.SingleOrDefault()));
+
+            CreateMap<PaginatedList<Gem>, PaginatedList<GetGemResponse>>();
+
+            CreateMap<GemPriceList, GemPrice>();
             #endregion
 
             #region Material
             CreateMap<Material, MaterialItem>();
+
+            CreateMap<Material, GetMaterialResponse>()
+                .ForMember(m => m.MaterialPrice, m => m.MapFrom(m => m.MaterialPrices.SingleOrDefault()));
+
+            CreateMap<PaginatedList<Material>, PaginatedList<GetMaterialResponse>>();
+
+            CreateMap<MaterialPriceList, MaterialPrice>();
             #endregion
 
             #region Invoice
