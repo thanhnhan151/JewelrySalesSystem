@@ -20,16 +20,21 @@ namespace JewelrySalesSystem.BAL.Mappings
             #endregion
 
             #region Product
-            CreateMap<Product, GetProductResponse>();
+            CreateMap<Product, GetProductResponse>()
+                .ForMember(p => p.Materials, p => p.MapFrom(p => p.ProductMaterials
+                .Select(y => y.Material).ToList()))
+
+                .ForMember(p => p.Gems, p => p.MapFrom(p => p.ProductGems
+                .Select(y => y.Gem).ToList()));
             CreateMap<PaginatedList<Product>, PaginatedList<GetProductResponse>>();
             #endregion
 
             #region Gem
-            CreateMap<List<Gem>, List<GemItem>>();
+            CreateMap<Gem, GemItem>();
             #endregion
 
             #region Material
-            CreateMap<List<Material>, List<MaterialItem>>();
+            CreateMap<Material, MaterialItem>();
             #endregion
         }
     }
