@@ -64,7 +64,7 @@ namespace JewelrySalesSystem.DAL.Repositories
                                     .ThenInclude(g => g.Gem)
                                .Include(p => p.ProductMaterials)
                                     .ThenInclude(m => m.Material)
-                               .FirstOrDefaultAsync();
+                               .FirstOrDefaultAsync(p => p.ProductId == id);
             if (result == null) return null;
             return result;
         }

@@ -61,7 +61,7 @@ namespace JewelrySalesSystem.DAL.Repositories
         {
             var result = await _dbSet.Include(i => i.InvoiceDetails)
                                     .ThenInclude(i => i.Product)
-                               .FirstOrDefaultAsync();
+                               .FirstOrDefaultAsync(i => i.InvoiceId == id);
 
             if (result == null) return null;
             return result;

@@ -3,6 +3,7 @@ using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
 using JewelrySalesSystem.DAL.Interfaces;
 using JewelrySalesSystem.DAL.Persistence;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 
@@ -23,7 +24,10 @@ namespace JewelrySalesSystem.DAL.Repositories
             , int page
             , int pageSize)
         {
-            IQueryable<Gem> gemsQuery = _dbSet;
+            IQueryable<Gem> gemsQuery = _dbSet
+                .Include(g => g.GemPrices
+                .OrderByDescending(m => m.EffDate)
+                .Take(1));
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
@@ -53,5 +57,17 @@ namespace JewelrySalesSystem.DAL.Repositories
             //"dob" => gem => gem.DoB,
             _ => gem => gem.GemId
         };
+
+        public async Task<Gem?> GetByIdWithIncludeAsync(int id)
+        {
+            var result = await _dbSet
+                .Include(g => g.GemPrices
+                .OrderByDescending(m => m.EffDate)
+                .Take(1))
+                .FirstOrDefaultAsync(g => g.GemId == id);
+
+            if (result == null) return null;
+            return result;
+        }
     }
 }
