@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using JewelrySalesSystem.BAL.Interfaces;
+﻿using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.Roles;
 using JewelrySalesSystem.DAL.Entities;
 using Microsoft.AspNetCore.Http;
@@ -13,14 +12,14 @@ namespace JewelrySalesSystem.API.Controllers
     {
         private readonly ILogger<RolesController> _logger;
         private readonly IRoleService _roleService;
-        private readonly IMapper _mapper;
+
         public RolesController(
             ILogger<RolesController> logger,
-            IRoleService roleService, IMapper mapper)
+            IRoleService roleService)
         {
             _logger = logger;
             _roleService = roleService;
-            _mapper = mapper;
+
         }
 
         /*Change here*/
