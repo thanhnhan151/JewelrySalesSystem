@@ -1,4 +1,5 @@
 ﻿using JewelrySalesSystem.BAL.Interfaces;
+using JewelrySalesSystem.BAL.Models.Materials;
 using JewelrySalesSystem.DAL.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -70,13 +71,12 @@ namespace JewelrySalesSystem.API.Controllers
         /// Sample request:
         /// 
         ///     {
-        ///       "userName": "testaccount",
-        ///       "fullName": "Nguyen Van B",
-        ///       "phoneNumber": "0999123456",
-        ///       "email": "testemail@gmail.com",
-        ///       "password" : "test",
-        ///       "address" : "test",
-        ///       "roleId" : 3
+        ///       "materialName": "Vàng 16K",
+        ///       "materialPrice": {
+        ///          "buyPrice" : 11,
+        ///          "sellPrice" : 11,
+        ///          "effDate" : "2024-06-06T04:33:20.997Z"
+        ///        }            
         ///     }
         ///         
         /// </remarks> 
@@ -88,13 +88,14 @@ namespace JewelrySalesSystem.API.Controllers
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server</response>
         [HttpPost]
-        public async Task<IActionResult> AddAsync(Material material)
+        public async Task<IActionResult> AddAsync(CreateMaterialRequest createMaterialRequest)
         {
             try
             {
-                await _materialService.AddAsync(material);
+                createMaterialRequest.MaterialPrice.EffDate = DateTime.Now;
+                await _materialService.AddAsync(createMaterialRequest);
 
-                return Ok();
+                return Ok(createMaterialRequest);
             }
             catch (Exception ex)
             {

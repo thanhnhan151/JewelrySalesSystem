@@ -13,7 +13,7 @@ namespace JewelrySalesSystem.BAL.Interfaces
             , int page
             , int pageSize);
 
-        Task<Material> AddAsync(Material material);
+        Task<CreateMaterialRequest> AddAsync(CreateMaterialRequest createMaterialRequest);
 
         Task UpdateAsync(Material material);
 

@@ -44,5 +44,28 @@ namespace JewelrySalesSystem.BAL.Services
         }
 
         public async Task<GetMaterialResponse?> GetByIdWithIncludeAsync(int id) => _mapper.Map<GetMaterialResponse>(await _unitOfWork.Materials.GetByIdWithIncludeAsync(id));
+
+        public async Task<CreateMaterialRequest> AddAsync(CreateMaterialRequest createMaterialRequest)
+        {
+            var material = new Material
+            {
+                MaterialName = createMaterialRequest.MaterialName,
+                MaterialPrices = new List<MaterialPriceList>
+                {
+                    new MaterialPriceList
+                    {
+                        SellPrice = createMaterialRequest.MaterialPrice.SellPrice,
+                        BuyPrice = createMaterialRequest.MaterialPrice.BuyPrice,
+                        EffDate = createMaterialRequest.MaterialPrice.EffDate
+                    }
+                }
+            };
+
+            var result = _unitOfWork.Materials.AddEntity(material);
+
+            await _unitOfWork.CompleteAsync();
+
+            return createMaterialRequest;
+        }
     }
 }
