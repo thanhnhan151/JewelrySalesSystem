@@ -52,5 +52,12 @@ namespace JewelrySalesSystem.DAL.Repositories
             //"dob" => category => category.DoB,
             _ => category => category.CategoryId
         };
+
+        public async Task<Category> AddCategory(Category category)
+        {
+            _context.Categories.Add(category);
+            await _context.SaveChangesAsync();
+            return category;
+        }
     }
 }

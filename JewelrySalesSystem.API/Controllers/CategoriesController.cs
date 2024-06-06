@@ -1,4 +1,5 @@
 ﻿using JewelrySalesSystem.BAL.Interfaces;
+using JewelrySalesSystem.BAL.Models.Categories;
 using JewelrySalesSystem.DAL.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -86,6 +87,22 @@ namespace JewelrySalesSystem.API.Controllers
             try
             {
                 await _categoryService.UpdateAsync(category);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        //changes here
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateNewcategories(AddCategories category)
+        {
+            try
+            {
+                await _categoryService.AddNewCategory(category);
 
                 return Ok();
             }
