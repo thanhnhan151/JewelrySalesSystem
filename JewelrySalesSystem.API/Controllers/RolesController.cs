@@ -25,15 +25,14 @@ namespace JewelrySalesSystem.API.Controllers
 
         /*Change here*/
         [HttpPost]
-        public async Task<IActionResult> AddRoleAsync(RoleViewModel roleViewModel)
+        public async Task<IActionResult> AddRoleAsync([FromBody] RoleViewModel roleViewModel)
         {
             //var newRole = await _roleService.AddRoleAsync(role);
             //return Ok(newRole);
             //Map the RoleViewModel to a Role object
-           var role = _mapper.Map<Role>(roleViewModel);
 
             // Call the service to add the new role
-            var newRole = await _roleService.AddRoleAsync(role);
+            var newRole = await _roleService.AddRoleAsync(roleViewModel);
 
             // Map the new Role back to a RoleViewModel and return it
             //var newRoleViewModel = _mapper.Map<RoleViewModel>(newRole);
