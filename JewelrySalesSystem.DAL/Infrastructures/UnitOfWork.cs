@@ -25,8 +25,8 @@ namespace JewelrySalesSystem.DAL.Infrastructures
 
         public ICategoryRepository Categories { get; private set; }
 
-        public IGenderRepository Gender { get; private set; }
-        /*Change here*/
+        public IGenderRepository Genders { get; private set; }
+        
         public IRoleRepository Roles { get; private set; }
 
         public UnitOfWork(
@@ -51,9 +51,8 @@ namespace JewelrySalesSystem.DAL.Infrastructures
 
             Categories = new CategoryRepository(_context, _logger);
 
-            Gender = new GenderRepository(_context, _logger);
+            Genders = new GenderRepository(_context, _logger);
             
-            /*Change here*/
             Roles = new RoleRepository(_context, _logger);
         }
 

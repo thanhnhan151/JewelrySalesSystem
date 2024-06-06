@@ -1,6 +1,4 @@
-﻿using JewelrySalesSystem.BAL.Models.Gender;
-using JewelrySalesSystem.DAL.Common;
-using JewelrySalesSystem.DAL.Entities;
+﻿using JewelrySalesSystem.BAL.Models.Genders;
 
 namespace JewelrySalesSystem.BAL.Interfaces
 {

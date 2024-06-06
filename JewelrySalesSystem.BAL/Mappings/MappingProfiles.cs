@@ -1,10 +1,10 @@
 using AutoMapper;
-using JewelrySalesSystem.BAL.Models.Gender;
-using JewelrySalesSystem.BAL.Models.Roles;
 using JewelrySalesSystem.BAL.Models.Gems;
+using JewelrySalesSystem.BAL.Models.Genders;
 using JewelrySalesSystem.BAL.Models.Invoices;
 using JewelrySalesSystem.BAL.Models.Materials;
 using JewelrySalesSystem.BAL.Models.Products;
+using JewelrySalesSystem.BAL.Models.Roles;
 using JewelrySalesSystem.BAL.Models.Users;
 using JewelrySalesSystem.DAL.Common;
 using JewelrySalesSystem.DAL.Entities;
@@ -15,10 +15,14 @@ namespace JewelrySalesSystem.BAL.Mappings
     {
         public MappingProfiles()
         {
-            /*Change here*/
+            #region Role
             CreateMap<RoleViewModel, Role>().ReverseMap();
+            #endregion
+
+            #region Gender
             CreateMap<GenderModel, Gender>().ReverseMap();
-            
+            #endregion
+
             #region User
             CreateMap<User, GetUserResponse>();
             CreateMap<PaginatedList<User>, PaginatedList<GetUserResponse>>();

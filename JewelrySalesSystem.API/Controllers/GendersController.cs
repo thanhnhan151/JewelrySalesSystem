@@ -1,6 +1,5 @@
 ﻿using JewelrySalesSystem.BAL.Interfaces;
-using JewelrySalesSystem.BAL.Models.Gender;
-using JewelrySalesSystem.DAL.Entities;
+using JewelrySalesSystem.BAL.Models.Genders;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

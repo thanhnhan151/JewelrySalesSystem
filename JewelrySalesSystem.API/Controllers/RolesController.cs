@@ -1,6 +1,5 @@
 ﻿using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.Roles;
-using JewelrySalesSystem.DAL.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +21,6 @@ namespace JewelrySalesSystem.API.Controllers
 
         }
 
-        /*Change here*/
         [HttpPost]
         public async Task<IActionResult> AddRoleAsync([FromBody] RoleViewModel roleViewModel)
         {

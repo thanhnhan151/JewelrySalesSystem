@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using JewelrySalesSystem.BAL.Interfaces;
-using JewelrySalesSystem.BAL.Models.Gender;
+using JewelrySalesSystem.BAL.Models.Genders;
 using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
-using Microsoft.EntityFrameworkCore;
 
 namespace JewelrySalesSystem.BAL.Services
 {
@@ -21,7 +20,7 @@ namespace JewelrySalesSystem.BAL.Services
         public async Task<GenderModel> AddGender(GenderModel gender)
         {
 
-            var result = _unitOfWork.Gender.AddEntity(_mapper.Map<Gender>(gender));
+            var result = _unitOfWork.Genders.AddEntity(_mapper.Map<Gender>(gender));
 
             await _unitOfWork.CompleteAsync();
             var newGender = _mapper.Map<GenderModel>(result);

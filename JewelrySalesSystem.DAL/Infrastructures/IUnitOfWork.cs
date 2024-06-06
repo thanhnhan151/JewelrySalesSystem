@@ -18,7 +18,7 @@ namespace JewelrySalesSystem.DAL.Infrastructures
 
         ICategoryRepository Categories { get; }
 
-        IGenderRepository Gender {  get; }
+        IGenderRepository Genders {  get; }
 
         IRoleRepository Roles { get; } 
 
