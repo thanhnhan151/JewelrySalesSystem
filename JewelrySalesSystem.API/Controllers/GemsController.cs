@@ -1,4 +1,5 @@
 ﻿using JewelrySalesSystem.BAL.Interfaces;
+using JewelrySalesSystem.BAL.Models.Gems;
 using JewelrySalesSystem.DAL.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -41,7 +42,7 @@ namespace JewelrySalesSystem.API.Controllers
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
-            int page = 1 ,
+            int page = 1,
             int pageSize = 5)
         {
             try
@@ -70,13 +71,19 @@ namespace JewelrySalesSystem.API.Controllers
         /// Sample request:
         /// 
         ///     {
-        ///       "userName": "testaccount",
-        ///       "fullName": "Nguyen Van B",
-        ///       "phoneNumber": "0999123456",
-        ///       "email": "testemail@gmail.com",
-        ///       "password" : "test",
-        ///       "address" : "test",
-        ///       "roleId" : 3
+        ///       "gemName": "Test Gem",
+        ///       "origin": "Artificial",
+        ///       "caratWeight": "1",
+        ///       "colour": "light blue",
+        ///       "clarity" : "test",
+        ///       "cut" : "test",
+        ///       "gemPrice" : {
+        ///          "caratWeightPrice" : 10,
+        ///          "colourPrice" : 10,
+        ///          "clarityPrice" : 10,
+        ///          "cutPrice" : 10,
+        ///          "effDate" : "2024-06-06T04:33:20.997Z"
+        ///        }
         ///     }
         ///         
         /// </remarks> 
@@ -88,13 +95,14 @@ namespace JewelrySalesSystem.API.Controllers
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server</response>
         [HttpPost]
-        public async Task<IActionResult> AddAsync(Gem gem)
+        public async Task<IActionResult> AddAsync(CreateGemRequest createGemRequest)
         {
             try
             {
-                await _gemService.AddAsync(gem);
+                createGemRequest.GemPrice.EffDate = DateTime.Now;
+                await _gemService.AddAsync(createGemRequest);
 
-                return Ok();
+                return Ok(createGemRequest);
             }
             catch (Exception ex)
             {
