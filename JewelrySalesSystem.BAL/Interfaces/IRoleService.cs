@@ -1,9 +1,12 @@
-﻿using JewelrySalesSystem.DAL.Entities;
+﻿using JewelrySalesSystem.BAL.Models.Roles;
+using JewelrySalesSystem.DAL.Entities;
 
 namespace JewelrySalesSystem.BAL.Interfaces
 {
     public interface IRoleService
     {
-        Task<Role> AddRoleAsync(Role role);
+        /*Change here*/
+        //
+        Task<RoleViewModel> AddRoleAsync(RoleViewModel role);
     }
 }

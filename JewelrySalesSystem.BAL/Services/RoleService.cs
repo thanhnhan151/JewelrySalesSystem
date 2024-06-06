@@ -1,4 +1,6 @@
-﻿using JewelrySalesSystem.BAL.Interfaces;
+﻿using AutoMapper;
+using JewelrySalesSystem.BAL.Interfaces;
+using JewelrySalesSystem.BAL.Models.Roles;
 using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
 
@@ -7,11 +9,20 @@ namespace JewelrySalesSystem.BAL.Services
     public class RoleService : IRoleService
     {
         private readonly IUnitOfWork _unitOfWork;
-        public async Task<Role> AddRoleAsync(Role role)
+        private readonly IMapper _mapper;
+
+        public RoleService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            var result = _unitOfWork.Roles.AddEntity(role);
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
+        }
+
+        public async Task<RoleViewModel> AddRoleAsync(RoleViewModel role)
+        {
+            var result = _unitOfWork.Roles.AddEntity(_mapper.Map<Role>(role));
             await _unitOfWork.CompleteAsync();
-            return result;
+            var newRole = _mapper.Map<RoleViewModel>(result);
+            return newRole;
         }
     }
 }
