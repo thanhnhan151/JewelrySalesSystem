@@ -3,6 +3,7 @@ using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
 using JewelrySalesSystem.DAL.Interfaces;
 using JewelrySalesSystem.DAL.Persistence;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 
@@ -23,7 +24,8 @@ namespace JewelrySalesSystem.DAL.Repositories
             , int page
             , int pageSize)
         {
-            IQueryable<Invoice> invoicesQuery = _dbSet;
+            IQueryable<Invoice> invoicesQuery = _dbSet.Include(i => i.InvoiceDetails)
+                                                            .ThenInclude(i => i.Product);
 
             //if (!string.IsNullOrWhiteSpace(searchTerm))
             //{
@@ -54,5 +56,15 @@ namespace JewelrySalesSystem.DAL.Repositories
             //"dob" => invoice => invoice.DoB,
             _ => invoice => invoice.InvoiceId
         };
+
+        public async Task<Invoice?> GetByIdWithIncludeAsync(int id)
+        {
+            var result = await _dbSet.Include(i => i.InvoiceDetails)
+                                    .ThenInclude(i => i.Product)
+                               .FirstOrDefaultAsync(i => i.InvoiceId == id);
+
+            if (result == null) return null;
+            return result;
+        }
     }
 }

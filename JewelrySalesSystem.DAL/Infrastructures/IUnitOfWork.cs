@@ -1,4 +1,4 @@
-﻿using JewelrySalesSystem.DAL.Interfaces;
+using JewelrySalesSystem.DAL.Interfaces;
 
 namespace JewelrySalesSystem.DAL.Infrastructures
 {
@@ -19,6 +19,8 @@ namespace JewelrySalesSystem.DAL.Infrastructures
         ICategoryRepository Categories { get; }
 
         IGenderRepository Gender {  get; }
+
+        IRoleRepository Roles { get; } 
 
         Task CompleteAsync();
     }

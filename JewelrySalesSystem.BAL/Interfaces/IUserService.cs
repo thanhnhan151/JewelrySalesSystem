@@ -1,4 +1,5 @@
-﻿using JewelrySalesSystem.DAL.Common;
+﻿using JewelrySalesSystem.BAL.Models.Users;
+using JewelrySalesSystem.DAL.Common;
 using JewelrySalesSystem.DAL.Entities;
 
 namespace JewelrySalesSystem.BAL.Interfaces
@@ -7,17 +8,17 @@ namespace JewelrySalesSystem.BAL.Interfaces
     {
         Task<User?> LoginAsync(string userName, string passWord);
 
-        Task<PaginatedList<User>> PaginationAsync
+        Task<PaginatedList<GetUserResponse>> PaginationAsync
             (string? searchTerm
             , string? sortColumn
             , string? sortOrder
             , int page
             , int pageSize);
 
-        Task<User> AddAsync(User user);
+        Task<CreateUserRequest> AddAsync(CreateUserRequest createUserRequest);
 
-        Task UpdateAsync(User user);
+        Task UpdateAsync(UpdateUserRequest updateUserRequest);
 
-        Task<User?> GetByIdAsync(int id);
+        Task<GetUserResponse?> GetByIdAsync(int id);
     }
 }
