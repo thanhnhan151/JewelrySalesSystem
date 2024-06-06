@@ -120,7 +120,7 @@ namespace JewelrySalesSystem.API.Controllers
         {
             try
             {
-                var result = await _userService.GetByIdAsync(id);
+                var result = await _userService.GetByIdWithIncludeAsync(id);
 
                 if (result is not null)
                 {
@@ -167,7 +167,7 @@ namespace JewelrySalesSystem.API.Controllers
         {
             try
             {
-                var user = await _userService.GetByIdAsync(updateUserRequest.UserId);
+                var user = await _userService.GetByIdWithIncludeAsync(updateUserRequest.UserId);
 
                 if (user == null)
                     return BadRequest();
