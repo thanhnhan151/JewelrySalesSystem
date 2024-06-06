@@ -1,4 +1,5 @@
 using AutoMapper;
+using JewelrySalesSystem.BAL.Models.Gender;
 using JewelrySalesSystem.BAL.Models.Roles;
 using JewelrySalesSystem.BAL.Models.Gems;
 using JewelrySalesSystem.BAL.Models.Invoices;
@@ -16,6 +17,7 @@ namespace JewelrySalesSystem.BAL.Mappings
         {
             /*Change here*/
             CreateMap<RoleViewModel, Role>().ReverseMap();
+            CreateMap<GenderModel, Gender>().ReverseMap();
             
             #region User
             CreateMap<User, GetUserResponse>();

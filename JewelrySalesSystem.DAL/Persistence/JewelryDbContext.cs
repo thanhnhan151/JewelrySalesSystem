@@ -1,4 +1,4 @@
-﻿using JewelrySalesSystem.DAL.Entities;
+using JewelrySalesSystem.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -14,7 +14,8 @@ namespace JewelrySalesSystem.DAL.Persistence
         public JewelryDbContext(DbContextOptions<JewelryDbContext> options)
             : base(options)
         {
-        }      
+
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -13,5 +13,16 @@ namespace JewelrySalesSystem.DAL.Repositories
             , ILogger logger) : base(context, logger)
         {
         }
+
+        public async Task<Gender> AddGender(Gender gender)
+        {
+            _context.Genders.Add(gender);
+
+            await _context.SaveChangesAsync();
+
+            return gender;
+        }
+
+
     }
 }

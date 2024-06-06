@@ -1,4 +1,4 @@
-﻿using JewelrySalesSystem.DAL.Interfaces;
+using JewelrySalesSystem.DAL.Interfaces;
 using JewelrySalesSystem.DAL.Persistence;
 using JewelrySalesSystem.DAL.Repositories;
 using Microsoft.Extensions.Logging;
@@ -25,6 +25,7 @@ namespace JewelrySalesSystem.DAL.Infrastructures
 
         public ICategoryRepository Categories { get; private set; }
 
+        public IGenderRepository Gender { get; private set; }
         /*Change here*/
         public IRoleRepository Roles { get; private set; }
 
@@ -50,6 +51,8 @@ namespace JewelrySalesSystem.DAL.Infrastructures
 
             Categories = new CategoryRepository(_context, _logger);
 
+            Gender = new GenderRepository(_context, _logger);
+            
             /*Change here*/
             Roles = new RoleRepository(_context, _logger);
         }
