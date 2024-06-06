@@ -26,7 +26,7 @@ namespace JewelrySalesSystem.DAL.Persistence
                 //                  .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
                 //IConfigurationRoot configuration = builder.Build();
                 //optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-                optionsBuilder.UseSqlServer("Server=(local);Uid=sa;Pwd=1;Database=JewelrySalesSystem;Trusted_Connection=true;TrustServerCertificate=true;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-ICDH4CC\\VIETDUC;Uid=sa;Pwd=1;Database=JewelrySalesSystem;Trusted_Connection=true;TrustServerCertificate=true;");
             }
         }
 
