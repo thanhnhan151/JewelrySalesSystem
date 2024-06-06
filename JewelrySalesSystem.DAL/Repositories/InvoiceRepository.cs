@@ -25,7 +25,10 @@ namespace JewelrySalesSystem.DAL.Repositories
             , int pageSize)
         {
             IQueryable<Invoice> invoicesQuery = _dbSet.Include(i => i.InvoiceDetails)
-                                                            .ThenInclude(i => i.Product);
+                                                            .ThenInclude(i => i.Product)
+                                                      .Include(i => i.Customer)
+                                                      .Include(i => i.User)
+                                                      .Include(i => i.Warranty);
 
             //if (!string.IsNullOrWhiteSpace(searchTerm))
             //{
@@ -59,11 +62,16 @@ namespace JewelrySalesSystem.DAL.Repositories
 
         public async Task<Invoice?> GetByIdWithIncludeAsync(int id)
         {
-            var result = await _dbSet.Include(i => i.InvoiceDetails)
+            var result = await _dbSet
+                                .Include(i => i.InvoiceDetails)
                                     .ThenInclude(i => i.Product)
-                               .FirstOrDefaultAsync(i => i.InvoiceId == id);
+                                .Include(i => i.Customer)
+                                .Include(i => i.User)
+                                .Include(i => i.Warranty)
+                                .FirstOrDefaultAsync(i => i.InvoiceId == id);
 
             if (result == null) return null;
+
             return result;
         }
     }

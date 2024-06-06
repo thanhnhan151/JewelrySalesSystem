@@ -10,19 +10,18 @@ namespace JewelrySalesSystem.BAL.Models.Products
         public float ProductionCost { get; set; }
         public bool Status { get; set; }
         public string FeaturedImage { get; set; } = string.Empty;
+
         // Category
-        public int CategoryId { get; set; }
+        public string Category { get; set; } = string.Empty;
 
         // Product Type
-        public int ProductTypeId { get; set; }
+        public string ProductType { get; set; } = string.Empty;
 
         // Gender
-        public int GenderId { get; set; }
+        public string Gender { get; set; } = string.Empty;
 
         // Colour
-        public int ColourId { get; set; }
-
-        // Invoice Details
+        public string Colour { get; set; } = string.Empty;
 
         // Product Gems
         public ICollection<GemItem> Gems { get; set; } = new List<GemItem>();

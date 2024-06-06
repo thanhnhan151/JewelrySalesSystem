@@ -19,6 +19,6 @@ namespace JewelrySalesSystem.BAL.Interfaces
 
         Task UpdateAsync(UpdateUserRequest updateUserRequest);
 
-        Task<GetUserResponse?> GetByIdAsync(int id);
+        Task<GetUserResponse?> GetByIdWithIncludeAsync(int id);
     }
 }

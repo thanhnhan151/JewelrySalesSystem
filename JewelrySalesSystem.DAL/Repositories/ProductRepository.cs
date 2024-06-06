@@ -28,7 +28,11 @@ namespace JewelrySalesSystem.DAL.Repositories
                                                 .Include(p => p.ProductGems)
                                                     .ThenInclude(g => g.Gem)
                                                 .Include(p => p.ProductMaterials)
-                                                    .ThenInclude(m => m.Material);
+                                                    .ThenInclude(m => m.Material)
+                                                .Include(p => p.Category)
+                                                .Include(p => p.ProductType)
+                                                .Include(p => p.Gender)
+                                                .Include(p => p.Colour);
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
@@ -64,8 +68,14 @@ namespace JewelrySalesSystem.DAL.Repositories
                                     .ThenInclude(g => g.Gem)
                                .Include(p => p.ProductMaterials)
                                     .ThenInclude(m => m.Material)
+                               .Include(p => p.Category)
+                               .Include(p => p.ProductType)
+                               .Include(p => p.Gender)
+                               .Include(p => p.Colour)
                                .FirstOrDefaultAsync(p => p.ProductId == id);
+
             if (result == null) return null;
+
             return result;
         }
     }

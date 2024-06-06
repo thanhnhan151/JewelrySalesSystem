@@ -13,7 +13,7 @@ namespace JewelrySalesSystem.BAL.Interfaces
             , int page
             , int pageSize);
 
-        Task<Gem> AddAsync(Gem gem);
+        Task<CreateGemRequest> AddAsync(CreateGemRequest createGemRequest);
 
         Task UpdateAsync(Gem gem);
 

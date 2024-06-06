@@ -24,9 +24,13 @@ namespace JewelrySalesSystem.BAL.Mappings
             #endregion
 
             #region User
-            CreateMap<User, GetUserResponse>();
+            CreateMap<User, GetUserResponse>()
+                .ForMember(u => u.Role, u => u.MapFrom(u => u.Role.RoleName));
+
             CreateMap<PaginatedList<User>, PaginatedList<GetUserResponse>>();
+
             CreateMap<CreateUserRequest, User>();
+
             CreateMap<UpdateUserRequest, User>();
             #endregion
 
@@ -36,7 +40,16 @@ namespace JewelrySalesSystem.BAL.Mappings
                 .Select(y => y.Material).ToList()))
 
                 .ForMember(p => p.Gems, p => p.MapFrom(p => p.ProductGems
-                .Select(y => y.Gem).ToList()));
+                .Select(y => y.Gem).ToList()))
+                
+                .ForMember(p => p.Category, p => p.MapFrom(p => p.Category.CategoryName))
+
+                .ForMember(p => p.ProductType, p => p.MapFrom(p => p.ProductType.Name))
+
+                .ForMember(p => p.Gender, p => p.MapFrom(p => p.Gender.GenderName))
+
+                .ForMember(p => p.Colour, p => p.MapFrom(p => p.Colour.ColourName));
+
             CreateMap<PaginatedList<Product>, PaginatedList<GetProductResponse>>();
             #endregion
 
@@ -67,7 +80,13 @@ namespace JewelrySalesSystem.BAL.Mappings
                 .ForMember(i => i.Items, i => i.MapFrom(i => i.InvoiceDetails))
 
                 .ForMember(i => i.Total, i => i.MapFrom(i => i.InvoiceDetails
-                .Sum(i => i.ProductPrice)));
+                .Sum(i => i.ProductPrice)))
+                
+                .ForMember(i => i.CustomerName, i => i.MapFrom(i => i.Customer.FullName))
+
+                .ForMember(i => i.UserName, i => i.MapFrom(i => i.User.UserName))
+
+                .ForMember(i => i.Warranty, i => i.MapFrom(i => i.Warranty.Description));
 
             CreateMap<PaginatedList<Invoice>, PaginatedList<GetInvoiceResponse>>();
 

@@ -1,6 +1,6 @@
 ﻿namespace JewelrySalesSystem.BAL.Models.Gems
 {
-    public class GetGemResponse
+    public class CreateGemRequest
     {
         public string GemName { get; set; } = string.Empty;
         public string Origin { get; set; } = string.Empty;

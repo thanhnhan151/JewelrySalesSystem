@@ -28,13 +28,34 @@ namespace JewelrySalesSystem.BAL.Services
             int pageSize)
         => _mapper.Map<PaginatedList<GetGemResponse>>(await _unitOfWork.Gems.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize));
 
-        public async Task<Gem> AddAsync(Gem gem)
+        public async Task<CreateGemRequest> AddAsync(CreateGemRequest createGemRequest)
         {
+            var gem = new Gem
+            {
+                GemName = createGemRequest.GemName,
+                Origin = createGemRequest.Origin,
+                CaratWeight = createGemRequest.CaratWeight,
+                Colour = createGemRequest.Colour,
+                Clarity = createGemRequest.Clarity,
+                Cut = createGemRequest.Cut,
+                GemPrices = new List<GemPriceList>
+                {
+                    new GemPriceList
+                    {
+                        CaratWeightPrice = createGemRequest.GemPrice.CaratWeightPrice,
+                        ColourPrice = createGemRequest.GemPrice.ColourPrice,
+                        ClarityPrice = createGemRequest.GemPrice.ClarityPrice,
+                        CutPrice = createGemRequest.GemPrice.CutPrice,
+                        EffDate = createGemRequest.GemPrice.EffDate
+                    }
+                }
+            };
+
             var result = _unitOfWork.Gems.AddEntity(gem);
 
             await _unitOfWork.CompleteAsync();
 
-            return result;
+            return createGemRequest;
         }
 
         public async Task UpdateAsync(Gem gem)

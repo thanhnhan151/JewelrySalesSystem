@@ -9,13 +9,13 @@ namespace JewelrySalesSystem.BAL.Models.Invoices
         public bool InvoiceType { get; set; }
 
         // Customer
-        public int CustomerId { get; set; }
+        public string CustomerName { get; set; } = string.Empty;
 
         // User
-        public int UserId { get; set; }
+        public string UserName { get; set; } = string.Empty;
 
         // Warranty
-        public int WarrantyId { get; set; }
+        public string Warranty { get; set; } = string.Empty;
 
         // Invoice Details
         public ICollection<InvoiceItem> Items { get; set; } = new List<InvoiceItem>();
