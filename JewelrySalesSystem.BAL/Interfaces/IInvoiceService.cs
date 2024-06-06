@@ -1,11 +1,12 @@
-﻿using JewelrySalesSystem.DAL.Common;
+﻿using JewelrySalesSystem.BAL.Models.Invoices;
+using JewelrySalesSystem.DAL.Common;
 using JewelrySalesSystem.DAL.Entities;
 
 namespace JewelrySalesSystem.BAL.Interfaces
 {
     public interface IInvoiceService
     {
-        Task<PaginatedList<Invoice>> PaginationAsync
+        Task<PaginatedList<GetInvoiceResponse>> PaginationAsync
             (string? searchTerm
             , string? sortColumn
             , string? sortOrder
@@ -16,6 +17,6 @@ namespace JewelrySalesSystem.BAL.Interfaces
 
         Task UpdateAsync(Invoice invoice);
 
-        Task<Invoice?> GetByIdAsync(int id);
+        Task<GetInvoiceResponse?> GetByIdWithIncludeAsync(int id);
     }
 }

@@ -11,24 +11,10 @@ namespace JewelrySalesSystem.DAL.Persistence
 
         }
 
-
         public JewelryDbContext(DbContextOptions<JewelryDbContext> options)
             : base(options)
         {
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                //var builder = new ConfigurationBuilder()
-                //                  .SetBasePath(Directory.GetCurrentDirectory())
-                //                  .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-                //IConfigurationRoot configuration = builder.Build();
-                //optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-                optionsBuilder.UseSqlServer("Server=(local);Uid=sa;Pwd=1;Database=JewelrySalesSystem;Trusted_Connection=true;TrustServerCertificate=true;");
-            }
-        }
+        }      
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

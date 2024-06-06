@@ -1,11 +1,12 @@
-﻿using JewelrySalesSystem.DAL.Common;
+﻿using JewelrySalesSystem.BAL.Models.Products;
+using JewelrySalesSystem.DAL.Common;
 using JewelrySalesSystem.DAL.Entities;
 
 namespace JewelrySalesSystem.BAL.Interfaces
 {
     public interface IProductService
     {
-        Task<PaginatedList<Product>> PaginationAsync
+        Task<PaginatedList<GetProductResponse>> PaginationAsync
             (string? searchTerm
             , string? sortColumn
             , string? sortOrder
@@ -16,6 +17,6 @@ namespace JewelrySalesSystem.BAL.Interfaces
 
         Task UpdateAsync(Product product);
 
-        Task<Product?> GetByIdAsync(int id);
+        Task<GetProductResponse?> GetByIdWithIncludeAsync(int id);
     }
 }

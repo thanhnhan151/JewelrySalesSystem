@@ -20,7 +20,7 @@ namespace JewelrySalesSystem.DAL.Infrastructures
         }
         public virtual TEntity AddEntity(TEntity entity) => _dbSet.Add(entity).Entity;
 
-        public virtual void UpdateEntity(TEntity entity) => _context.Entry(entity).State = EntityState.Modified;
+        public virtual void UpdateEntity(TEntity entity) => _dbSet.Update(entity);
 
         public virtual async Task<TEntity?> GetByIdAsync(int id)
         {

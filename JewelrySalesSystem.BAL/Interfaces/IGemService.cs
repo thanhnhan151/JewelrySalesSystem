@@ -1,11 +1,12 @@
-﻿using JewelrySalesSystem.DAL.Common;
+﻿using JewelrySalesSystem.BAL.Models.Gems;
+using JewelrySalesSystem.DAL.Common;
 using JewelrySalesSystem.DAL.Entities;
 
 namespace JewelrySalesSystem.BAL.Interfaces
 {
     public interface IGemService
     {
-        Task<PaginatedList<Gem>> PaginationAsync
+        Task<PaginatedList<GetGemResponse>> PaginationAsync
             (string? searchTerm
             , string? sortColumn
             , string? sortOrder
@@ -16,6 +17,6 @@ namespace JewelrySalesSystem.BAL.Interfaces
 
         Task UpdateAsync(Gem gem);
 
-        Task<Gem?> GetByIdAsync(int id);
+        Task<GetGemResponse?> GetByIdWithIncludeAsync(int id);
     }
 }

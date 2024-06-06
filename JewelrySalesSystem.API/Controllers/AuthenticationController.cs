@@ -33,21 +33,21 @@ namespace JewelrySalesSystem.API.Controllers
         /// Log into system using username and password
         /// </summary>    
         /// <remarks>
-        ///     Sample request:
-        ///
-        ///         {
-        ///           "username": "testingaccount",
-        ///           "password": "test"
-        ///         }
+        /// Sample request:  
+        /// 
+        ///     {
+        ///       "username": "testingaccount",
+        ///       "password": "test"
+        ///     }   
         ///         
         /// </remarks>
-        /// <returns>Specific HTTP Status code</returns>
+        /// <returns>Json Web Token with User Role</returns>
         /// <response code="200">Return home screen if the access is successful</response>
         /// <response code="400">If the account is null</response>
-        [HttpPost]
+        /// <response code="500">Internal Server</response>
+        [HttpPost("sigin")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Boolean), StatusCodes.Status400BadRequest)]
-        [HttpPost]
         public async Task<IActionResult> LoginAsync([FromBody] UserSignInRequest userSignInRequest)
         {
             try
@@ -71,6 +71,21 @@ namespace JewelrySalesSystem.API.Controllers
             {
                 ErrorMessage = "Wrong UserName or Password"
             });
+        }
+        #endregion
+
+        #region Reset Password
+        /// <summary>
+        /// Reset account password using email
+        /// </summary>    
+        /// <returns>User account</returns>
+        /// <response code="200">Return user account</response>
+        /// <response code="400">If the email does not exist</response>
+        /// <response code="500">Internal Server</response>
+        [HttpPost("reset-password")]
+        public async  Task<IActionResult> ResetPasswordAsync(string email)
+        {
+            return Ok();
         }
         #endregion
 
