@@ -18,6 +18,9 @@ namespace JewelrySalesSystem.DAL.Infrastructures
 
         ICategoryRepository Categories { get; }
 
+        /*Change here*/
+        IRoleRepository Roles { get; }  
+
         Task CompleteAsync();
     }
 }

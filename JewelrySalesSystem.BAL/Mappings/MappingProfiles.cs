@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+using AutoMapper;
+using JewelrySalesSystem.BAL.Models.Roles;
 using JewelrySalesSystem.BAL.Models.Gems;
 using JewelrySalesSystem.BAL.Models.Invoices;
 using JewelrySalesSystem.BAL.Models.Materials;
@@ -13,6 +14,9 @@ namespace JewelrySalesSystem.BAL.Mappings
     {
         public MappingProfiles()
         {
+            /*Change here*/
+            CreateMap<RoleViewModel, Role>().ReverseMap();
+            
             #region User
             CreateMap<User, GetUserResponse>();
             CreateMap<PaginatedList<User>, PaginatedList<GetUserResponse>>();

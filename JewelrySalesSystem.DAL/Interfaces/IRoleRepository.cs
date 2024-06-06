@@ -5,5 +5,7 @@ namespace JewelrySalesSystem.DAL.Interfaces
 {
     public interface IRoleRepository : IGenericRepository<Role>
     {
+        /*Change here*/
+        Task<Role> AddRoleAsync(Role role);
     }
 }

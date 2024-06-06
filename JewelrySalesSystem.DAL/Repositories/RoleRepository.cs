@@ -8,10 +8,19 @@ namespace JewelrySalesSystem.DAL.Repositories
 {
     public class RoleRepository : GenericRepository<Role>, IRoleRepository
     {
+        /*Change here*/
+        private readonly JewelryDbContext _jewelryDbContext;
         public RoleRepository(
             JewelryDbContext context
             , ILogger logger) : base(context, logger)
         {
+        }
+
+        public async Task<Role> AddRoleAsync(Role role)
+        {
+            _context.Roles.Add(role);
+            await _context.SaveChangesAsync();
+            return role;
         }
     }
 }
