@@ -4,6 +4,7 @@ namespace JewelrySalesSystem.BAL.Models.Invoices
 {
     public class GetInvoiceResponse
     {
+        public int InvoiceId { get; set; }
         public DateTime OrderDate { get; set; }
         public bool Status { get; set; }
         public bool InvoiceType { get; set; }

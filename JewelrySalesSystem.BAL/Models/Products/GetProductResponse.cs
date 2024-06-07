@@ -5,6 +5,7 @@ namespace JewelrySalesSystem.BAL.Models.Products
 {
     public class GetProductResponse
     {
+        public int ProductId { get; set; }
         public string ProductName { get; set; } = string.Empty;
         public int PercentPriceRate { get; set; }
         public float ProductionCost { get; set; }
