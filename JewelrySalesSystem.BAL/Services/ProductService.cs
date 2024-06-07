@@ -28,13 +28,53 @@ namespace JewelrySalesSystem.BAL.Services
             int pageSize)
         => _mapper.Map<PaginatedList<GetProductResponse>>(await _unitOfWork.Products.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize));
 
-        public async Task<Product> AddAsync(Product product)
+        public async Task<CreateProductRequest> AddAsync(CreateProductRequest createProductRequest)
         {
+            var productGems = new List<ProductGem>();
+
+            if (createProductRequest.Gems.Count > 0)
+            {
+                foreach (var item in createProductRequest.Gems)
+                {
+                    productGems.Add(new ProductGem
+                    {
+                        GemId = item
+                    });
+                }
+            }
+
+            var productMaterials = new List<ProductMaterial>();
+
+            if (createProductRequest.Materials.Count > 0)
+            {
+                foreach (var item in createProductRequest.Materials)
+                {
+                    productMaterials.Add(new ProductMaterial
+                    {
+                        MaterialId = item
+                    });
+                }
+            }
+
+            var product = new Product()
+            {
+                ProductName = createProductRequest.ProductName,
+                PercentPriceRate = createProductRequest.PercentPriceRate,
+                ProductionCost = createProductRequest.ProductionCost,
+                FeaturedImage = createProductRequest.FeaturedImage,
+                CategoryId = createProductRequest.CategoryId,
+                ProductTypeId = createProductRequest.ProductTypeId,
+                GenderId = createProductRequest.GenderId,
+                ColourId = createProductRequest.ColourId,
+                ProductGems = productGems,
+                ProductMaterials = productMaterials
+            };
+
             var result = _unitOfWork.Products.AddEntity(product);
 
             await _unitOfWork.CompleteAsync();
 
-            return result;
+            return createProductRequest;
         }
 
         public async Task UpdateAsync(Product product)
