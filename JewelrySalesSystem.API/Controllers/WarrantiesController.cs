@@ -1,5 +1,8 @@
 ﻿using JewelrySalesSystem.BAL.Interfaces;
+using JewelrySalesSystem.BAL.Models.Users;
+using JewelrySalesSystem.BAL.Models.Warranties;
 using JewelrySalesSystem.BAL.Services;
+using JewelrySalesSystem.DAL.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -44,5 +47,28 @@ namespace JewelrySalesSystem.API.Controllers
 
             return BadRequest();
         }
+
+        
+        #region Update Warranty
+        [HttpPut]
+        public async Task<IActionResult> UpdateAsync([FromBody]UpdateWarrantyRequest updateWarrantyRequest)
+        {
+            try
+            {
+                //var warranty = await _warrantyService.GetById(updateWarrantyRequest.WarrantyId);
+                //if (warranty == null)
+                //    return NotFound("Warranty not found.");
+
+                await _warrantyService.UpdateAsync(updateWarrantyRequest);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        #endregion
+
     }
 }

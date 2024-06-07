@@ -7,6 +7,7 @@ using JewelrySalesSystem.BAL.Models.Materials;
 using JewelrySalesSystem.BAL.Models.Products;
 using JewelrySalesSystem.BAL.Models.Roles;
 using JewelrySalesSystem.BAL.Models.Users;
+using JewelrySalesSystem.BAL.Models.Warranties;
 using JewelrySalesSystem.DAL.Common;
 using JewelrySalesSystem.DAL.Entities;
 
@@ -95,6 +96,10 @@ namespace JewelrySalesSystem.BAL.Mappings
                 .ForMember(i => i.ProductName, i => i.MapFrom(i => i.Product.ProductName));
             #endregion
 
+            #region Warranty
+            CreateMap<UpdateWarrantyRequest, Warranty>().ReverseMap();
+            #endregion
+            
             #region Category
             CreateMap<AddCategories, Category>().ReverseMap();
             #endregion
