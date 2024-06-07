@@ -87,5 +87,13 @@ namespace JewelrySalesSystem.DAL.Repositories
 
             return result;
         }
+
+        public async Task<User> AddAsync(User user)
+        {
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            return user;
+        }
     }
 }

@@ -163,7 +163,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server</response>
         [HttpPut]
-        public async Task<IActionResult> UpdateAsync([FromBody]UpdateUserRequest updateUserRequest)
+        public async Task<IActionResult> UpdateAsync([FromBody] UpdateUserRequest updateUserRequest)
         {
             try
             {

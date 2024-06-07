@@ -28,7 +28,7 @@ namespace JewelrySalesSystem.BAL.Mappings
                 .ForMember(u => u.Role, u => u.MapFrom(u => u.Role.RoleName));
 
             CreateMap<PaginatedList<User>, PaginatedList<GetUserResponse>>();
-
+            
             CreateMap<CreateUserRequest, User>();
 
             CreateMap<UpdateUserRequest, User>();
