@@ -1,4 +1,5 @@
-﻿using JewelrySalesSystem.DAL.Common;
+﻿using JewelrySalesSystem.BAL.Models.Categories;
+using JewelrySalesSystem.DAL.Common;
 using JewelrySalesSystem.DAL.Entities;
 
 namespace JewelrySalesSystem.BAL.Interfaces
@@ -17,5 +18,8 @@ namespace JewelrySalesSystem.BAL.Interfaces
         Task UpdateAsync(Category category);
 
         Task<Category?> GetByIdAsync(int id);
+
+        //change here
+        Task<AddCategories> AddNewCategory(AddCategories category);
     }
 }
