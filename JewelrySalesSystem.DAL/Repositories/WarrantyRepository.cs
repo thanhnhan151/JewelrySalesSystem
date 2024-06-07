@@ -54,5 +54,24 @@ namespace JewelrySalesSystem.DAL.Repositories
             //"dob" => warranty => warranty.DoB,
             _ => warranty => warranty.WarrantyId
         };
+
+        /*Update Warranty*/
+        public async void UpdateWarranty(Warranty warranty)
+        {
+
+            var checkExistWarrantyTask = _dbSet.FindAsync(warranty.WarrantyId);
+            //var checkExistWarrantyTask = _dbSet.Find(warranty.WarrantyId);
+            var checkExistWarranty = await checkExistWarrantyTask;
+            if (checkExistWarranty == null)
+            {
+                throw new Exception($"Warranty with ID {warranty.WarrantyId} not found.");
+            }
+            //Update data
+            checkExistWarranty.Description = warranty.Description;
+            checkExistWarranty.StartDate = warranty.StartDate;
+            checkExistWarranty.EndDate = warranty.EndDate;
+            
+
+        }
     }
 }
