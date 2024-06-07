@@ -28,13 +28,36 @@ namespace JewelrySalesSystem.BAL.Services
             int pageSize)
         => _mapper.Map<PaginatedList<GetInvoiceResponse>>(await _unitOfWork.Invoices.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize));
 
-        public async Task<Invoice> AddAsync(Invoice invoice)
+        public async Task<CreateInvoiceRequest> AddAsync(CreateInvoiceRequest createInvoiceRequest)
         {
+            var invoiceDetails = new List<InvoiceDetail>();
+
+            if (createInvoiceRequest.InvoiceDetails.Count > 0)
+            {
+                foreach (var item in createInvoiceRequest.InvoiceDetails)
+                {
+                    invoiceDetails.Add(new InvoiceDetail
+                    {
+                        ProductId = item,
+                        ProductPrice = await CalculateProductPrice(item)
+                    });
+                }
+            }
+
+            var invoice = new Invoice
+            {
+                OrderDate = DateTime.Now,
+                CustomerId = createInvoiceRequest.CustomerId,
+                UserId = createInvoiceRequest.UserId,
+                WarrantyId = createInvoiceRequest.WarrantyId,
+                InvoiceDetails = invoiceDetails
+            };
+
             var result = _unitOfWork.Invoices.AddEntity(invoice);
 
             await _unitOfWork.CompleteAsync();
 
-            return result;
+            return createInvoiceRequest;
         }
 
         public async Task UpdateAsync(Invoice invoice)
@@ -44,5 +67,50 @@ namespace JewelrySalesSystem.BAL.Services
         }
 
         public async Task<GetInvoiceResponse?> GetByIdWithIncludeAsync(int id) => _mapper.Map<GetInvoiceResponse>(await _unitOfWork.Invoices.GetByIdWithIncludeAsync(id));
+
+        private async Task<float> CalculateProductPrice(int productId)
+        {
+            var product = await _unitOfWork.Products.GetByIdWithIncludeAsync(productId);
+
+            float productPrice = 0;
+
+            if (product != null)
+            {
+                productPrice += product.ProductionCost;
+                if (product.ProductGems.Count > 0)
+                {
+                    foreach (var gem in product.ProductGems)
+                    {
+                        var temp = await _unitOfWork.Gems.GetByIdWithIncludeAsync(gem.GemId);
+
+                        if (temp != null)
+                        {
+                            var gemPrice = temp.GemPrices.SingleOrDefault();
+
+                            if (gemPrice != null)
+                            {
+                                productPrice += gemPrice.CutPrice + gemPrice.CaratWeightPrice + gemPrice.ClarityPrice + gemPrice.ColourPrice;
+                            }
+                        }
+                    }
+                }
+
+                if (product.ProductMaterials.Count > 0)
+                {
+                    foreach (var material in product.ProductMaterials)
+                    {
+                        var temp = await _unitOfWork.Materials.GetByIdWithIncludeAsync(material.MaterialId);
+
+                        if (temp != null)
+                        {
+                            var materialPrice = temp.MaterialPrices.SingleOrDefault();
+
+                            if (materialPrice != null) productPrice += materialPrice.SellPrice;
+                        }
+                    }
+                }
+            }
+            return productPrice;
+        }
     }
 }
