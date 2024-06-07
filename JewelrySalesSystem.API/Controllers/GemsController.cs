@@ -76,13 +76,13 @@ namespace JewelrySalesSystem.API.Controllers
         ///       "caratWeight": "1",
         ///       "colour": "light blue",
         ///       "clarity" : "test",
-        ///       "cut" : "test",
-        ///       "gemPrice" : {
-        ///          "caratWeightPrice" : 10,
-        ///          "colourPrice" : 10,
-        ///          "clarityPrice" : 10,
-        ///          "cutPrice" : 10,
-        ///          "effDate" : "2024-06-06T04:33:20.997Z"
+        ///       "cut": "test",
+        ///       "gemPrice": {
+        ///          "caratWeightPrice": 10,
+        ///          "colourPrice": 10,
+        ///          "clarityPrice": 10,
+        ///          "cutPrice": 10,
+        ///          "effDate": "2024-06-06T04:33:20.997Z"
         ///        }
         ///     }
         ///         

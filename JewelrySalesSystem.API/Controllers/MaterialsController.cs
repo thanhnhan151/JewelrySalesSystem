@@ -73,9 +73,9 @@ namespace JewelrySalesSystem.API.Controllers
         ///     {
         ///       "materialName": "Vàng 16K",
         ///       "materialPrice": {
-        ///          "buyPrice" : 11,
-        ///          "sellPrice" : 11,
-        ///          "effDate" : "2024-06-06T04:33:20.997Z"
+        ///          "buyPrice": 11,
+        ///          "sellPrice": 11,
+        ///          "effDate": "2024-06-06T04:33:20.997Z"
         ///        }            
         ///     }
         ///         

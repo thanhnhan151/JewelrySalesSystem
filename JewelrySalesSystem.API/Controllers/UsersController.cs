@@ -74,9 +74,9 @@ namespace JewelrySalesSystem.API.Controllers
         ///       "fullName": "Nguyen Van B",
         ///       "phoneNumber": "0999123456",
         ///       "email": "testemail@gmail.com",
-        ///       "password" : "test",
-        ///       "address" : "test",
-        ///       "roleId" : 3
+        ///       "password": "test",
+        ///       "address": "test",
+        ///       "roleId": 3
         ///     }
         ///         
         /// </remarks> 
