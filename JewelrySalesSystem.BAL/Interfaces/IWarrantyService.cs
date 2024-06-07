@@ -1,4 +1,5 @@
-﻿using JewelrySalesSystem.DAL.Common;
+﻿using JewelrySalesSystem.BAL.Models.Warranties;
+using JewelrySalesSystem.DAL.Common;
 using JewelrySalesSystem.DAL.Entities;
 
 namespace JewelrySalesSystem.BAL.Interfaces
@@ -11,5 +12,6 @@ namespace JewelrySalesSystem.BAL.Interfaces
             , string? sortOrder
             , int page
             , int pageSize);
+        Task UpdateAsync(UpdateWarrantyRequest updateWarrantyRequest);
     }
 }
