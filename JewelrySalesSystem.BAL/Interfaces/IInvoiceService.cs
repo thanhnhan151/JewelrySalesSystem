@@ -13,7 +13,7 @@ namespace JewelrySalesSystem.BAL.Interfaces
             , int page
             , int pageSize);
 
-        Task<Invoice> AddAsync(Invoice invoice);
+        Task<CreateInvoiceRequest> AddAsync(CreateInvoiceRequest createInvoiceRequest);
 
         Task UpdateAsync(Invoice invoice);
 

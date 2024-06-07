@@ -13,7 +13,7 @@ namespace JewelrySalesSystem.BAL.Interfaces
             , int page
             , int pageSize);
 
-        Task<Product> AddAsync(Product product);
+        Task<CreateProductRequest> AddAsync(CreateProductRequest createProductRequest);
 
         Task UpdateAsync(Product product);
 
