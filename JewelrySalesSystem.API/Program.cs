@@ -24,7 +24,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddDbContext<JewelryDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DeployConnection"));
     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
 
@@ -88,10 +88,10 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecificOrigin",
+    options.AddPolicy("AllowOrigin",
         builder =>
         {
-            builder.WithOrigins("*")
+            builder.AllowAnyOrigin()
                    .AllowAnyHeader()
                    .AllowAnyMethod();
         });
@@ -116,7 +116,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 
-app.UseCors("AllowSpecificOrigin");
+app.UseCors("AllowOrigin");
 
 app.UseAuthorization();
 

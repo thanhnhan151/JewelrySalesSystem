@@ -2,6 +2,7 @@
 {
     public class GetMaterialResponse
     {
+        public int MaterialId { get; set; }
         public string MaterialName { get; set; } = string.Empty;
         public MaterialPrice MaterialPrice { get; set; } = null!;
     }

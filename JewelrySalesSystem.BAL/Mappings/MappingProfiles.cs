@@ -1,4 +1,5 @@
 using AutoMapper;
+using JewelrySalesSystem.BAL.Models.Categories;
 using JewelrySalesSystem.BAL.Models.Gems;
 using JewelrySalesSystem.BAL.Models.Genders;
 using JewelrySalesSystem.BAL.Models.Invoices;
@@ -97,6 +98,10 @@ namespace JewelrySalesSystem.BAL.Mappings
 
             #region Warranty
             CreateMap<UpdateWarrantyRequest, Warranty>().ReverseMap();
+            #endregion
+            
+            #region Category
+            CreateMap<AddCategories, Category>().ReverseMap();
             #endregion
         }
     }

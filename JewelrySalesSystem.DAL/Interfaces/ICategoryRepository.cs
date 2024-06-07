@@ -12,5 +12,8 @@ namespace JewelrySalesSystem.DAL.Interfaces
             , string? sortOrder
             , int page
             , int pageSize);
+
+        //changes here
+        Task<Category> AddCategory(Category category);
     }
 }
