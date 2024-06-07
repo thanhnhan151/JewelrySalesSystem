@@ -64,6 +64,6 @@ namespace JewelrySalesSystem.DAL.Repositories
                                 .FirstOrDefaultAsync(x => x.MaterialId == id);
             if (result == null) return null;
             return result;
-        }    
+        }
     }
 }
