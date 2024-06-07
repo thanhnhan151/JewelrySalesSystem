@@ -1,4 +1,5 @@
 ﻿using JewelrySalesSystem.BAL.Interfaces;
+using JewelrySalesSystem.BAL.Models.Products;
 using JewelrySalesSystem.DAL.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -70,13 +71,22 @@ namespace JewelrySalesSystem.API.Controllers
         /// Sample request:
         /// 
         ///     {
-        ///       "userName": "testaccount",
-        ///       "fullName": "Nguyen Van B",
-        ///       "phoneNumber": "0999123456",
-        ///       "email": "testemail@gmail.com",
-        ///       "password" : "test",
-        ///       "address" : "test",
-        ///       "roleId" : 3
+        ///       "productName": "Test Product",
+        ///       "percentPriceRate": 10,
+        ///       "productionCost": 100,
+        ///       "featuredImage": "testurl",
+        ///       "categoryId": 2,
+        ///       "productTypeId": 2,
+        ///       "genderId": 3,
+        ///       "colourId": 4,
+        ///       "gems" : [
+        ///         7,
+        ///         8
+        ///       ],
+        ///       "materials" : [
+        ///         2,
+        ///         5
+        ///       ]
         ///     }
         ///         
         /// </remarks> 
@@ -88,13 +98,13 @@ namespace JewelrySalesSystem.API.Controllers
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server</response>
         [HttpPost]
-        public async Task<IActionResult> AddAsync(Product product)
+        public async Task<IActionResult> AddAsync(CreateProductRequest createProductRequest)
         {
             try
             {
-                await _productService.AddAsync(product);
+                await _productService.AddAsync(createProductRequest);
 
-                return Ok();
+                return Ok(createProductRequest);
             }
             catch (Exception ex)
             {
