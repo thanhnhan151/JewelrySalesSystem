@@ -1,4 +1,5 @@
 ﻿using JewelrySalesSystem.BAL.Interfaces;
+using JewelrySalesSystem.BAL.Models.Invoices;
 using JewelrySalesSystem.DAL.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -70,13 +71,15 @@ namespace JewelrySalesSystem.API.Controllers
         /// Sample request:
         /// 
         ///     {
-        ///       "userName": "testaccount",
-        ///       "fullName": "Nguyen Van B",
-        ///       "phoneNumber": "0999123456",
-        ///       "email": "testemail@gmail.com",
-        ///       "password" : "test",
-        ///       "address" : "test",
-        ///       "roleId" : 3
+        ///       "status": true,
+        ///       "invoiceType": true,
+        ///       "customerId": 1,
+        ///       "userId": 1,
+        ///       "warrantyId": 1,
+        ///       "invoiceDetails": [
+        ///         1,
+        ///         2
+        ///       ]
         ///     }
         ///         
         /// </remarks> 
@@ -88,13 +91,13 @@ namespace JewelrySalesSystem.API.Controllers
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server</response>
         [HttpPost]
-        public async Task<IActionResult> AddAsync(Invoice invoice)
+        public async Task<IActionResult> AddAsync(CreateInvoiceRequest createInvoiceRequest)
         {
             try
             {
-                await _invoiceService.AddAsync(invoice);
+                await _invoiceService.AddAsync(createInvoiceRequest);
 
-                return Ok();
+                return Ok(createInvoiceRequest);
             }
             catch (Exception ex)
             {
