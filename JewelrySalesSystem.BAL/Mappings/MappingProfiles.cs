@@ -53,6 +53,7 @@ namespace JewelrySalesSystem.BAL.Mappings
                 .ForMember(p => p.Colour, p => p.MapFrom(p => p.Colour.ColourName));
 
             CreateMap<PaginatedList<Product>, PaginatedList<GetProductResponse>>();
+            CreateMap<DeleteProductRequest, Product>().ReverseMap();
             #endregion
 
             #region Gem
