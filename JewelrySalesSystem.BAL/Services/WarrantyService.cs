@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using JewelrySalesSystem.BAL.Interfaces;
+using JewelrySalesSystem.BAL.Models.Roles;
 using JewelrySalesSystem.BAL.Models.Users;
 using JewelrySalesSystem.BAL.Models.Warranties;
 using JewelrySalesSystem.DAL.Common;
 using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
+using System.Data;
 
 namespace JewelrySalesSystem.BAL.Services
 {
@@ -33,6 +35,19 @@ namespace JewelrySalesSystem.BAL.Services
         {
             _unitOfWork.Warranties.UpdateEntity(_mapper.Map<Warranty>(updateWarrantyRequest));
             await _unitOfWork.CompleteAsync();
+        }
+        public async Task<GetWarrantyResponse> GetWarrantyById(int id)
+        {
+            var warranty = await _unitOfWork.Warranties.GetWarrantyById(id);
+
+            if (warranty == null)
+            {
+                return null;
+            }
+
+            var mappedWarranty = _mapper.Map<GetWarrantyResponse>(warranty);
+            return mappedWarranty;
+
         }
     }
 }

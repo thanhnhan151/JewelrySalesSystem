@@ -98,6 +98,8 @@ namespace JewelrySalesSystem.BAL.Mappings
 
             #region Warranty
             CreateMap<UpdateWarrantyRequest, Warranty>().ReverseMap();
+
+            CreateMap<GetWarrantyResponse, Warranty>().ReverseMap();
             #endregion
             
             #region Category

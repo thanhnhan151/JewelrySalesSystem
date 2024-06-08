@@ -13,5 +13,6 @@ namespace JewelrySalesSystem.BAL.Interfaces
             , int page
             , int pageSize);
         Task UpdateAsync(UpdateWarrantyRequest updateWarrantyRequest);
+        Task<GetWarrantyResponse>GetWarrantyById(int id);
     }
 }

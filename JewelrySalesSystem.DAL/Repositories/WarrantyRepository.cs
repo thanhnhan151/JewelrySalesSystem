@@ -3,6 +3,7 @@ using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
 using JewelrySalesSystem.DAL.Interfaces;
 using JewelrySalesSystem.DAL.Persistence;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 
@@ -72,6 +73,14 @@ namespace JewelrySalesSystem.DAL.Repositories
             checkExistWarranty.EndDate = warranty.EndDate;
             
 
+        }
+
+        public async Task<Warranty> GetWarrantyById(int id)
+        {
+            var result = await _dbSet.FindAsync(id);
+            if (result == null) return null;
+
+            return result;
         }
     }
 }
