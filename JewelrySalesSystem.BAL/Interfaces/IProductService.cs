@@ -19,6 +19,6 @@ namespace JewelrySalesSystem.BAL.Interfaces
 
         Task<GetProductResponse?> GetByIdWithIncludeAsync(int id);
 
-        Task DeleteAsync(DeleteProductRequest deleteProductRequest);
+        Task DeleteAsync(int id);
     }
 }
