@@ -83,9 +83,21 @@ namespace JewelrySalesSystem.DAL.Repositories
             var result = await _dbSet.Include(u => u.Role)
                                .FirstOrDefaultAsync(u => u.UserId == id);
 
-            if (result == null) return null;
+            if (result == null) { return null; }
 
             return result;
+        }
+
+        public async Task<User?> DeleteAsync(int id)
+        {
+            var result = await _dbSet.FirstOrDefaultAsync(u => u.UserId == id);
+            if (result == null) { return null; }
+
+            result.Status = false; 
+            await _context.SaveChangesAsync();
+
+            return result;
+
         }
     }
 }
