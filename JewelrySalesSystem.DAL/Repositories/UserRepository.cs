@@ -46,7 +46,7 @@ namespace JewelrySalesSystem.DAL.Repositories
             , int page
             , int pageSize)
         {
-            IQueryable<User> usersQuery = _dbSet;
+            IQueryable<User> usersQuery = _dbSet.Include(u => u.Role);
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
