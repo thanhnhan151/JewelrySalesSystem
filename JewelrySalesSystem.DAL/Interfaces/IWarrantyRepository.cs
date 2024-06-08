@@ -14,6 +14,8 @@ namespace JewelrySalesSystem.DAL.Interfaces
             , int pageSize);
         /*Initialized interface update warranty method*/
         void UpdateWarranty (Warranty warranty);
+
+        Task<Warranty> GetWarrantyById(int id);
     }
 
     

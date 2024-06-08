@@ -3,6 +3,7 @@ using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
 using JewelrySalesSystem.DAL.Interfaces;
 using JewelrySalesSystem.DAL.Persistence;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 
@@ -25,13 +26,13 @@ namespace JewelrySalesSystem.DAL.Repositories
         {
             IQueryable<Warranty> warrantiesQuery = _dbSet;
 
-            //if (!string.IsNullOrWhiteSpace(searchTerm))
-            //{
-            //    warrantiesQuery = warrantiesQuery.Where(c =>
-            //        c.FullName.Contains(searchTerm) ||
-            //        c.PhoneNumber.Contains(searchTerm) ||
-            //        c.Email.Contains(searchTerm));
-            //}
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                warrantiesQuery = warrantiesQuery.Where(c =>
+                    c.Description.Contains(searchTerm) ||
+                    c.StartDate.Equals(searchTerm) ||
+                    c.EndDate.Equals(searchTerm));
+            }
 
             if (sortOrder?.ToLower() == "desc")
             {
@@ -72,6 +73,14 @@ namespace JewelrySalesSystem.DAL.Repositories
             checkExistWarranty.EndDate = warranty.EndDate;
             
 
+        }
+
+        public async Task<Warranty> GetWarrantyById(int id)
+        {
+            var result = await _dbSet.FindAsync(id);
+            if (result == null) return null;
+
+            return result;
         }
     }
 }

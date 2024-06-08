@@ -6,12 +6,13 @@ namespace JewelrySalesSystem.BAL.Interfaces
 {
     public interface IWarrantyService
     {
-        Task<PaginatedList<Warranty>> PaginationAsync
+        Task<PaginatedList<GetWarrantyResponse>> PaginationAsync
             (string? searchTerm
             , string? sortColumn
             , string? sortOrder
             , int page
             , int pageSize);
         Task UpdateAsync(UpdateWarrantyRequest updateWarrantyRequest);
+        Task<GetWarrantyResponse>GetWarrantyById(int id);
     }
 }
