@@ -5,5 +5,7 @@
         Task<TEntity?> GetByIdAsync(int id);
         TEntity AddEntity(TEntity entity);
         void UpdateEntity(TEntity entity);
+
+        //void DeleteEntity(TEntity entity);
     }
 }

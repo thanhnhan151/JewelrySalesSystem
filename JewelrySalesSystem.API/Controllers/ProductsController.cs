@@ -187,5 +187,21 @@ namespace JewelrySalesSystem.API.Controllers
             }
         }
         #endregion
+
+        #region Delete Product
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            try
+            {
+                await _productService.DeleteAsync(id);
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        #endregion
     }
 }

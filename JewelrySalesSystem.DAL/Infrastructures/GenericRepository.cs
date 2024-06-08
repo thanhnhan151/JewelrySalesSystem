@@ -31,6 +31,8 @@ namespace JewelrySalesSystem.DAL.Infrastructures
             }
 
             return null;
-        }     
+        }   
+        
+        //public virtual void DeleteEntity(TEntity entity) => _dbSet.Update(entity);
     }
 }

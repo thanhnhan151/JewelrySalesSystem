@@ -84,5 +84,11 @@ namespace JewelrySalesSystem.BAL.Services
         }
 
         public async Task<GetProductResponse?> GetByIdWithIncludeAsync(int id) => _mapper.Map<GetProductResponse>(await _unitOfWork.Products.GetByIdWithIncludeAsync(id));
+
+        public async Task DeleteAsync(int id)
+        {
+            await _unitOfWork.Products.DeleteProduct(id);
+            await _unitOfWork.CompleteAsync();
+        }
     }
 }
