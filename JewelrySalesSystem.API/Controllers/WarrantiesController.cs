@@ -66,7 +66,7 @@ namespace JewelrySalesSystem.API.Controllers
         }
         #endregion
 
-        #region GetWarrantyById
+        #region Get Warranty By Id
         /// <summary>
         /// Get a warranty 
         /// </summary>
@@ -85,7 +85,10 @@ namespace JewelrySalesSystem.API.Controllers
             {
                 throw new Exception(ex.Message);
             }
-            return BadRequest();
+            return NotFound(new
+            {
+                ErrorMessage = "Warranty does not exist"
+            });
         }
         #endregion
 
