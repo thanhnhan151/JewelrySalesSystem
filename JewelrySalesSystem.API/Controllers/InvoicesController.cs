@@ -135,7 +135,10 @@ namespace JewelrySalesSystem.API.Controllers
                 throw new Exception(ex.Message);
             }
 
-            return BadRequest();
+            return NotFound(new
+            {
+                ErrorMessage = "Invoice does not exist"
+            });
         }
         #endregion
 
