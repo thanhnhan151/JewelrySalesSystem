@@ -6,6 +6,6 @@
         TEntity AddEntity(TEntity entity);
         void UpdateEntity(TEntity entity);
 
-        void DeleteEntity(TEntity entity);
+        //void DeleteEntity(TEntity entity);
     }
 }
