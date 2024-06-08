@@ -15,6 +15,6 @@ namespace JewelrySalesSystem.DAL.Interfaces
 
         Task<Product?> GetByIdWithIncludeAsync(int id);
 
-        void DeleteProduct(Product product);
+        Task DeleteProduct(int id);
     }
 }

@@ -81,17 +81,17 @@ namespace JewelrySalesSystem.DAL.Repositories
 
         /*Delete Product*/
         //Change status of product = false
-        public async void DeleteProduct(Product product)
+        public async Task DeleteProduct(int id)
         {
-            var checkExistProductTask = _dbSet.FindAsync(product.ProductId);
-            var checkExistProduct = await checkExistProductTask.ConfigureAwait(false);
+            var checkExistProduct = await _dbSet.FindAsync(id);
+           
             if (checkExistProduct == null)
             {
-                throw new Exception($"Product with {product.ProductId} not found");
+                throw new Exception($"Product with {id} not found");
             }
             //Delete by change property status = false
             checkExistProduct.Status = false;
-
+            _dbSet.Update(checkExistProduct);
         }
     }
 }
