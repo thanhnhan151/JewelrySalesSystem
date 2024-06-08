@@ -1,4 +1,5 @@
-﻿using JewelrySalesSystem.BAL.Interfaces;
+﻿
+using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -163,7 +164,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server</response>
         [HttpPut]
-        public async Task<IActionResult> UpdateAsync([FromBody]UpdateUserRequest updateUserRequest)
+        public async Task<IActionResult> UpdateAsync([FromBody] UpdateUserRequest updateUserRequest)
         {
             try
             {
@@ -182,5 +183,26 @@ namespace JewelrySalesSystem.API.Controllers
             }
         }
         #endregion
+
+        #region Delete User
+        ///<summary>
+        ///Change user status in the system
+        ///</summary>
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            try
+            {
+                var result = await _userService.DeleteAsync(id);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return BadRequest();
+        }
+        #endregion
+
     }
 }

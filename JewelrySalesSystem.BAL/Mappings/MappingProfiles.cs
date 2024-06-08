@@ -34,6 +34,7 @@ namespace JewelrySalesSystem.BAL.Mappings
             CreateMap<CreateUserRequest, User>();
 
             CreateMap<UpdateUserRequest, User>();
+            CreateMap<DeleteUserRequest, User>().ReverseMap();
             #endregion
 
             #region Product
