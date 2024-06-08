@@ -47,7 +47,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// <response code="500">Internal Server</response>
         [HttpPost("sigin")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(Boolean), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(Boolean), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> LoginAsync([FromBody] UserSignInRequest userSignInRequest)
         {
             try
@@ -67,7 +67,7 @@ namespace JewelrySalesSystem.API.Controllers
                 throw new Exception(ex.Message);
             }
 
-            return BadRequest(new
+            return NotFound(new
             {
                 ErrorMessage = "Wrong UserName or Password"
             });
@@ -83,7 +83,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// <response code="400">If the email does not exist</response>
         /// <response code="500">Internal Server</response>
         [HttpPost("reset-password")]
-        public async  Task<IActionResult> ResetPasswordAsync(string email)
+        public async Task<IActionResult> ResetPasswordAsync(string email)
         {
             return Ok();
         }
