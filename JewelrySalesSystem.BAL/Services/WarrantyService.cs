@@ -50,5 +50,17 @@ namespace JewelrySalesSystem.BAL.Services
             return mappedWarranty;
 
         }
+
+        //change here
+        public async Task<CreateWarrantyRequest> AddNewWarranty(CreateWarrantyRequest createWarrantyRequest)
+        {
+            var warranty = _unitOfWork.Warranties.AddEntity(_mapper.Map<Warranty>(createWarrantyRequest));
+
+            await _unitOfWork.CompleteAsync();
+
+            var newWarranty = _mapper.Map<CreateWarrantyRequest>(warranty);
+
+            return newWarranty;
+        }
     }
 }

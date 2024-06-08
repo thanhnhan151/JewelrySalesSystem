@@ -16,6 +16,9 @@ namespace JewelrySalesSystem.DAL.Interfaces
         void UpdateWarranty (Warranty warranty);
 
         Task<Warranty> GetWarrantyById(int id);
+
+        //Change here
+        Task<Warranty> CreateWarranty(Warranty warranty);
     }
 
     

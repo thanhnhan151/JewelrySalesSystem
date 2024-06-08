@@ -14,5 +14,8 @@ namespace JewelrySalesSystem.BAL.Interfaces
             , int pageSize);
         Task UpdateAsync(UpdateWarrantyRequest updateWarrantyRequest);
         Task<GetWarrantyResponse>GetWarrantyById(int id);
+
+        //change here
+        Task<CreateWarrantyRequest> AddNewWarranty(CreateWarrantyRequest createWarrantyRequest);
     }
 }

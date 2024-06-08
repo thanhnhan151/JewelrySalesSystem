@@ -105,6 +105,7 @@ namespace JewelrySalesSystem.BAL.Mappings
 
             CreateMap<PaginatedList<Warranty>, PaginatedList<GetWarrantyResponse>>();
 
+            CreateMap<CreateWarrantyRequest, Warranty>().ReverseMap();
             #endregion
 
             #region Category

@@ -82,5 +82,13 @@ namespace JewelrySalesSystem.DAL.Repositories
 
             return result;
         }
+
+        //change here
+        public async Task<Warranty> CreateWarranty(Warranty warranty)
+        {
+            _context.Warranties.Add(warranty);
+            await _context.SaveChangesAsync();
+            return warranty;
+        }
     }
 }
