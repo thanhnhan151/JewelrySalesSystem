@@ -78,5 +78,20 @@ namespace JewelrySalesSystem.DAL.Repositories
 
             return result;
         }
+
+        /*Delete Product*/
+        //Change status of product = false
+        public async void DeleteProduct(Product product)
+        {
+            var checkExistProductTask = _dbSet.FindAsync(product.ProductId);
+            var checkExistProduct = await checkExistProductTask.ConfigureAwait(false);
+            if (checkExistProduct == null)
+            {
+                throw new Exception($"Product with {product.ProductId} not found");
+            }
+            //Delete by change property status = false
+            checkExistProduct.Status = false;
+
+        }
     }
 }
