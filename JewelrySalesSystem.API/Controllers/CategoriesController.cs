@@ -78,7 +78,10 @@ namespace JewelrySalesSystem.API.Controllers
                 throw new Exception(ex.Message);
             }
 
-            return BadRequest();
+            return NotFound(new
+            {
+                ErrorMessage = "Category does not exist"
+            });
         }
 
         [HttpPut]
