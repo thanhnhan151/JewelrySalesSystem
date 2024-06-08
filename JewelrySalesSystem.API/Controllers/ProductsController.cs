@@ -142,7 +142,10 @@ namespace JewelrySalesSystem.API.Controllers
                 throw new Exception(ex.Message);
             }
 
-            return BadRequest();
+            return NotFound(new
+            {
+                ErrorMessage = "Product does not exist"
+            });
         }
         #endregion
 
@@ -189,7 +192,7 @@ namespace JewelrySalesSystem.API.Controllers
         #endregion
 
         #region Delete Product
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
             try
