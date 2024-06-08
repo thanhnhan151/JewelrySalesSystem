@@ -26,13 +26,13 @@ namespace JewelrySalesSystem.DAL.Repositories
         {
             IQueryable<Warranty> warrantiesQuery = _dbSet;
 
-            //if (!string.IsNullOrWhiteSpace(searchTerm))
-            //{
-            //    warrantiesQuery = warrantiesQuery.Where(c =>
-            //        c.FullName.Contains(searchTerm) ||
-            //        c.PhoneNumber.Contains(searchTerm) ||
-            //        c.Email.Contains(searchTerm));
-            //}
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                warrantiesQuery = warrantiesQuery.Where(c =>
+                    c.Description.Contains(searchTerm) ||
+                    c.StartDate.Equals(searchTerm) ||
+                    c.EndDate.Equals(searchTerm));
+            }
 
             if (sortOrder?.ToLower() == "desc")
             {

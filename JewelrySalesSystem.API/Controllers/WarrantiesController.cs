@@ -24,13 +24,29 @@ namespace JewelrySalesSystem.API.Controllers
             _warrantyService = warrantyService;
         }
 
+        #region Get All Warranties
+        /// <summary>
+        /// Get all warranties in the system.
+        /// </summary>
+        /// <param name="page">Current page of warranties to retrieve.</param>
+        /// <param name="pageSize">Number of warranties to show per page.</param>
+        /// <param name="searchTerm">Search query to filter the warranties.</param>
+        /// <param name="sortColumn">Column by which to sort the warranties.</param>
+        /// <param name="sortOrder">Order in which to sort the column, either ascending or descending.</param>
+        /// <returns>A list of all warranties in the system.</returns>
+        /// <response code="200">Returns all warranties in the system.</response>
+        /// <response code="400">If no warranties are found in the system.</response>
+        /// <response code="401">Unauthorized.</response>
+        /// <response code="403">Forbidden.</response>
+        /// <response code="404">Not Found.</response>
+        /// <response code="500">Internal Server Error.</response>
         [HttpGet]
         public async Task<IActionResult> GetAllAsync(
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
-            int page,
-            int pageSize)
+            int page = 1,
+            int pageSize = 5)
         {
             try
             {
@@ -48,9 +64,13 @@ namespace JewelrySalesSystem.API.Controllers
 
             return BadRequest();
         }
+        #endregion
 
-        
-        [HttpGet("{id}")]
+        #region GetWarrantyById
+        /// <summary>
+        /// Get a warranty 
+        /// </summary>
+        [HttpGet("{id}")] 
         public async Task<IActionResult> GetByIdAsync(int id)
         {
             try
@@ -67,8 +87,7 @@ namespace JewelrySalesSystem.API.Controllers
             }
             return BadRequest();
         }
-
-        
+        #endregion
 
         #region Update Warranty
         [HttpPut]

@@ -6,7 +6,7 @@ namespace JewelrySalesSystem.BAL.Interfaces
 {
     public interface IWarrantyService
     {
-        Task<PaginatedList<Warranty>> PaginationAsync
+        Task<PaginatedList<GetWarrantyResponse>> PaginationAsync
             (string? searchTerm
             , string? sortColumn
             , string? sortOrder

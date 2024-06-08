@@ -21,13 +21,14 @@ namespace JewelrySalesSystem.BAL.Services
             _mapper = mapper;
         }
 
-        public async Task<PaginatedList<Warranty>> PaginationAsync(
+        public async Task<PaginatedList<GetWarrantyResponse>> PaginationAsync(
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
             int page,
             int pageSize)
-        => await _unitOfWork.Warranties.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize);
+        => _mapper.Map<PaginatedList<GetWarrantyResponse>>(await _unitOfWork.Warranties.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize));
+
 
         //Update information of warranty in the database
         //Use AutoMapper
