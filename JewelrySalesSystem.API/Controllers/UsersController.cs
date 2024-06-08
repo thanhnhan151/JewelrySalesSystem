@@ -196,13 +196,20 @@ namespace JewelrySalesSystem.API.Controllers
             try
             {
                 var result = await _userService.DeleteAsync(id);
-                return Ok(result);
+
+                if (result is not null)
+                {
+                    return Ok(result);
+                }
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-            return BadRequest();
+            return NotFound(new
+            {
+                ErrorMessage = "User does not exist"
+            });
         }
         #endregion
 
