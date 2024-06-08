@@ -190,11 +190,11 @@ namespace JewelrySalesSystem.API.Controllers
 
         #region Delete Product
         [HttpDelete]
-        public async Task<IActionResult> DeleteAsync(DeleteProductRequest deleteProductRequest)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
             try
             {
-                await _productService.DeleteAsync(deleteProductRequest);
+                await _productService.DeleteAsync(id);
                 return Ok();
             }
             catch(Exception ex)
