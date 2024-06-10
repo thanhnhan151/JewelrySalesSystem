@@ -27,8 +27,14 @@ namespace JewelrySalesSystem.DAL.Repositories
             IQueryable<Product> productsQuery = _dbSet
                                                 .Include(p => p.ProductGems)
                                                     .ThenInclude(g => g.Gem)
+                                                        .ThenInclude(g => g.GemPrices
+                                                        .OrderByDescending(g => g.EffDate)
+                                                        .Take(1))
                                                 .Include(p => p.ProductMaterials)
                                                     .ThenInclude(m => m.Material)
+                                                        .ThenInclude(g => g.MaterialPrices
+                                                        .OrderByDescending(g => g.EffDate)
+                                                        .Take(1))
                                                 .Include(p => p.Category)
                                                 .Include(p => p.ProductType)
                                                 .Include(p => p.Gender)
@@ -66,8 +72,14 @@ namespace JewelrySalesSystem.DAL.Repositories
         {
             var result = await _dbSet.Include(p => p.ProductGems)
                                     .ThenInclude(g => g.Gem)
+                                        .ThenInclude(g => g.GemPrices
+                                        .OrderByDescending(g => g.EffDate)
+                                        .Take(1))
                                .Include(p => p.ProductMaterials)
                                     .ThenInclude(m => m.Material)
+                                        .ThenInclude(g => g.MaterialPrices
+                                        .OrderByDescending(g => g.EffDate)
+                                        .Take(1))
                                .Include(p => p.Category)
                                .Include(p => p.ProductType)
                                .Include(p => p.Gender)
@@ -84,7 +96,7 @@ namespace JewelrySalesSystem.DAL.Repositories
         public async Task DeleteProduct(int id)
         {
             var checkExistProduct = await _dbSet.FindAsync(id);
-           
+
             if (checkExistProduct == null)
             {
                 throw new Exception($"Product with {id} not found");
