@@ -2,6 +2,7 @@
 {
     public class GemItem
     {
+        public int GemId { get; set; }
         public string GemName { get; set; } = string.Empty;
         public string Origin { get; set; } = string.Empty;
         public float CaratWeight { get; set; }

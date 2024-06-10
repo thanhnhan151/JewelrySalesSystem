@@ -113,5 +113,29 @@ namespace JewelrySalesSystem.API.Controllers
         }
         #endregion
 
+        //Change here
+        #region Create New Warranty
+        /// <summary>
+        /// Create New Warranty
+        /// </summary>
+        /// <param name="warranty"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        [HttpPost("Create")]
+        public async Task<IActionResult> CreateAsysc(CreateWarrantyRequest warranty)
+        {
+            try
+            {
+                await _warrantyService.AddNewWarranty(warranty);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        #endregion
+
     }
 }

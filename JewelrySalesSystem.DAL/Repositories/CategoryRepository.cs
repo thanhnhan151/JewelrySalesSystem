@@ -1,10 +1,9 @@
-﻿using JewelrySalesSystem.DAL.Common;
-using JewelrySalesSystem.DAL.Entities;
+﻿using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
 using JewelrySalesSystem.DAL.Interfaces;
 using JewelrySalesSystem.DAL.Persistence;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Linq.Expressions;
 
 namespace JewelrySalesSystem.DAL.Repositories
 {
@@ -16,42 +15,13 @@ namespace JewelrySalesSystem.DAL.Repositories
         {
         }
 
-        public async Task<PaginatedList<Category>> PaginationAsync(
-            string? searchTerm
-            , string? sortColumn
-            , string? sortOrder
-            , int page
-            , int pageSize)
-        {
-            IQueryable<Category> categoriesQuery = _dbSet;
+        public async Task<List<Category>> GetAllAsync() => await _dbSet
+                                                                 .Where(c => c.Status)
+                                                                 .ToListAsync();
 
-            if (!string.IsNullOrWhiteSpace(searchTerm))
-            {
-                categoriesQuery = categoriesQuery.Where(c =>
-                    c.CategoryName.Contains(searchTerm));
-            }
-
-            if (sortOrder?.ToLower() == "desc")
-            {
-                categoriesQuery = categoriesQuery.OrderByDescending(GetSortProperty(sortColumn));
-            }
-            else
-            {
-                categoriesQuery = categoriesQuery.OrderBy(GetSortProperty(sortColumn));
-            }
-
-            var categories = await PaginatedList<Category>.CreateAsync(categoriesQuery, page, pageSize);
-
-            return categories;
-        }
-
-        private static Expression<Func<Category, object>> GetSortProperty(string? sortColumn)
-        => sortColumn?.ToLower() switch
-        {
-            "name" => category => category.CategoryName,
-            //"dob" => category => category.DoB,
-            _ => category => category.CategoryId
-        };
+        public async Task<Category?> GetAllProductsByCategoryIdAsync(int id)
+            => await _dbSet.Include(c => c.Products)
+                           .FirstOrDefaultAsync(c => c.Status && c.CategoryId == id);
 
         public async Task<Category> AddCategory(Category category)
         {

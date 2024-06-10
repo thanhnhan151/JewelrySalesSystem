@@ -1,4 +1,4 @@
-﻿using JewelrySalesSystem.BAL.Interfaces;
+using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Mappings;
 using JewelrySalesSystem.BAL.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,6 +34,8 @@ namespace JewelrySalesSystem.BAL
 
             services.AddScoped<IMaterialPriceListService, MaterialPriceListService>();
 
+            services.AddScoped<IGemPriceListService, GemPriceListService>();
+          
             return services;
         }
     }

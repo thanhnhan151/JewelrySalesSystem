@@ -74,5 +74,16 @@ namespace JewelrySalesSystem.DAL.Repositories
 
             return result;
         }
+
+        public async Task DeleteById(int id)
+        {
+            var found = await _dbSet.FindAsync(id);
+            if (found == null)
+            {
+                throw new Exception($"{id} is not found!");
+            }
+            found.Status = false;
+            _dbSet.Update(found);
+        }
     }
 }

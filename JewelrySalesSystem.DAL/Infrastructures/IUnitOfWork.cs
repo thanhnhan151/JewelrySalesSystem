@@ -24,6 +24,8 @@ namespace JewelrySalesSystem.DAL.Infrastructures
 
         IMaterialPriceListRepository MaterialPriceList { get; }
 
+        IGemPriceListRepository GemPrices { get; }
+
         Task CompleteAsync();
     }
 }

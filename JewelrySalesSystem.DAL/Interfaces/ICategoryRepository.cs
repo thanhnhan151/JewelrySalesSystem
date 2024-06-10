@@ -6,14 +6,10 @@ namespace JewelrySalesSystem.DAL.Interfaces
 {
     public interface ICategoryRepository : IGenericRepository<Category>
     {
-        Task<PaginatedList<Category>> PaginationAsync
-            (string? searchTerm
-            , string? sortColumn
-            , string? sortOrder
-            , int page
-            , int pageSize);
+        Task<List<Category>> GetAllAsync();
 
-        //changes here
+        Task<Category?> GetAllProductsByCategoryIdAsync(int id);
+
         Task<Category> AddCategory(Category category);
     }
 }
