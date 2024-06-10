@@ -56,7 +56,7 @@ namespace JewelrySalesSystem.BAL.Services
                     {
                         SellPrice = createMaterialRequest.MaterialPrice.SellPrice,
                         BuyPrice = createMaterialRequest.MaterialPrice.BuyPrice,
-                        EffDate = createMaterialRequest.MaterialPrice.EffDate
+                        EffDate = DateTime.Now
                     }
                 }
             };

@@ -46,7 +46,7 @@ namespace JewelrySalesSystem.BAL.Services
                         ColourPrice = createGemRequest.GemPrice.ColourPrice,
                         ClarityPrice = createGemRequest.GemPrice.ClarityPrice,
                         CutPrice = createGemRequest.GemPrice.CutPrice,
-                        EffDate = createGemRequest.GemPrice.EffDate
+                        EffDate = DateTime.Now
                     }
                 }
             };
