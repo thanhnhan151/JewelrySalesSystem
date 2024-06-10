@@ -22,16 +22,11 @@ namespace JewelrySalesSystem.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAsync(
-            string? searchTerm,
-            string? sortColumn,
-            string? sortOrder,
-            int page = 1,
-            int pageSize = 5)
+        public async Task<IActionResult> GetAllAsync()
         {
             try
             {
-                var result = await _categoryService.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize);
+                var result = await _categoryService.GetAllAsync();
 
                 if (result is not null)
                 {
@@ -46,19 +41,27 @@ namespace JewelrySalesSystem.API.Controllers
             return BadRequest();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddAsync(Category category)
+        [HttpGet("{id}/products")]
+        public async Task<IActionResult> GetAllProductsByCategoryIdAsync(int id)
         {
             try
             {
-                await _categoryService.AddAsync(category);
+                var result = await _categoryService.GetAllProductsByCategoryIdAsync(id);
 
-                return Ok();
+                if (result is not null)
+                {
+                    return Ok(result.Products);
+                }
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
+
+            return NotFound(new
+            {
+                ErrorMessage = "Category does not exist"
+            });
         }
 
         [HttpGet("{id}")]
@@ -99,8 +102,7 @@ namespace JewelrySalesSystem.API.Controllers
             }
         }
 
-        //changes here
-        [HttpPost("create")]
+        [HttpPost]
         public async Task<IActionResult> CreateNewcategories(AddCategories category)
         {
             try
