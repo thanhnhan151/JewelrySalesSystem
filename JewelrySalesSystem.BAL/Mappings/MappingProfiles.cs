@@ -66,7 +66,8 @@ namespace JewelrySalesSystem.BAL.Mappings
             #endregion
 
             #region Gem
-            CreateMap<Gem, GemItem>();
+            CreateMap<Gem, GemItem>()
+                .ForMember(g => g.GemPrice, g => g.MapFrom(m => m.GemPrices.SingleOrDefault()));
 
             CreateMap<Gem, GetGemResponse>()
                 .ForMember(g => g.GemPrice, g => g.MapFrom(m => m.GemPrices.SingleOrDefault()));
@@ -77,7 +78,8 @@ namespace JewelrySalesSystem.BAL.Mappings
             #endregion
 
             #region Material
-            CreateMap<Material, MaterialItem>();
+            CreateMap<Material, MaterialItem>()
+                .ForMember(m => m.MaterialPrice, m => m.MapFrom(m => m.MaterialPrices.SingleOrDefault()));
 
             CreateMap<Material, GetMaterialResponse>()
                 .ForMember(m => m.MaterialPrice, m => m.MapFrom(m => m.MaterialPrices.SingleOrDefault()));
