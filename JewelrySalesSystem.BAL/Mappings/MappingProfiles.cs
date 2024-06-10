@@ -4,6 +4,7 @@ using JewelrySalesSystem.BAL.Models.GemPriceLists;
 using JewelrySalesSystem.BAL.Models.Gems;
 using JewelrySalesSystem.BAL.Models.Genders;
 using JewelrySalesSystem.BAL.Models.Invoices;
+using JewelrySalesSystem.BAL.Models.MaterialPriceList;
 using JewelrySalesSystem.BAL.Models.Materials;
 using JewelrySalesSystem.BAL.Models.Products;
 using JewelrySalesSystem.BAL.Models.Roles;
@@ -122,6 +123,10 @@ namespace JewelrySalesSystem.BAL.Mappings
             CreateMap<CreateGemPriceRequest, GemPriceList>().ReverseMap();
             CreateMap<CreateGemPriceRequest, GemPriceList>().
                 ForMember(p => p.EffDate, p => p.MapFrom(p => DateTime.Now));
+            #endregion
+
+            #region MaterialPriceList
+            CreateMap<CreateMaterialPriceList,MaterialPriceList>().ReverseMap();
             #endregion
         }
     }
