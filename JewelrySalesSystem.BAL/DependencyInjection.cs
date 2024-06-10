@@ -32,6 +32,8 @@ namespace JewelrySalesSystem.BAL
 
             services.AddScoped<IRoleService, RoleService>();
 
+            services.AddScoped<IMaterialPriceListService, MaterialPriceListService>();
+
             return services;
         }
     }
