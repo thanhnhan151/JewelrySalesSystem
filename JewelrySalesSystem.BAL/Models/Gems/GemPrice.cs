@@ -6,6 +6,5 @@
         public float ColourPrice { get; set; }
         public float ClarityPrice { get; set; }
         public float CutPrice { get; set; }
-        public DateTime EffDate { get; set; }
     }
 }
