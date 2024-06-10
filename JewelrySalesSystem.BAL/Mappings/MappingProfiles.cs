@@ -1,5 +1,6 @@
 using AutoMapper;
 using JewelrySalesSystem.BAL.Models.Categories;
+using JewelrySalesSystem.BAL.Models.GemPriceLists;
 using JewelrySalesSystem.BAL.Models.Gems;
 using JewelrySalesSystem.BAL.Models.Genders;
 using JewelrySalesSystem.BAL.Models.Invoices;
@@ -110,6 +111,12 @@ namespace JewelrySalesSystem.BAL.Mappings
 
             #region Category
             CreateMap<AddCategories, Category>().ReverseMap();
+            #endregion
+
+            #region GemPriceList
+            CreateMap<CreateGemPriceRequest, GemPriceList>().ReverseMap();
+            CreateMap<CreateGemPriceRequest, GemPriceList>().
+                ForMember(p => p.EffDate, p => p.MapFrom(p => DateTime.Now));
             #endregion
         }
     }

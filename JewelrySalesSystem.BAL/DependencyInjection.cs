@@ -32,6 +32,7 @@ namespace JewelrySalesSystem.BAL
 
             services.AddScoped<IRoleService, RoleService>();
 
+            services.AddScoped<IGemPriceListService, GemPriceListService>();
             return services;
         }
     }
