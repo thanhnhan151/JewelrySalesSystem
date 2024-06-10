@@ -1,18 +1,17 @@
 ﻿using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.MaterialPriceList;
-using JewelrySalesSystem.DAL.Infrastructures;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JewelrySalesSystem.API.Controllers
 {
-    [Route("api/materialPriceList")]
+    [Route("api/materialprices")]
     [ApiController]
-    public class MaterialPriceListController : ControllerBase
+    public class MaterialPricesController : ControllerBase
     {
-        private readonly ILogger<MaterialPriceListController> _logger;
+        private readonly ILogger<MaterialPricesController> _logger;
         private readonly IMaterialPriceListService _materialService;
 
-        public MaterialPriceListController(ILogger<MaterialPriceListController> logger, IMaterialPriceListService materialService)
+        public MaterialPricesController(ILogger<MaterialPricesController> logger, IMaterialPriceListService materialService)
         {
             _logger = logger;
             _materialService = materialService;

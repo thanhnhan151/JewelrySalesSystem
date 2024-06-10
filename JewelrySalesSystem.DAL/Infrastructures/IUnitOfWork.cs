@@ -22,9 +22,11 @@ namespace JewelrySalesSystem.DAL.Infrastructures
 
         IRoleRepository Roles { get; } 
 
-        IMaterialPriceListRepository MaterialPriceList { get; }
+        IMaterialPriceListRepository MaterialPrices { get; }
 
         IGemPriceListRepository GemPrices { get; }
+
+        IProductTypeRepository ProductTypes { get; }
 
         Task CompleteAsync();
     }

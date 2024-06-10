@@ -42,12 +42,7 @@ namespace JewelrySalesSystem.API.Controllers
         }
 
         [HttpGet("{id}/products")]
-        public async Task<IActionResult> GetAllProductsByCategoryIdAsync(int id
-            ,string? searchTerm,
-            string? sortColumn,
-            string? sortOrder,
-            int page = 1,
-            int pageSize = 5)
+        public async Task<IActionResult> GetAllProductsByCategoryIdAsync(int id)
         {
             try
             {

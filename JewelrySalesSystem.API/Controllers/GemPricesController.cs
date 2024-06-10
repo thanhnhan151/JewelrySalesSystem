@@ -5,13 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JewelrySalesSystem.API.Controllers
 {
-    [Route("api/gemPrices")]
+    [Route("api/gemprices")]
     [ApiController]
-    public class GemPriceListsController : ControllerBase
+    public class GemPricesController : ControllerBase
     {
-        private readonly ILogger<RolesController> _logger;
+        private readonly ILogger<GemPricesController> _logger;
         private readonly IGemPriceListService _gemPriceListService;
-        public GemPriceListsController(ILogger<RolesController> logger, IGemPriceListService gemPriceListService)
+        public GemPricesController(ILogger<GemPricesController> logger, IGemPriceListService gemPriceListService)
         {
             _logger = logger;
             _gemPriceListService = gemPriceListService;

@@ -26,12 +26,14 @@ namespace JewelrySalesSystem.DAL.Infrastructures
         public ICategoryRepository Categories { get; private set; }
 
         public IGenderRepository Genders { get; private set; }
-        
+
         public IRoleRepository Roles { get; private set; }
 
-        public IMaterialPriceListRepository MaterialPriceList { get; private set; }
+        public IMaterialPriceListRepository MaterialPrices { get; private set; }
 
         public IGemPriceListRepository GemPrices { get; private set; }
+
+        public IProductTypeRepository ProductTypes { get; private set; }
 
         public UnitOfWork(
             JewelryDbContext context,
@@ -56,14 +58,16 @@ namespace JewelrySalesSystem.DAL.Infrastructures
             Categories = new CategoryRepository(_context, _logger);
 
             Genders = new GenderRepository(_context, _logger);
-            
+
             Roles = new RoleRepository(_context, _logger);
 
-            MaterialPriceList = new MaterialPriceRepository(_context, _logger);
-            
+            MaterialPrices = new MaterialPriceRepository(_context, _logger);
+
             GemPrices = new GemPriceListRepository(_context, _logger);
+
+            ProductTypes = new ProductTypeRepository(_context, _logger);
         }
 
-        public async Task CompleteAsync() => await _context.SaveChangesAsync();       
+        public async Task CompleteAsync() => await _context.SaveChangesAsync();
     }
 }
