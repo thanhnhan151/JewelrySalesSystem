@@ -7,13 +7,13 @@ namespace JewelrySalesSystem.BAL.Interfaces
 {
     public interface ICategoryService
     {
-        Task<List<GetCategoryResponse>> GetAllAsync();
+        Task<List<GetRawCategoryResponse>> GetAllAsync();
 
         Task<GetCategoryResponse?> GetAllProductsByCategoryIdAsync(int id);
 
         Task UpdateAsync(Category category);
 
-        Task<Category?> GetByIdAsync(int id);
+        Task<GetRawCategoryResponse?> GetByIdAsync(int id);
 
         Task<AddCategories> AddNewCategory(AddCategories category);
     }

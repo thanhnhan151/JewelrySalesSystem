@@ -18,7 +18,7 @@ namespace JewelrySalesSystem.BAL.Services
             _mapper = mapper;
         }
 
-        public async Task<List<GetCategoryResponse>> GetAllAsync() => _mapper.Map<List<GetCategoryResponse>>(await _unitOfWork.Categories.GetAllAsync());
+        public async Task<List<GetRawCategoryResponse>> GetAllAsync() => _mapper.Map<List<GetRawCategoryResponse>>(await _unitOfWork.Categories.GetAllAsync());
 
         public async Task<GetCategoryResponse?> GetAllProductsByCategoryIdAsync(int id)
         {
@@ -35,7 +35,7 @@ namespace JewelrySalesSystem.BAL.Services
             await _unitOfWork.CompleteAsync();
         }
 
-        public async Task<Category?> GetByIdAsync(int id) => await _unitOfWork.Categories.GetByIdAsync(id);
+        public async Task<GetRawCategoryResponse?> GetByIdAsync(int id) => _mapper.Map<GetRawCategoryResponse>(await _unitOfWork.Categories.GetByIdAsync(id));
 
         public async Task<Category> AddNewCategory(Category category)
         {

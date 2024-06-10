@@ -21,6 +21,11 @@ namespace JewelrySalesSystem.DAL.Repositories
 
         public async Task<Category?> GetAllProductsByCategoryIdAsync(int id)
             => await _dbSet.Include(c => c.Products)
+                                .ThenInclude(p => p.Gender)
+                            .Include(c => c.Products)
+                                .ThenInclude(p => p.Colour)
+                            .Include(c => c.Products)
+                                .ThenInclude(p => p.ProductType)
                            .FirstOrDefaultAsync(c => c.Status && c.CategoryId == id);
 
         public async Task<Category> AddCategory(Category category)
