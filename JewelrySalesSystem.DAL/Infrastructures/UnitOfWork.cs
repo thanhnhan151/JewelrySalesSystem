@@ -29,6 +29,8 @@ namespace JewelrySalesSystem.DAL.Infrastructures
         
         public IRoleRepository Roles { get; private set; }
 
+        public IGemPriceListRepository GemPrices { get; private set; }
+
         public UnitOfWork(
             JewelryDbContext context,
             ILoggerFactory loggerFactory)
@@ -54,6 +56,8 @@ namespace JewelrySalesSystem.DAL.Infrastructures
             Genders = new GenderRepository(_context, _logger);
             
             Roles = new RoleRepository(_context, _logger);
+            
+            GemPrices = new GemPriceListRepository(_context, _logger);
         }
 
         public async Task CompleteAsync() => await _context.SaveChangesAsync();       

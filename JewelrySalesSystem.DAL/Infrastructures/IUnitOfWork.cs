@@ -22,6 +22,7 @@ namespace JewelrySalesSystem.DAL.Infrastructures
 
         IRoleRepository Roles { get; } 
 
+        IGemPriceListRepository GemPrices { get; }
         Task CompleteAsync();
     }
 }

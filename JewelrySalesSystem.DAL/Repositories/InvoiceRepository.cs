@@ -6,6 +6,7 @@ using JewelrySalesSystem.DAL.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
+using System.Net.Http.Headers;
 
 namespace JewelrySalesSystem.DAL.Repositories
 {
@@ -73,6 +74,17 @@ namespace JewelrySalesSystem.DAL.Repositories
             if (result == null) return null;
 
             return result;
+        }
+
+        public async Task DeleteById(int id)
+        {
+            var found = await _dbSet.FindAsync(id);
+            if (found == null)
+            {
+                throw new Exception($"{id} is not found!");
+            }
+            found.Status = false;
+            _dbSet.Update(found);
         }
     }
 }
