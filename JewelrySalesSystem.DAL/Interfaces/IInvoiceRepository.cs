@@ -14,5 +14,7 @@ namespace JewelrySalesSystem.DAL.Interfaces
             , int pageSize);
 
         Task<Invoice?> GetByIdWithIncludeAsync(int id);
+
+        Task DeleteById(int id);
     }
 }

@@ -112,5 +112,11 @@ namespace JewelrySalesSystem.BAL.Services
             }
             return productPrice;
         }
+
+        public async Task DeleteInvoice(int id)
+        {
+            await _unitOfWork.Invoices.DeleteById(id);
+            await _unitOfWork.CompleteAsync();
+        }
     }
 }
