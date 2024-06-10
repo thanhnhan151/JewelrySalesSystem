@@ -1,4 +1,5 @@
 ﻿using JewelrySalesSystem.BAL.Models.Categories;
+using JewelrySalesSystem.BAL.Models.Products;
 using JewelrySalesSystem.DAL.Common;
 using JewelrySalesSystem.DAL.Entities;
 
@@ -6,20 +7,14 @@ namespace JewelrySalesSystem.BAL.Interfaces
 {
     public interface ICategoryService
     {
-        Task<PaginatedList<Category>> PaginationAsync
-            (string? searchTerm
-            , string? sortColumn
-            , string? sortOrder
-            , int page
-            , int pageSize);
+        Task<List<GetCategoryResponse>> GetAllAsync();
 
-        Task<Category> AddAsync(Category category);
+        Task<GetCategoryResponse?> GetAllProductsByCategoryIdAsync(int id);
 
         Task UpdateAsync(Category category);
 
         Task<Category?> GetByIdAsync(int id);
 
-        //change here
         Task<AddCategories> AddNewCategory(AddCategories category);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.Categories;
-using JewelrySalesSystem.DAL.Common;
+using JewelrySalesSystem.BAL.Models.Products;
 using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
 
@@ -18,19 +18,13 @@ namespace JewelrySalesSystem.BAL.Services
             _mapper = mapper;
         }
 
-        public async Task<PaginatedList<Category>> PaginationAsync(
-            string? searchTerm,
-            string? sortColumn,
-            string? sortOrder,
-            int page,
-            int pageSize)
-        => await _unitOfWork.Categories.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize);
+        public async Task<List<GetCategoryResponse>> GetAllAsync() => _mapper.Map<List<GetCategoryResponse>>(await _unitOfWork.Categories.GetAllAsync());
 
-        public async Task<Category> AddAsync(Category category)
+        public async Task<GetCategoryResponse?> GetAllProductsByCategoryIdAsync(int id)
         {
-            var result = _unitOfWork.Categories.AddEntity(category);
+            var result = _mapper.Map<GetCategoryResponse>(await _unitOfWork.Categories.GetAllProductsByCategoryIdAsync(id));
 
-            await _unitOfWork.CompleteAsync();
+            if (result == null) return null;
 
             return result;
         }
