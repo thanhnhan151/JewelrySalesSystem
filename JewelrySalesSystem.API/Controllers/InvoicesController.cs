@@ -183,5 +183,27 @@ namespace JewelrySalesSystem.API.Controllers
             }
         }
         #endregion
+
+        //change here
+        #region Delete Invoice
+        /// <summary>
+        /// Delete Invoice by InvoiceID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteInvoice(int id)
+        {
+            try
+            {
+                await _invoiceService.DeleteInvoice(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        #endregion
     }
 }
