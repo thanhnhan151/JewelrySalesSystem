@@ -81,8 +81,7 @@ namespace JewelrySalesSystem.API.Controllers
         ///          "caratWeightPrice": 10,
         ///          "colourPrice": 10,
         ///          "clarityPrice": 10,
-        ///          "cutPrice": 10,
-        ///          "effDate": "2024-06-06T04:33:20.997Z"
+        ///          "cutPrice": 10
         ///        }
         ///     }
         ///         
@@ -99,7 +98,6 @@ namespace JewelrySalesSystem.API.Controllers
         {
             try
             {
-                createGemRequest.GemPrice.EffDate = DateTime.Now;
                 await _gemService.AddAsync(createGemRequest);
 
                 return Ok(createGemRequest);
