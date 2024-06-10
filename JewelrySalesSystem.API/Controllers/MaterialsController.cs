@@ -74,8 +74,7 @@ namespace JewelrySalesSystem.API.Controllers
         ///       "materialName": "Vàng 16K",
         ///       "materialPrice": {
         ///          "buyPrice": 11,
-        ///          "sellPrice": 11,
-        ///          "effDate": "2024-06-06T04:33:20.997Z"
+        ///          "sellPrice": 11
         ///        }            
         ///     }
         ///         
@@ -92,7 +91,6 @@ namespace JewelrySalesSystem.API.Controllers
         {
             try
             {
-                createMaterialRequest.MaterialPrice.EffDate = DateTime.Now;
                 await _materialService.AddAsync(createMaterialRequest);
 
                 return Ok(createMaterialRequest);
