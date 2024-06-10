@@ -6,7 +6,6 @@ using JewelrySalesSystem.DAL.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
-using System.Net.Http.Headers;
 
 namespace JewelrySalesSystem.DAL.Repositories
 {
