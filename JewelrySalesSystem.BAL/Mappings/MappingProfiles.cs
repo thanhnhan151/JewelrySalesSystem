@@ -36,7 +36,6 @@ namespace JewelrySalesSystem.BAL.Mappings
             CreateMap<CreateUserRequest, User>();
 
             CreateMap<UpdateUserRequest, User>();
-            CreateMap<DeleteUserRequest, User>().ReverseMap();
             #endregion
 
             #region Product
@@ -46,7 +45,7 @@ namespace JewelrySalesSystem.BAL.Mappings
 
                 .ForMember(p => p.Gems, p => p.MapFrom(p => p.ProductGems
                 .Select(y => y.Gem).ToList()))
-                
+
                 .ForMember(p => p.Category, p => p.MapFrom(p => p.Category.CategoryName))
 
                 .ForMember(p => p.ProductType, p => p.MapFrom(p => p.ProductType.Name))
@@ -63,8 +62,6 @@ namespace JewelrySalesSystem.BAL.Mappings
                 .ForMember(p => p.Colour, p => p.MapFrom(p => p.Colour.ColourName));
 
             CreateMap<PaginatedList<Product>, PaginatedList<GetProductResponse>>();
-
-            CreateMap<UpdateProductRequest, Product>().ReverseMap();
             #endregion
 
             #region Gem
@@ -97,7 +94,7 @@ namespace JewelrySalesSystem.BAL.Mappings
 
                 .ForMember(i => i.Total, i => i.MapFrom(i => i.InvoiceDetails
                 .Sum(i => i.ProductPrice)))
-                
+
                 .ForMember(i => i.CustomerName, i => i.MapFrom(i => i.Customer.FullName))
 
                 .ForMember(i => i.UserName, i => i.MapFrom(i => i.User.UserName))
@@ -136,7 +133,7 @@ namespace JewelrySalesSystem.BAL.Mappings
             #endregion
 
             #region MaterialPriceList
-            CreateMap<CreateMaterialPriceList,MaterialPriceList>().ReverseMap();
+            CreateMap<CreateMaterialPriceList, MaterialPriceList>().ReverseMap();
             #endregion
         }
     }
