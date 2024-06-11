@@ -22,7 +22,7 @@ namespace JewelrySalesSystem.DAL.Infrastructures
 
         public virtual void UpdateEntity(TEntity entity) => _dbSet.Update(entity);
 
-        public virtual async Task<TEntity?> GetByIdAsync(int id)
+        public virtual async Task<TEntity?> GetEntityByIdAsync(int id)
         {
             var result = await _dbSet.FindAsync(id);
             if (result != null)
@@ -32,7 +32,5 @@ namespace JewelrySalesSystem.DAL.Infrastructures
 
             return null;
         }   
-        
-        //public virtual void DeleteEntity(TEntity entity) => _dbSet.Update(entity);
     }
 }
