@@ -49,9 +49,12 @@ namespace JewelrySalesSystem.BAL.Services
 
         public async Task<GetUserResponse?> GetByIdWithIncludeAsync(int id) => _mapper.Map<GetUserResponse>(await _unitOfWork.Users.GetByIdWithIncludeAsync(id));
 
-        public async Task<DeleteUserRequest> DeleteAsync(int id)
-        => _mapper.Map<DeleteUserRequest>(await _unitOfWork.Users.DeleteAsync(id));
+        public async Task DeleteAsync(int id)
+        {
+            await _unitOfWork.Users.DeleteAsync(id);
+            await _unitOfWork.CompleteAsync();
+        }
 
-
+        public async Task<GetUserResponse?> GetByIdAsync(int id) => _mapper.Map<GetUserResponse>(await _unitOfWork.Users.GetEntityByIdAsync(id));
     }
 }

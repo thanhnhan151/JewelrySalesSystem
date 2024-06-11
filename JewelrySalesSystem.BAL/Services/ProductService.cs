@@ -80,7 +80,7 @@ namespace JewelrySalesSystem.BAL.Services
         public async Task UpdateAsync(UpdateProductRequest updateProductRequest)
         {
             var productGems = new List<ProductGem>();
-            if(updateProductRequest.Gems.Count > 0)
+            if (updateProductRequest.Gems.Count > 0)
             {
                 foreach (var item in updateProductRequest.Gems)
                 {
@@ -92,7 +92,7 @@ namespace JewelrySalesSystem.BAL.Services
             }
 
             var productMaterials = new List<ProductMaterial>();
-            if(updateProductRequest.Materials.Count > 0)
+            if (updateProductRequest.Materials.Count > 0)
             {
                 foreach (var item in updateProductRequest.Materials)
                 {
@@ -130,5 +130,7 @@ namespace JewelrySalesSystem.BAL.Services
             await _unitOfWork.Products.DeleteProduct(id);
             await _unitOfWork.CompleteAsync();
         }
+
+        public async Task<GetProductResponse?> GetByIdAsync(int id) => _mapper.Map<GetProductResponse>(await _unitOfWork.Products.GetEntityByIdAsync(id));
     }
 }

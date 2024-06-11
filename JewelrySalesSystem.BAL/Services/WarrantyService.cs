@@ -37,19 +37,8 @@ namespace JewelrySalesSystem.BAL.Services
             _unitOfWork.Warranties.UpdateEntity(_mapper.Map<Warranty>(updateWarrantyRequest));
             await _unitOfWork.CompleteAsync();
         }
-        public async Task<GetWarrantyResponse> GetWarrantyById(int id)
-        {
-            var warranty = await _unitOfWork.Warranties.GetWarrantyById(id);
-
-            if (warranty == null)
-            {
-                return null;
-            }
-
-            var mappedWarranty = _mapper.Map<GetWarrantyResponse>(warranty);
-            return mappedWarranty;
-
-        }
+        public async Task<GetWarrantyResponse?> GetWarrantyById(int id) => _mapper.Map<GetWarrantyResponse>(await _unitOfWork.Warranties.GetEntityByIdAsync(id));
+        
 
         //change here
         public async Task<CreateWarrantyRequest> AddNewWarranty(CreateWarrantyRequest createWarrantyRequest)

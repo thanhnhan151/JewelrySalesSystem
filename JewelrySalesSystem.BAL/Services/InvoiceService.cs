@@ -118,5 +118,7 @@ namespace JewelrySalesSystem.BAL.Services
             await _unitOfWork.Invoices.DeleteById(id);
             await _unitOfWork.CompleteAsync();
         }
+
+        public async Task<GetInvoiceResponse?> GetByIdAsync(int id) => _mapper.Map<GetInvoiceResponse>(await _unitOfWork.Invoices.GetEntityByIdAsync(id));
     }
 }

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.Categories;
-using JewelrySalesSystem.BAL.Models.Products;
 using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
 
@@ -35,7 +34,7 @@ namespace JewelrySalesSystem.BAL.Services
             await _unitOfWork.CompleteAsync();
         }
 
-        public async Task<GetRawCategoryResponse?> GetByIdAsync(int id) => _mapper.Map<GetRawCategoryResponse>(await _unitOfWork.Categories.GetByIdAsync(id));
+        public async Task<GetRawCategoryResponse?> GetByIdAsync(int id) => _mapper.Map<GetRawCategoryResponse>(await _unitOfWork.Categories.GetEntityByIdAsync(id));
 
         public async Task<Category> AddNewCategory(Category category)
         {
