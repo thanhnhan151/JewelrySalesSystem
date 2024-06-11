@@ -77,9 +77,9 @@ namespace JewelrySalesSystem.BAL.Services
             return createProductRequest;
         }
 
-        public async Task UpdateAsync(Product product)
+        public async Task UpdateAsync(UpdateProductRequest updateProductRequest)
         {
-            _unitOfWork.Products.UpdateEntity(product);
+            _unitOfWork.Products.UpdateEntity(_mapper.Map<Product>(updateProductRequest));
             await _unitOfWork.CompleteAsync();
         }
 

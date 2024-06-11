@@ -15,7 +15,7 @@ namespace JewelrySalesSystem.BAL.Interfaces
 
         Task<CreateProductRequest> AddAsync(CreateProductRequest createProductRequest);
 
-        Task UpdateAsync(Product product);
+        Task UpdateAsync(UpdateProductRequest updateProductRequest);
 
         Task<GetProductResponse?> GetByIdWithIncludeAsync(int id);
 
