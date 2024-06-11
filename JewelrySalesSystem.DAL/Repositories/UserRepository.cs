@@ -88,16 +88,17 @@ namespace JewelrySalesSystem.DAL.Repositories
             return result;
         }
 
-        public async Task<User?> DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            var result = await _dbSet.FirstOrDefaultAsync(u => u.UserId == id);
-            if (result == null) { return null; }
+            var checkExistUser = await _dbSet.FindAsync(id);
 
-            result.Status = false; 
-            await _context.SaveChangesAsync();
-
-            return result;
-
+            if (checkExistUser == null)
+            {
+                throw new Exception($"User with {id} not found");
+            }
+            //Delete by change property status = false
+            checkExistUser.Status = false;
+            _dbSet.Update(checkExistUser);
         }
     }
 }

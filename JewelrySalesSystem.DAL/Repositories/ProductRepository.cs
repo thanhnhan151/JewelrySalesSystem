@@ -109,7 +109,7 @@ namespace JewelrySalesSystem.DAL.Repositories
         public async Task UpdateProduct(Product product)
         {
             //Check exist
-            var checkExistProductTask =  _dbSet.FindAsync(product.ProductId);
+            var checkExistProductTask = _dbSet.FindAsync(product.ProductId);
             var checkExistProduct = await checkExistProductTask;
             if (checkExistProduct != null)
             {
@@ -127,13 +127,6 @@ namespace JewelrySalesSystem.DAL.Repositories
 
                 var existProductGems = await _context.ProductGems.Where(pe => pe.ProductId == product.ProductId).ToListAsync();
 
-                //_context.ProductGems.RemoveRange(existProductGems);
-
-                //var newProductGems = product.ProductGems.Select(g => new ProductGem
-                //{
-                //    GemId = g.GemId,
-                //    ProductId = product.ProductId
-                //}).ToList();
                 var existingProductGemsDict = existProductGems.ToDictionary(pg => pg.GemId, pg => pg);
 
 
@@ -153,15 +146,15 @@ namespace JewelrySalesSystem.DAL.Repositories
                 var newProductMaterials = product.ProductMaterials.Where(m => !existProductMaterials.Any(em => em.MaterialId == m.MaterialId))
                                                                   .Select(m => new ProductMaterial
                                                                   {
-                                                                    Id = m.Id,
-                                                                    MaterialId = m.MaterialId,
-                                                                    ProductId = product.ProductId
+                                                                      Id = m.Id,
+                                                                      MaterialId = m.MaterialId,
+                                                                      ProductId = product.ProductId
                                                                   });
                 var removedProductMaterials = existingProductMaterialsDict.Values.Where(em => !product.ProductMaterials.Any(m => m.MaterialId == em.MaterialId)).ToList();
                 _context.ProductMaterials.RemoveRange(removedProductMaterials);
                 _context.ProductMaterials.AddRange(newProductMaterials);
-                
-                
+
+
 
             }
             else
@@ -169,8 +162,6 @@ namespace JewelrySalesSystem.DAL.Repositories
                 throw new Exception($"Product with ID = {product.ProductId} not found!");
             }
             _dbSet.Update(checkExistProduct);
-            await _context.SaveChangesAsync();
-
         }
     }
 }

@@ -74,15 +74,6 @@ namespace JewelrySalesSystem.DAL.Repositories
             
 
         }
-
-        public async Task<Warranty> GetWarrantyById(int id)
-        {
-            var result = await _dbSet.FindAsync(id);
-            if (result == null) return null;
-
-            return result;
-        }
-
         //change here
         public async Task<Warranty> CreateWarranty(Warranty warranty)
         {
