@@ -12,10 +12,11 @@ namespace JewelrySalesSystem.BAL.Interfaces
             , string? sortOrder
             , int page
             , int pageSize);
-        Task UpdateAsync(UpdateWarrantyRequest updateWarrantyRequest);
-        Task<GetWarrantyResponse>GetWarrantyById(int id);
 
-        //change here
+        Task UpdateAsync(UpdateWarrantyRequest updateWarrantyRequest);
+
+        Task<GetWarrantyResponse?>GetWarrantyById(int id);
+
         Task<CreateWarrantyRequest> AddNewWarranty(CreateWarrantyRequest createWarrantyRequest);
     }
 }

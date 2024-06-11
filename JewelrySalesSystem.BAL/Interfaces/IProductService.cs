@@ -1,6 +1,5 @@
 ﻿using JewelrySalesSystem.BAL.Models.Products;
 using JewelrySalesSystem.DAL.Common;
-using JewelrySalesSystem.DAL.Entities;
 
 namespace JewelrySalesSystem.BAL.Interfaces
 {
@@ -16,6 +15,8 @@ namespace JewelrySalesSystem.BAL.Interfaces
         Task<CreateProductRequest> AddAsync(CreateProductRequest createProductRequest);
 
         Task UpdateAsync(UpdateProductRequest updateProductRequest);
+
+        Task<GetProductResponse?> GetByIdAsync(int id);
 
         Task<GetProductResponse?> GetByIdWithIncludeAsync(int id);
 
