@@ -77,9 +77,49 @@ namespace JewelrySalesSystem.BAL.Services
             return createProductRequest;
         }
 
-        public async Task UpdateAsync(Product product)
+        public async Task UpdateAsync(UpdateProductRequest updateProductRequest)
         {
-            _unitOfWork.Products.UpdateEntity(product);
+            var productGems = new List<ProductGem>();
+            if(updateProductRequest.Gems.Count > 0)
+            {
+                foreach (var item in updateProductRequest.Gems)
+                {
+                    productGems.Add(new ProductGem
+                    {
+                        GemId = item
+                    });
+                }
+            }
+
+            var productMaterials = new List<ProductMaterial>();
+            if(updateProductRequest.Materials.Count > 0)
+            {
+                foreach (var item in updateProductRequest.Materials)
+                {
+                    productMaterials.Add(new ProductMaterial
+                    {
+                        MaterialId = item
+                    });
+                }
+            }
+
+            var product = new Product()
+            {
+                ProductId = updateProductRequest.ProductId,
+                ProductName = updateProductRequest.ProductName,
+                PercentPriceRate = updateProductRequest.PercentPriceRate,
+                ProductionCost = updateProductRequest.ProductionCost,
+                FeaturedImage = updateProductRequest.FeaturedImage,
+                CategoryId = updateProductRequest.CategoryId,
+                ProductTypeId = updateProductRequest.ProductTypeId,
+                GenderId = updateProductRequest.GenderId,
+                ColourId = updateProductRequest.ColourId,
+                ProductGems = productGems,
+                ProductMaterials = productMaterials
+            };
+
+
+            await _unitOfWork.Products.UpdateProduct(product);
             await _unitOfWork.CompleteAsync();
         }
 
