@@ -176,11 +176,11 @@ namespace JewelrySalesSystem.API.Controllers
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server</response>
         [HttpPut]
-        public async Task<IActionResult> UpdateAsync(Product product)
+        public async Task<IActionResult> UpdateAsync(UpdateProductRequest updateProductRequest)
         {
             try
             {
-                await _productService.UpdateAsync(product);
+                await _productService.UpdateAsync(updateProductRequest);
 
                 return Ok();
             }
