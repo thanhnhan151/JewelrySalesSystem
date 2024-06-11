@@ -12,10 +12,9 @@ namespace JewelrySalesSystem.DAL.Interfaces
             , string? sortOrder
             , int page
             , int pageSize);
+
         /*Initialized interface update warranty method*/
         void UpdateWarranty (Warranty warranty);
-
-        Task<Warranty> GetWarrantyById(int id);
 
         //Change here
         Task<Warranty> CreateWarranty(Warranty warranty);
