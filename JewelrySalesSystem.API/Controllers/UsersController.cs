@@ -187,31 +187,38 @@ namespace JewelrySalesSystem.API.Controllers
         #endregion
 
         #region Delete User
-        ///<summary>
-        ///Change user status in the system
-        ///</summary>
+        /// <summary>
+        /// Change the user status in the system
+        /// </summary>
+        /// <param name="id">Id of the user you want to change</param>
+        /// <returns>A product</returns>
+        /// <response code="204">No Content</response>
+        /// <response code="400">If the user is null</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server</response>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
             try
             {
-                var result = await _userService.DeleteAsync(id);
+                var result = await _userService.GetByIdAsync(id);
 
-                if (result is not null)
+                if (result == null) return NotFound(new
                 {
-                    return Ok(result);
-                }
+                    ErrorMessage = $"User with {id} does not exist"
+                });
+
+                await _userService.DeleteAsync(id);
+
+                return NoContent();
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-            return NotFound(new
-            {
-                ErrorMessage = "User does not exist"
-            });
         }
         #endregion
-
     }
 }

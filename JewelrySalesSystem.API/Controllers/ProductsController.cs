@@ -144,7 +144,7 @@ namespace JewelrySalesSystem.API.Controllers
 
             return NotFound(new
             {
-                ErrorMessage = "Product does not exist"
+                ErrorMessage = $"Product with {id} does not exist"
             });
         }
         #endregion
@@ -157,14 +157,23 @@ namespace JewelrySalesSystem.API.Controllers
         /// Sample request:
         /// 
         ///     {
-        ///       "userId" : 2,
-        ///       "userName": "newtestaccount",
-        ///       "fullName": "Nguyen Van C",
-        ///       "phoneNumber": "0999123456",
-        ///       "email": "testemail@gmail.com",
-        ///       "password" : "test",
-        ///       "address" : "test",
-        ///       "roleId" : 2
+        ///       "productId": 1
+        ///       "productName": "Test Product",
+        ///       "percentPriceRate": 10,
+        ///       "productionCost": 100,
+        ///       "featuredImage": "testurl",
+        ///       "categoryId": 2,
+        ///       "productTypeId": 2,
+        ///       "genderId": 3,
+        ///       "colourId": 4,
+        ///       "gems" : [
+        ///         1,
+        ///         3
+        ///       ],
+        ///       "materials" : [
+        ///         3,
+        ///         4
+        ///       ]
         ///     }
         ///         
         /// </remarks> 
@@ -180,6 +189,13 @@ namespace JewelrySalesSystem.API.Controllers
         {
             try
             {
+                var result = await _productService.GetByIdAsync(updateProductRequest.ProductId);
+
+                if (result == null) return NotFound(new
+                {
+                    ErrorMessage = $"Product with {updateProductRequest.ProductId} does not exist"
+                });
+
                 await _productService.UpdateAsync(updateProductRequest);
 
                 return Ok();
@@ -192,15 +208,33 @@ namespace JewelrySalesSystem.API.Controllers
         #endregion
 
         #region Delete Product
+        /// <summary>
+        /// Change the product status in the system
+        /// </summary>
+        /// <param name="id">Id of the product you want to change</param>
+        /// <response code="204">No Content</response>
+        /// <response code="400">If the product is null</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server</response>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
             try
             {
+                var result = await _productService.GetByIdAsync(id);
+
+                if (result == null) return NotFound(new
+                {
+                    ErrorMessage = $"Product with {id} does not exist"
+                });
+
                 await _productService.DeleteAsync(id);
-                return Ok();
+
+                return NoContent();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }

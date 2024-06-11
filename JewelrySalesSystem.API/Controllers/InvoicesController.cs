@@ -184,20 +184,32 @@ namespace JewelrySalesSystem.API.Controllers
         }
         #endregion
 
-        //change here
         #region Delete Invoice
         /// <summary>
-        /// Delete Invoice by InvoiceID
+        /// Change the invoice status in the system
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">Id of the invoice you want to change</param>
+        /// <response code="204">No Content</response>
+        /// <response code="400">If the invoice is null</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server</response>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteInvoice(int id)
         {
             try
             {
+                var result = await _invoiceService.GetByIdAsync(id);
+
+                if (result == null) return NotFound(new
+                {
+                    ErrorMessage = $"Invoice with {id} does not exist"
+                });
+
                 await _invoiceService.DeleteInvoice(id);
-                return Ok();
+
+                return NoContent();
             }
             catch (Exception ex)
             {
