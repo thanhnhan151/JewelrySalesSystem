@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using JewelrySalesSystem.BAL.Interfaces;
+﻿using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.MaterialPriceList;
 using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
@@ -9,20 +8,25 @@ namespace JewelrySalesSystem.BAL.Services
     public class MaterialPriceListService : IMaterialPriceListService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public MaterialPriceListService(IUnitOfWork unitOfWork, IMapper mapper)
+        public MaterialPriceListService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
-        public async Task<CreateMaterialPriceList> AddAsync(CreateMaterialPriceList materialPriceList)
+        public async Task<CreateMaterialPriceList> AddAsync(int id, CreateMaterialPriceList materialPriceList)
         {
-            var result = _unitOfWork.MaterialPrices.AddEntity(_mapper.Map<MaterialPriceList>(materialPriceList));
+            var materialPrice = new MaterialPriceList
+            {
+                SellPrice = materialPriceList.SellPrice,
+                BuyPrice = materialPriceList.BuyPrice,
+                MaterialId = id,
+                EffDate = DateTime.Now
+            };
+
+            var result = _unitOfWork.MaterialPrices.AddEntity(materialPrice);
 
             await _unitOfWork.CompleteAsync();
-            var createMaterialPriceList = _mapper.Map<CreateMaterialPriceList>(result);
-            return createMaterialPriceList;
+            return materialPriceList;
         }
     }
 }
