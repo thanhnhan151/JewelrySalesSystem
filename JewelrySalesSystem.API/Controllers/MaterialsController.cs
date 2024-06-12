@@ -1,4 +1,5 @@
 ﻿using JewelrySalesSystem.BAL.Interfaces;
+using JewelrySalesSystem.BAL.Models.MaterialPriceList;
 using JewelrySalesSystem.BAL.Models.Materials;
 using JewelrySalesSystem.DAL.Entities;
 using Microsoft.AspNetCore.Http;
@@ -12,13 +13,16 @@ namespace JewelrySalesSystem.API.Controllers
     {
         private readonly ILogger<MaterialsController> _logger;
         private readonly IMaterialService _materialService;
+        private readonly IMaterialPriceListService _materialPriceListService;
 
         public MaterialsController(
             ILogger<MaterialsController> logger,
-            IMaterialService materialService)
+            IMaterialService materialService,
+            IMaterialPriceListService materialPriceListService)
         {
             _logger = logger;
             _materialService = materialService;
+            _materialPriceListService = materialPriceListService;
         }
 
         #region Get All Materials
@@ -59,7 +63,29 @@ namespace JewelrySalesSystem.API.Controllers
                 throw new Exception(ex.Message);
             }
 
-            return BadRequest();
+            return NotFound();
+        }
+        #endregion
+
+        #region Get All Gold Materials
+        [HttpGet("golds")]
+        public async Task<IActionResult> GetAllGoldMaterials()
+        {
+            try
+            {
+                var result = await _materialService.GetAllGoldMaterials();
+
+                if (result is not null)
+                {
+                    return Ok(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return NotFound();
         }
         #endregion
 
@@ -94,6 +120,29 @@ namespace JewelrySalesSystem.API.Controllers
                 await _materialService.AddAsync(createMaterialRequest);
 
                 return Ok(createMaterialRequest);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        #endregion
+
+        #region Add Material Price
+        [HttpPost("{id}/materialprices")]
+        public async Task<IActionResult> AddAsync(int id, [FromBody] CreateMaterialPriceList createMaterialPriceList)
+        {
+            try
+            {
+                var material = await _materialService.GetByIdAsync(id);
+
+                if (material == null) return NotFound(new
+                {
+                    ErrorMessage = $"Material with {id} does not exist"
+                });
+
+                var result = await _materialPriceListService.AddAsync(id, createMaterialPriceList);
+                return Ok(result);
             }
             catch (Exception ex)
             {
