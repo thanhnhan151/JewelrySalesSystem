@@ -26,7 +26,17 @@ namespace JewelrySalesSystem.BAL.Services
             string? sortOrder,
             int page,
             int pageSize)
-        => _mapper.Map<PaginatedList<GetGemResponse>>(await _unitOfWork.Gems.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize));
+        {
+            var result = _mapper.Map<PaginatedList<GetGemResponse>>(await _unitOfWork.Gems.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize));
+
+            foreach (var item in result.Items)
+            {
+                item.GemPrice.Total = CalculateTotal(item);
+            }
+
+            return result;
+        }
+
 
         public async Task<CreateGemRequest> AddAsync(CreateGemRequest createGemRequest)
         {
@@ -38,16 +48,12 @@ namespace JewelrySalesSystem.BAL.Services
                 Colour = createGemRequest.Colour,
                 Clarity = createGemRequest.Clarity,
                 Cut = createGemRequest.Cut,
-                GemPrices = new List<GemPriceList>
+                GemPrice = new GemPriceList
                 {
-                    new GemPriceList
-                    {
-                        CaratWeightPrice = createGemRequest.GemPrice.CaratWeightPrice,
-                        ColourPrice = createGemRequest.GemPrice.ColourPrice,
-                        ClarityPrice = createGemRequest.GemPrice.ClarityPrice,
-                        CutPrice = createGemRequest.GemPrice.CutPrice,
-                        EffDate = DateTime.Now
-                    }
+                    CaratWeightPrice = createGemRequest.GemPrice.CaratWeightPrice,
+                    ColourPrice = createGemRequest.GemPrice.ColourPrice,
+                    ClarityPrice = createGemRequest.GemPrice.ClarityPrice,
+                    CutPrice = createGemRequest.GemPrice.CutPrice
                 }
             };
 
@@ -64,6 +70,15 @@ namespace JewelrySalesSystem.BAL.Services
             await _unitOfWork.CompleteAsync();
         }
 
-        public async Task<GetGemResponse?> GetByIdWithIncludeAsync(int id) => _mapper.Map<GetGemResponse>(await _unitOfWork.Gems.GetByIdWithIncludeAsync(id));
+        public async Task<GetGemResponse?> GetByIdWithIncludeAsync(int id)
+        {
+            var result = _mapper.Map<GetGemResponse>(await _unitOfWork.Gems.GetByIdWithIncludeAsync(id));
+
+            result.GemPrice.Total = CalculateTotal(result);
+
+            return result;
+        }
+
+        private static float CalculateTotal(GetGemResponse getGemResponse) => getGemResponse.GemPrice.ClarityPrice + getGemResponse.GemPrice.CutPrice + getGemResponse.GemPrice.CaratWeightPrice + getGemResponse.GemPrice.ColourPrice;
     }
 }

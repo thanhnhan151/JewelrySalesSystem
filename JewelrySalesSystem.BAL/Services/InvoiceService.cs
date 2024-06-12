@@ -85,7 +85,7 @@ namespace JewelrySalesSystem.BAL.Services
 
                         if (temp != null)
                         {
-                            var gemPrice = temp.GemPrices.SingleOrDefault();
+                            var gemPrice = temp.GemPrice;
 
                             if (gemPrice != null)
                             {
