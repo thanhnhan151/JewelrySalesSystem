@@ -27,9 +27,7 @@ namespace JewelrySalesSystem.DAL.Repositories
             IQueryable<Product> productsQuery = _dbSet
                                                 .Include(p => p.ProductGems)
                                                     .ThenInclude(g => g.Gem)
-                                                        .ThenInclude(g => g.GemPrices
-                                                        .OrderByDescending(g => g.EffDate)
-                                                        .Take(1))
+                                                        .ThenInclude(g => g.GemPrice)
                                                 .Include(p => p.ProductMaterials)
                                                     .ThenInclude(m => m.Material)
                                                         .ThenInclude(g => g.MaterialPrices
@@ -72,9 +70,7 @@ namespace JewelrySalesSystem.DAL.Repositories
         {
             var result = await _dbSet.Include(p => p.ProductGems)
                                     .ThenInclude(g => g.Gem)
-                                        .ThenInclude(g => g.GemPrices
-                                        .OrderByDescending(g => g.EffDate)
-                                        .Take(1))
+                                        .ThenInclude(g => g.GemPrice)
                                .Include(p => p.ProductMaterials)
                                     .ThenInclude(m => m.Material)
                                         .ThenInclude(g => g.MaterialPrices

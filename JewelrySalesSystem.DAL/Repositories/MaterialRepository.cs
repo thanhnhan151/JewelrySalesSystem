@@ -65,5 +65,10 @@ namespace JewelrySalesSystem.DAL.Repositories
             if (result == null) return null;
             return result;
         }
+
+        public async Task<List<Material>> GetAllGoldMaterials() => await _dbSet
+                                .Include(m => m.MaterialPrices.OrderByDescending(m => m.EffDate).Take(1))
+                                .Where(m => String.Equals(m.MaterialName, "Gold", StringComparison.OrdinalIgnoreCase))
+                                .ToListAsync();
     }
 }

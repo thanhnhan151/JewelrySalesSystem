@@ -25,9 +25,7 @@ namespace JewelrySalesSystem.DAL.Repositories
             , int pageSize)
         {
             IQueryable<Gem> gemsQuery = _dbSet
-                .Include(g => g.GemPrices
-                .OrderByDescending(m => m.EffDate)
-                .Take(1));
+                .Include(g => g.GemPrice);
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
@@ -61,9 +59,7 @@ namespace JewelrySalesSystem.DAL.Repositories
         public async Task<Gem?> GetByIdWithIncludeAsync(int id)
         {
             var result = await _dbSet
-                .Include(g => g.GemPrices
-                .OrderByDescending(m => m.EffDate)
-                .Take(1))
+                .Include(g => g.GemPrice)             
                 .FirstOrDefaultAsync(g => g.GemId == id);
 
             if (result == null) return null;
