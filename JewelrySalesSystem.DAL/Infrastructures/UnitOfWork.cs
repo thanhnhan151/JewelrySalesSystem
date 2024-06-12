@@ -31,8 +31,6 @@ namespace JewelrySalesSystem.DAL.Infrastructures
 
         public IMaterialPriceListRepository MaterialPrices { get; private set; }
 
-        public IGemPriceListRepository GemPrices { get; private set; }
-
         public IProductTypeRepository ProductTypes { get; private set; }
 
         public UnitOfWork(
@@ -62,8 +60,6 @@ namespace JewelrySalesSystem.DAL.Infrastructures
             Roles = new RoleRepository(_context, _logger);
 
             MaterialPrices = new MaterialPriceRepository(_context, _logger);
-
-            GemPrices = new GemPriceListRepository(_context, _logger);
 
             ProductTypes = new ProductTypeRepository(_context, _logger);
         }
