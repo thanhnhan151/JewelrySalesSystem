@@ -67,5 +67,9 @@ namespace JewelrySalesSystem.BAL.Services
 
             return createMaterialRequest;
         }
+
+        public async Task<GetMaterialResponse?> GetByIdAsync(int id) => _mapper.Map<GetMaterialResponse>(await _unitOfWork.Materials.GetEntityByIdAsync(id));
+
+        public async Task<List<GetMaterialResponse>> GetAllGoldMaterials() => _mapper.Map<List<GetMaterialResponse>>(await _unitOfWork.Materials.GetAllGoldMaterials());
     }
 }

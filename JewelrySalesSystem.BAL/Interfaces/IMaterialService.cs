@@ -13,7 +13,11 @@ namespace JewelrySalesSystem.BAL.Interfaces
             , int page
             , int pageSize);
 
+        Task<List<GetMaterialResponse>> GetAllGoldMaterials();
+
         Task<CreateMaterialRequest> AddAsync(CreateMaterialRequest createMaterialRequest);
+
+        Task<GetMaterialResponse?> GetByIdAsync(int id);
 
         Task UpdateAsync(Material material);
 
