@@ -17,7 +17,7 @@ namespace JewelrySalesSystem.DAL.Entities
         public bool Status { get; set; }
 
         // Gem Price List
-        public virtual ICollection<GemPriceList> GemPrices { get; set; } = new List<GemPriceList>();
+        public virtual GemPriceList GemPrice { get; set; } = null!;
 
         // Product Gems
         public virtual ICollection<ProductGem> ProductGems { get; set; } = new List<ProductGem>();

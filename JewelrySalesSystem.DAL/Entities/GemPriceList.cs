@@ -12,7 +12,6 @@ namespace JewelrySalesSystem.DAL.Entities
         public float ClarityPrice { get; set; }
         public float CutPrice { get; set; }
         public float ColourPrice { get; set; }
-        public DateTime EffDate { get; set; }
 
         // Gem
         public int GemId { get; set; }
