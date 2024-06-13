@@ -26,13 +26,6 @@ namespace JewelrySalesSystem.DAL.Repositories
                                 .ThenInclude(p => p.Colour)
                             .Include(c => c.Products)
                                 .ThenInclude(p => p.ProductType)
-                           .FirstOrDefaultAsync(c => c.Status && c.CategoryId == id);
-
-        public async Task<Category> AddCategory(Category category)
-        {
-            _context.Categories.Add(category);
-            await _context.SaveChangesAsync();
-            return category;
-        }
+                           .FirstOrDefaultAsync(c => c.Status && c.CategoryId == id);     
     }
 }

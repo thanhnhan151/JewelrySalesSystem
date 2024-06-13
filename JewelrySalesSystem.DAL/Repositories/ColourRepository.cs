@@ -7,12 +7,12 @@ using Microsoft.Extensions.Logging;
 
 namespace JewelrySalesSystem.DAL.Repositories
 {
-    public class ProductTypeRepository : GenericRepository<ProductType>, IProductTypeRepository
+    public class ColourRepository : GenericRepository<Colour>, IColourRepository
     {
-        public ProductTypeRepository(JewelryDbContext context, ILogger logger) : base(context, logger)
+        public ColourRepository(JewelryDbContext context, ILogger logger) : base(context, logger)
         {
         }
 
-        public async Task<List<ProductType>> GetAllAsync() => await _dbSet.ToListAsync();
+        public async Task<List<Colour>> GetAllAsync() => await _dbSet.ToListAsync();
     }
 }

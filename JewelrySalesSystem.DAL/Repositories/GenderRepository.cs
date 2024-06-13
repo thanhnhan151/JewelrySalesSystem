@@ -2,6 +2,7 @@
 using JewelrySalesSystem.DAL.Infrastructures;
 using JewelrySalesSystem.DAL.Interfaces;
 using JewelrySalesSystem.DAL.Persistence;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace JewelrySalesSystem.DAL.Repositories
@@ -23,6 +24,6 @@ namespace JewelrySalesSystem.DAL.Repositories
             return gender;
         }
 
-
+        public async Task<List<Gender>> GetAllAsync() => await _dbSet.ToListAsync();
     }
 }
