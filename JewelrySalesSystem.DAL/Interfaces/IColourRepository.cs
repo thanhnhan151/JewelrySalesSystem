@@ -3,8 +3,8 @@ using JewelrySalesSystem.DAL.Infrastructures;
 
 namespace JewelrySalesSystem.DAL.Interfaces
 {
-    public interface IProductTypeRepository : IGenericRepository<ProductType>
+    public interface IColourRepository : IGenericRepository<Colour>
     {
-        Task<List<ProductType>> GetAllAsync();
+        Task<List<Colour>> GetAllAsync();
     }
 }

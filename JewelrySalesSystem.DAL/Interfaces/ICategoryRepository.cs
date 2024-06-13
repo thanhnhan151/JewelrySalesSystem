@@ -8,7 +8,5 @@ namespace JewelrySalesSystem.DAL.Interfaces
         Task<List<Category>> GetAllAsync();
 
         Task<Category?> GetAllProductsByCategoryIdAsync(int id);
-
-        Task<Category> AddCategory(Category category);
     }
 }
