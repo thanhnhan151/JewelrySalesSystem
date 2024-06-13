@@ -26,6 +26,8 @@ namespace JewelrySalesSystem.DAL.Infrastructures
 
         IProductTypeRepository ProductTypes { get; }
 
+        IColourRepository Colours { get; }
+
         Task CompleteAsync();
     }
 }

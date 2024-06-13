@@ -33,6 +33,8 @@ namespace JewelrySalesSystem.DAL.Infrastructures
 
         public IProductTypeRepository ProductTypes { get; private set; }
 
+        public IColourRepository Colours { get; private set; }
+
         public UnitOfWork(
             JewelryDbContext context,
             ILoggerFactory loggerFactory)
@@ -62,6 +64,8 @@ namespace JewelrySalesSystem.DAL.Infrastructures
             MaterialPrices = new MaterialPriceRepository(_context, _logger);
 
             ProductTypes = new ProductTypeRepository(_context, _logger);
+
+            Colours = new ColourRepository(_context, _logger);
         }
 
         public async Task CompleteAsync() => await _context.SaveChangesAsync();
