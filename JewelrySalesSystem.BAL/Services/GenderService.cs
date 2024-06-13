@@ -17,15 +17,14 @@ namespace JewelrySalesSystem.BAL.Services
             _mapper = mapper;
         }
 
-        public async Task<GenderModel> AddGender(GenderModel gender)
+        public async Task<CreateGenderRequest> AddGender(CreateGenderRequest createGenderRequest)
         {
 
-            var result = _unitOfWork.Genders.AddEntity(_mapper.Map<Gender>(gender));
+            var result = _unitOfWork.Genders.AddEntity(_mapper.Map<Gender>(createGenderRequest));
 
             await _unitOfWork.CompleteAsync();
-            var newGender = _mapper.Map<GenderModel>(result);
 
-            return newGender;
+            return createGenderRequest;
         }
 
     }

@@ -17,12 +17,13 @@ namespace JewelrySalesSystem.BAL.Services
             _mapper = mapper;
         }
 
-        public async Task<RoleViewModel> AddRoleAsync(RoleViewModel role)
+        public async Task<CreateRoleRequest> AddRoleAsync(CreateRoleRequest createRoleRequest)
         {
-            var result = _unitOfWork.Roles.AddEntity(_mapper.Map<Role>(role));
+            var result = _unitOfWork.Roles.AddEntity(_mapper.Map<Role>(createRoleRequest));
+
             await _unitOfWork.CompleteAsync();
-            var newRole = _mapper.Map<RoleViewModel>(result);
-            return newRole;
+
+            return createRoleRequest;
         }
     }
 }
