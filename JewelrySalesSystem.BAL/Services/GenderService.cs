@@ -27,5 +27,8 @@ namespace JewelrySalesSystem.BAL.Services
             return createGenderRequest;
         }
 
+        public async Task<List<GetGenderResponse>> GetAllAsync() => _mapper.Map<List<GetGenderResponse>>(await _unitOfWork.Genders.GetAllAsync());
+
+        public async Task<GetGenderResponse?> GetByIdAsync(int id) => _mapper.Map<GetGenderResponse>(await _unitOfWork.Genders.GetEntityByIdAsync(id));
     }
 }
