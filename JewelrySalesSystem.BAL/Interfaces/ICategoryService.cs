@@ -11,10 +11,10 @@ namespace JewelrySalesSystem.BAL.Interfaces
 
         Task<GetCategoryResponse?> GetAllProductsByCategoryIdAsync(int id);
 
-        Task UpdateAsync(Category category);
+        Task UpdateAsync(UpdateCategoryRequest updateCategoryRequest);
 
         Task<GetRawCategoryResponse?> GetByIdAsync(int id);
 
-        Task<AddCategories> AddNewCategory(AddCategories category);
+        Task<CreateCategoryRequest> AddNewCategory(CreateCategoryRequest createCategoryRequest);
     }
 }

@@ -4,6 +4,6 @@ namespace JewelrySalesSystem.BAL.Interfaces
 {
     public interface IGenderService
     {
-        Task<GenderModel> AddGender(GenderModel gender);
+        Task<CreateGenderRequest> AddGender(CreateGenderRequest gender);
     }
 }
