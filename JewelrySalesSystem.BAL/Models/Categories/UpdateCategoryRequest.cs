@@ -1,9 +1,8 @@
 ﻿namespace JewelrySalesSystem.BAL.Models.Categories
 {
-    public class AddCategories
+    public class UpdateCategoryRequest
     {
+        public int CategoryId { get; set; }
         public string CategoryName { get; set; } = string.Empty;
-
-        public bool Status { get; set; }
     }
 }
