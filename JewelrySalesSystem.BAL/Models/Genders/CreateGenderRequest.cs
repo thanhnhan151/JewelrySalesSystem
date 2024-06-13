@@ -1,6 +1,6 @@
 ﻿namespace JewelrySalesSystem.BAL.Models.Genders
 {
-    public class GenderModel
+    public class CreateGenderRequest
     {
         public string GenderName { get; set; } = string.Empty;
     }
