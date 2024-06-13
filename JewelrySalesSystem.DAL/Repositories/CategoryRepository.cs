@@ -34,5 +34,23 @@ namespace JewelrySalesSystem.DAL.Repositories
             await _context.SaveChangesAsync();
             return category;
         }
+
+        //changes here
+        public async void UpdateCategories(Category category)
+        {
+            var result = _dbSet.Find(category.CategoryId);
+            var found = result;
+            if(found is not null)
+            {
+                found.CategoryName = category.CategoryName;
+                found.Status = category.Status;
+                _context.Categories.Update(found);
+            }
+            else
+            {
+                throw new Exception($"Category with '{category.CategoryId}' not found!");
+            }
+        }
+
     }
 }

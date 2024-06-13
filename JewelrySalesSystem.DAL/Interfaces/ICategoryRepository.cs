@@ -10,5 +10,8 @@ namespace JewelrySalesSystem.DAL.Interfaces
         Task<Category?> GetAllProductsByCategoryIdAsync(int id);
 
         Task<Category> AddCategory(Category category);
+
+        //changes here
+        void UpdateCategories(Category category);
     }
 }

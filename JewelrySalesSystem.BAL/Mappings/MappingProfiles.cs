@@ -124,6 +124,8 @@ namespace JewelrySalesSystem.BAL.Mappings
                 .ForMember(c => c.Products, c => c.MapFrom(c => c.Products));
 
             CreateMap<Category, GetRawCategoryResponse>();
+
+            CreateMap<UpdateCategory, Category>().ReverseMap();
             #endregion
 
             #region GemPriceList

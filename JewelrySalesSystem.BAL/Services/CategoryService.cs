@@ -55,5 +55,12 @@ namespace JewelrySalesSystem.BAL.Services
 
             return newCategories;
         }
+
+        //changes here
+        public async Task UpdateCategories(UpdateCategory updateCategory)
+        {
+            _unitOfWork.Categories.UpdateEntity(_mapper.Map<Category>(updateCategory));
+            await _unitOfWork.CompleteAsync();
+        }
     }
 }

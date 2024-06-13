@@ -116,5 +116,20 @@ namespace JewelrySalesSystem.API.Controllers
                 throw new Exception(ex.Message);
             }
         }
+
+        //changes here
+        [HttpPut("Update by ID")]
+        public async Task<IActionResult> UpdateCategories(UpdateCategory category)
+        {
+            try
+            {
+                await _categoryService.UpdateCategories(category);
+                return Ok(category);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

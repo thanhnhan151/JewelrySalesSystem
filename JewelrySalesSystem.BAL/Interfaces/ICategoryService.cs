@@ -16,5 +16,8 @@ namespace JewelrySalesSystem.BAL.Interfaces
         Task<GetRawCategoryResponse?> GetByIdAsync(int id);
 
         Task<AddCategories> AddNewCategory(AddCategories category);
+
+        //changes here
+        Task UpdateCategories(UpdateCategory updateCategory);
     }
 }
