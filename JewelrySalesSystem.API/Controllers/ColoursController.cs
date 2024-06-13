@@ -5,28 +5,28 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JewelrySalesSystem.API.Controllers
 {
-    [Route("api/producttypes")]
+    [Route("api/colours")]
     [ApiController]
-    public class ProductTypesController : ControllerBase
+    public class ColoursController : ControllerBase
     {
-        private readonly ILogger<ProductTypesController> _logger;
-        private readonly IProductTypeService _productTypeService;
+        private readonly ILogger<ColoursController> _logger;
+        private readonly IColourService _colourService;
 
-        public ProductTypesController(
-            ILogger<ProductTypesController> logger,
-            IProductTypeService productTypeService)
+        public ColoursController(
+            ILogger<ColoursController> logger,
+            IColourService colourService)
         {
             _logger = logger;
-            _productTypeService = productTypeService;
+            _colourService = colourService;
         }
 
-        #region Get All Product Types
+        #region Get All Colours
         /// <summary>
-        /// Get all product types in the system
+        /// Get all colours in the system
         /// </summary>
-        /// <returns>A list of all product types</returns>
-        /// <response code="200">Return all product types in the system</response>
-        /// <response code="400">If no product types are in the system</response>
+        /// <returns>A list of all colours</returns>
+        /// <response code="200">Return all colours in the system</response>
+        /// <response code="400">If no colours are in the system</response>
         /// <response code="401">Unauthorized</response>
         /// <response code="403">Forbidden</response>
         /// <response code="404">Not Found</response>
@@ -36,7 +36,7 @@ namespace JewelrySalesSystem.API.Controllers
         {
             try
             {
-                var result = await _productTypeService.GetAllAsync();
+                var result = await _colourService.GetAllAsync();
 
                 if (result is not null)
                 {
@@ -52,14 +52,14 @@ namespace JewelrySalesSystem.API.Controllers
         }
         #endregion
 
-        #region Get Product Type By Id
+        #region Get Colour By Id
         /// <summary>
-        /// Get a product type based on Id in the system
+        /// Get a colour based on Id in the system
         /// </summary>
-        /// <param name="id">Id of the product type you want to get</param>
-        /// <returns>A product type</returns>
-        /// <response code="200">Return a product type in the system</response>
-        /// <response code="400">If the product type is null</response>
+        /// <param name="id">Id of the colour you want to get</param>
+        /// <returns>A colour</returns>
+        /// <response code="200">Return a colour in the system</response>
+        /// <response code="400">If the colour is null</response>
         /// <response code="401">Unauthorized</response>
         /// <response code="403">Forbidden</response>
         /// <response code="404">Not Found</response>
@@ -69,7 +69,7 @@ namespace JewelrySalesSystem.API.Controllers
         {
             try
             {
-                var result = await _productTypeService.GetByIdAsync(id);
+                var result = await _colourService.GetByIdAsync(id);
 
                 if (result is not null)
                 {
@@ -83,7 +83,7 @@ namespace JewelrySalesSystem.API.Controllers
 
             return NotFound(new
             {
-                ErrorMessage = $"Product Type with {id} does not exist"
+                ErrorMessage = $"Colour with {id} does not exist"
             });
         }
         #endregion

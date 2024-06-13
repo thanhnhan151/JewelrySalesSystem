@@ -76,14 +76,14 @@ namespace JewelrySalesSystem.API.Controllers
         ///       "productionCost": 100,
         ///       "featuredImage": "testurl",
         ///       "categoryId": 2,
-        ///       "productTypeId": 2,
+        ///       "productTypeId": 3,
         ///       "genderId": 3,
         ///       "colourId": 4,
-        ///       "gems" : [
-        ///         7,
-        ///         8
+        ///       "gems": [
+        ///         6,
+        ///         7
         ///       ],
-        ///       "materials" : [
+        ///       "materials": [
         ///         2,
         ///         5
         ///       ]
@@ -166,11 +166,11 @@ namespace JewelrySalesSystem.API.Controllers
         ///       "productTypeId": 2,
         ///       "genderId": 3,
         ///       "colourId": 4,
-        ///       "gems" : [
+        ///       "gems": [
         ///         1,
         ///         3
         ///       ],
-        ///       "materials" : [
+        ///       "materials": [
         ///         3,
         ///         4
         ///       ]
