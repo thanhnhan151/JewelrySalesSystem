@@ -18,11 +18,11 @@ namespace JewelrySalesSystem.BAL.Mappings
         public MappingProfiles()
         {
             #region Role
-            CreateMap<RoleViewModel, Role>().ReverseMap();
+            CreateMap<CreateRoleRequest, Role>();
             #endregion
 
             #region Gender
-            CreateMap<GenderModel, Gender>().ReverseMap();
+            CreateMap<CreateGenderRequest, Gender>();
             #endregion
 
             #region User
@@ -116,7 +116,9 @@ namespace JewelrySalesSystem.BAL.Mappings
             #endregion
 
             #region Category
-            CreateMap<AddCategories, Category>().ReverseMap();
+            CreateMap<CreateCategoryRequest, Category>();
+
+            CreateMap<UpdateCategoryRequest, Category>();
 
             CreateMap<Category, GetCategoryResponse>()
                 .ForMember(c => c.Products, c => c.MapFrom(c => c.Products));
