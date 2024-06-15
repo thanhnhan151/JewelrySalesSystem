@@ -5,6 +5,7 @@ using JewelrySalesSystem.BAL.Models.Genders;
 using JewelrySalesSystem.BAL.Models.Invoices;
 using JewelrySalesSystem.BAL.Models.Materials;
 using JewelrySalesSystem.BAL.Models.Products;
+using JewelrySalesSystem.BAL.Models.ProductTypes;
 using JewelrySalesSystem.BAL.Models.Roles;
 using JewelrySalesSystem.BAL.Models.Users;
 using JewelrySalesSystem.BAL.Models.Warranties;
@@ -60,6 +61,11 @@ namespace JewelrySalesSystem.BAL.Mappings
                 .ForMember(p => p.Colour, p => p.MapFrom(p => p.Colour.ColourName));
 
             CreateMap<PaginatedList<Product>, PaginatedList<GetProductResponse>>();
+
+            CreateMap<Product, ProductAndProductTypeResponse>()
+                .ForMember(p => p.Category, p => p.MapFrom(p => p.Category.CategoryName))
+                .ForMember(p => p.Gender, p => p.MapFrom(p => p.Gender.GenderName))
+                .ForMember(p => p.Colour, p => p.MapFrom(p => p.Colour.ColourName));
             #endregion
 
             #region Gem
@@ -122,6 +128,11 @@ namespace JewelrySalesSystem.BAL.Mappings
                 .ForMember(c => c.Products, c => c.MapFrom(c => c.Products));
 
             CreateMap<Category, GetRawCategoryResponse>();
+            #endregion
+
+            #region ProductType
+            CreateMap<ProductType, GetProductTypeResponse>()
+                .ForMember(pt => pt.Products, pt => pt.MapFrom(pt => pt.Products));
             #endregion
         }
     }
