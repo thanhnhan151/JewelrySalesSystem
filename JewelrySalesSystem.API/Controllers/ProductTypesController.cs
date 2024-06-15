@@ -18,5 +18,25 @@ namespace JewelrySalesSystem.API.Controllers
             _logger = logger;
             _productTypeService = productTypeService;
         }
+
+        [HttpGet("{id}/products")]
+        public async Task<IActionResult> GetAllProductsByProductTypeIdAsync(int id)
+        {
+            try
+            {
+                var result = await _productTypeService.GetAllProductsByProductTypeIdAsync(id);
+                if(result != null)
+                {
+                    return Ok(result);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+            return NotFound();
+
+        }
     }
 }
