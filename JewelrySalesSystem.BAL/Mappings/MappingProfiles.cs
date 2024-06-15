@@ -5,6 +5,7 @@ using JewelrySalesSystem.BAL.Models.Genders;
 using JewelrySalesSystem.BAL.Models.Invoices;
 using JewelrySalesSystem.BAL.Models.Materials;
 using JewelrySalesSystem.BAL.Models.Products;
+using JewelrySalesSystem.BAL.Models.ProductType;
 using JewelrySalesSystem.BAL.Models.Roles;
 using JewelrySalesSystem.BAL.Models.Users;
 using JewelrySalesSystem.BAL.Models.Warranties;
@@ -122,6 +123,12 @@ namespace JewelrySalesSystem.BAL.Mappings
                 .ForMember(c => c.Products, c => c.MapFrom(c => c.Products));
 
             CreateMap<Category, GetRawCategoryResponse>();
+            #endregion
+
+            #region
+            CreateMap<ProductType, GetAllProductType>().ReverseMap();
+
+            CreateMap<ProductType, GetProductTypeById>().ReverseMap();
             #endregion
         }
     }

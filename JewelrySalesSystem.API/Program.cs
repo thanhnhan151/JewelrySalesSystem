@@ -24,8 +24,8 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddDbContext<JewelryDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DeployConnection"));
-    //options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    //options.UseSqlServer(builder.Configuration.GetConnectionString("DeployConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
 
