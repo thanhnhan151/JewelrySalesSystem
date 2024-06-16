@@ -25,9 +25,10 @@ namespace JewelrySalesSystem.API.Controllers
             try
             {
                 var result = await _productTypeService.GetAllProductsByProductTypeIdAsync(id);
-                if(result != null)
-            {
-                    return Ok(result);           
+                if (result != null)
+                {
+                    return Ok(result);
+                }
             }
             catch (Exception ex)
             {
@@ -35,7 +36,7 @@ namespace JewelrySalesSystem.API.Controllers
             }
             return NotFound();
         }
-        
+
         #region Get All Product Types
         /// <summary>
         /// Get all product types in the system
