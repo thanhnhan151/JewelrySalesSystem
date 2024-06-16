@@ -1,4 +1,5 @@
-﻿using JewelrySalesSystem.BAL.Interfaces;
+using JewelrySalesSystem.BAL.Interfaces;
+using JewelrySalesSystem.BAL.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,17 +27,82 @@ namespace JewelrySalesSystem.API.Controllers
             {
                 var result = await _productTypeService.GetAllProductsByProductTypeIdAsync(id);
                 if(result != null)
+            {
+                    return Ok(result);           
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return NotFound();
+        }
+        
+        #region Get All Product Types
+        /// <summary>
+        /// Get all product types in the system
+        /// </summary>
+        /// <returns>A list of all product types</returns>
+        /// <response code="200">Return all product types in the system</response>
+        /// <response code="400">If no product types are in the system</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server</response>
+        [HttpGet]
+        public async Task<IActionResult> GetAllAsync()
+        {
+            try
+            {
+                var result = await _productTypeService.GetAllAsync();
+
+                if (result is not null)
                 {
                     return Ok(result);
                 }
             }
             catch (Exception ex)
             {
-
                 throw new Exception(ex.Message);
             }
-            return NotFound();
 
+            return NotFound();
         }
+        #endregion
+
+        #region Get Product Type By Id
+        /// <summary>
+        /// Get a product type based on Id in the system
+        /// </summary>
+        /// <param name="id">Id of the product type you want to get</param>
+        /// <returns>A product type</returns>
+        /// <response code="200">Return a product type in the system</response>
+        /// <response code="400">If the product type is null</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server</response>
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetByIdAsync(int id)
+        {
+            try
+            {
+                var result = await _productTypeService.GetByIdAsync(id);
+
+                if (result is not null)
+                {
+                    return Ok(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return NotFound(new
+            {
+                ErrorMessage = $"Product Type with {id} does not exist"
+            });
+        }
+        #endregion
     }
 }

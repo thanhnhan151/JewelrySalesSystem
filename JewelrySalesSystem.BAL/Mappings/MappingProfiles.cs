@@ -1,5 +1,6 @@
 using AutoMapper;
 using JewelrySalesSystem.BAL.Models.Categories;
+using JewelrySalesSystem.BAL.Models.Colours;
 using JewelrySalesSystem.BAL.Models.Gems;
 using JewelrySalesSystem.BAL.Models.Genders;
 using JewelrySalesSystem.BAL.Models.Invoices;
@@ -19,11 +20,13 @@ namespace JewelrySalesSystem.BAL.Mappings
         public MappingProfiles()
         {
             #region Role
-            CreateMap<RoleViewModel, Role>().ReverseMap();
+            CreateMap<CreateRoleRequest, Role>();
             #endregion
 
             #region Gender
-            CreateMap<GenderModel, Gender>().ReverseMap();
+            CreateMap<Gender, GetGenderResponse>();
+
+            CreateMap<CreateGenderRequest, Gender>();
             #endregion
 
             #region User
@@ -122,7 +125,9 @@ namespace JewelrySalesSystem.BAL.Mappings
             #endregion
 
             #region Category
-            CreateMap<AddCategories, Category>().ReverseMap();
+            CreateMap<CreateCategoryRequest, Category>();
+
+            CreateMap<UpdateCategoryRequest, Category>();
 
             CreateMap<Category, GetCategoryResponse>()
                 .ForMember(c => c.Products, c => c.MapFrom(c => c.Products));
@@ -133,6 +138,10 @@ namespace JewelrySalesSystem.BAL.Mappings
             #region ProductType
             CreateMap<ProductType, GetProductTypeResponse>()
                 .ForMember(pt => pt.Products, pt => pt.MapFrom(pt => pt.Products));
+            #endregion
+
+            #region Colour
+            CreateMap<Colour, GetColourResponse>();
             #endregion
         }
     }

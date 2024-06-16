@@ -28,32 +28,21 @@ namespace JewelrySalesSystem.BAL.Services
             return result;
         }
 
-        public async Task UpdateAsync(Category category)
+        public async Task UpdateAsync(UpdateCategoryRequest updateCategoryRequest)
         {
-            _unitOfWork.Categories.UpdateEntity(category);
+            _unitOfWork.Categories.UpdateEntity(_mapper.Map<Category>(updateCategoryRequest));
             await _unitOfWork.CompleteAsync();
         }
 
         public async Task<GetRawCategoryResponse?> GetByIdAsync(int id) => _mapper.Map<GetRawCategoryResponse>(await _unitOfWork.Categories.GetEntityByIdAsync(id));
 
-        public async Task<Category> AddNewCategory(Category category)
+        public async Task<CreateCategoryRequest> AddNewCategory(CreateCategoryRequest createCategoryRequest)
         {
-            var result = _unitOfWork.Categories.AddEntity(category);
+            var result = _unitOfWork.Categories.AddEntity(_mapper.Map<Category>(createCategoryRequest));
 
             await _unitOfWork.CompleteAsync();
 
-            return result;
-        }
-
-        public async Task<AddCategories> AddNewCategory(AddCategories category)
-        {
-            var result = _unitOfWork.Categories.AddEntity(_mapper.Map<Category>(category));
-
-            await _unitOfWork.CompleteAsync();
-
-            var newCategories = _mapper.Map<AddCategories>(result);
-
-            return newCategories;
+            return createCategoryRequest;
         }
     }
 }

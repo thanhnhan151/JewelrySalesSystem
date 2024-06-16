@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using JewelrySalesSystem.BAL.Interfaces;
+using JewelrySalesSystem.BAL.Models.Gems;
 using JewelrySalesSystem.BAL.Models.Products;
 using JewelrySalesSystem.DAL.Common;
 using JewelrySalesSystem.DAL.Entities;
@@ -26,7 +27,19 @@ namespace JewelrySalesSystem.BAL.Services
             string? sortOrder,
             int page,
             int pageSize)
-        => _mapper.Map<PaginatedList<GetProductResponse>>(await _unitOfWork.Products.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize));
+        {
+            var result = _mapper.Map<PaginatedList<GetProductResponse>>(await _unitOfWork.Products.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize));
+
+            foreach(var item in result.Items)
+            {
+                foreach (var gem in item.Gems)
+                {
+                    gem.GemPrice.Total = CalculateTotal(gem);
+                }
+            }
+
+            return result;
+        }
 
         public async Task<CreateProductRequest> AddAsync(CreateProductRequest createProductRequest)
         {
@@ -131,6 +144,18 @@ namespace JewelrySalesSystem.BAL.Services
             await _unitOfWork.CompleteAsync();
         }
 
-        public async Task<GetProductResponse?> GetByIdAsync(int id) => _mapper.Map<GetProductResponse>(await _unitOfWork.Products.GetEntityByIdAsync(id));
+        public async Task<GetProductResponse?> GetByIdAsync(int id)
+        {
+            var result = _mapper.Map<GetProductResponse>(await _unitOfWork.Products.GetEntityByIdAsync(id));
+
+            foreach(var item in result.Gems)
+            {
+                item.GemPrice.Total = CalculateTotal(item);
+            }
+
+            return result;
+        }
+
+        private static float CalculateTotal(GemItem gemItem) => gemItem.GemPrice.ClarityPrice + gemItem.GemPrice.CutPrice + gemItem.GemPrice.CaratWeightPrice + gemItem.GemPrice.ColourPrice;
     }
 }

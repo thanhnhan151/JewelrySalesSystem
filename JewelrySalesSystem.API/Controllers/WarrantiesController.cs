@@ -70,7 +70,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// <summary>
         /// Get a warranty 
         /// </summary>
-        [HttpGet("{id}")] 
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
             try
@@ -93,6 +93,11 @@ namespace JewelrySalesSystem.API.Controllers
         #endregion
 
         #region Update Warranty
+        /// <summary>
+        /// Update New Warranty
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         [HttpPut]
         public async Task<IActionResult> UpdateAsync([FromBody] UpdateWarrantyRequest updateWarrantyRequest)
         {
@@ -113,7 +118,6 @@ namespace JewelrySalesSystem.API.Controllers
         }
         #endregion
 
-        //Change here
         #region Create New Warranty
         /// <summary>
         /// Create New Warranty

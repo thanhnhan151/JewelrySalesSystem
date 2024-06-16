@@ -9,6 +9,7 @@ namespace JewelrySalesSystem.BAL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+
         public ProductTypeService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
@@ -19,5 +20,9 @@ namespace JewelrySalesSystem.BAL.Services
             var result = _mapper.Map<GetProductTypeResponse>(await _unitOfWork.ProductTypes.GetAllProductsByProductTypeIdAsync(productTypeId));
             return result;
         }
+
+        public async Task<List<GetProductTypeResponse>> GetAllAsync() => _mapper.Map<List<GetProductTypeResponse>>(await _unitOfWork.ProductTypes.GetAllAsync());
+
+        public async Task<GetProductTypeResponse?> GetByIdAsync(int id) => _mapper.Map<GetProductTypeResponse>(await _unitOfWork.ProductTypes.GetEntityByIdAsync(id));
     }
 }
