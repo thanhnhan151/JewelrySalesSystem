@@ -4,7 +4,7 @@ namespace JewelrySalesSystem.BAL.Interfaces
 {
     public interface IProductTypeService
     {
-        Task<GetProductTypeResponse?> GetAllProductsByProductTypeIdAsync(int productTypeId); 
+        Task<ProductTypeIdCollectionResponse?> GetAllProductsByProductTypeIdAsync(int productTypeId); 
 
         Task<GetProductTypeResponse?> GetByIdAsync(int id);
 
