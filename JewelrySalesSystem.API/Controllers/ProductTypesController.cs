@@ -1,4 +1,4 @@
-﻿using JewelrySalesSystem.BAL.Interfaces;
+using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +20,23 @@ namespace JewelrySalesSystem.API.Controllers
             _productTypeService = productTypeService;
         }
 
+        [HttpGet("{id}/products")]
+        public async Task<IActionResult> GetAllProductsByProductTypeIdAsync(int id)
+        {
+            try
+            {
+                var result = await _productTypeService.GetAllProductsByProductTypeIdAsync(id);
+                if(result != null)
+            {
+                    return Ok(result);           
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return NotFound();
+        }
+        
         #region Get All Product Types
         /// <summary>
         /// Get all product types in the system

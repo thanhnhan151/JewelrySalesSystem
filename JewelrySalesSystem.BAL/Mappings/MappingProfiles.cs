@@ -64,6 +64,11 @@ namespace JewelrySalesSystem.BAL.Mappings
                 .ForMember(p => p.Colour, p => p.MapFrom(p => p.Colour.ColourName));
 
             CreateMap<PaginatedList<Product>, PaginatedList<GetProductResponse>>();
+
+            CreateMap<Product, ProductAndProductTypeResponse>()
+                .ForMember(p => p.Category, p => p.MapFrom(p => p.Category.CategoryName))
+                .ForMember(p => p.Gender, p => p.MapFrom(p => p.Gender.GenderName))
+                .ForMember(p => p.Colour, p => p.MapFrom(p => p.Colour.ColourName));
             #endregion
 
             #region Gem
@@ -130,12 +135,13 @@ namespace JewelrySalesSystem.BAL.Mappings
             CreateMap<Category, GetRawCategoryResponse>();
             #endregion
 
-            #region Colour
-            CreateMap<Colour, GetColourResponse>();
+            #region ProductType
+            CreateMap<ProductType, GetProductTypeResponse>()
+                .ForMember(pt => pt.Products, pt => pt.MapFrom(pt => pt.Products));
             #endregion
 
-            #region ProductType
-            CreateMap<ProductType, GetProductTypeResponse>();
+            #region Colour
+            CreateMap<Colour, GetColourResponse>();
             #endregion
         }
     }
