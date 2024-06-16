@@ -4,6 +4,5 @@ namespace JewelrySalesSystem.BAL.Models.ProductTypes
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public ICollection<ProductAndProductTypeResponse> Products { get; set; } = [];
     }
 }
