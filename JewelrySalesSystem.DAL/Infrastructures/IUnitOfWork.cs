@@ -28,6 +28,8 @@ namespace JewelrySalesSystem.DAL.Infrastructures
 
         IColourRepository Colours { get; }
 
+        ICustomerRepository Customers { get; }
+
         Task CompleteAsync();
     }
 }
