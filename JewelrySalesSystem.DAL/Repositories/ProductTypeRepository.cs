@@ -1,4 +1,4 @@
-﻿using JewelrySalesSystem.DAL.Entities;
+using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
 using JewelrySalesSystem.DAL.Interfaces;
 using JewelrySalesSystem.DAL.Persistence;
@@ -13,6 +13,17 @@ namespace JewelrySalesSystem.DAL.Repositories
         {
         }
 
+        public async Task<ProductType?> GetAllProductsByProductTypeIdAsync(int productTypeId)
+        {
+            return await _dbSet.Include(pt => pt.Products)
+                                    .ThenInclude(p => p.Gender)
+                            .Include(pt => pt.Products)
+                                .ThenInclude(p => p.Colour)
+                            .Include(pt => pt.Products)
+                                 .ThenInclude(p => p.Category)
+                .FirstOrDefaultAsync(pt => pt.Id == productTypeId);
+        }
+        
         public async Task<List<ProductType>> GetAllAsync() => await _dbSet.ToListAsync();
     }
 }
