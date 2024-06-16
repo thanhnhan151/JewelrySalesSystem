@@ -15,11 +15,9 @@ namespace JewelrySalesSystem.BAL.Services
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public async Task<GetProductTypeResponse?> GetAllProductsByProductTypeIdAsync(int productTypeId)
-        {
-            var result = _mapper.Map<GetProductTypeResponse>(await _unitOfWork.ProductTypes.GetAllProductsByProductTypeIdAsync(productTypeId));
-            return result;
-        }
+        public async Task<ProductTypeIdCollectionResponse?> GetAllProductsByProductTypeIdAsync(int productTypeId)
+            => _mapper.Map<ProductTypeIdCollectionResponse>(await _unitOfWork.ProductTypes.GetAllProductsByProductTypeIdAsync(productTypeId));
+
 
         public async Task<List<GetProductTypeResponse>> GetAllAsync() => _mapper.Map<List<GetProductTypeResponse>>(await _unitOfWork.ProductTypes.GetAllAsync());
 
