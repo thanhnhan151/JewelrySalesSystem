@@ -136,7 +136,9 @@ namespace JewelrySalesSystem.BAL.Mappings
             #endregion
 
             #region ProductType
-            CreateMap<ProductType, GetProductTypeResponse>()
+            CreateMap<ProductType, GetProductTypeResponse>();
+
+            CreateMap<ProductType, ProductTypeIdCollectionResponse>()
                 .ForMember(pt => pt.Products, pt => pt.MapFrom(pt => pt.Products));
             #endregion
 
