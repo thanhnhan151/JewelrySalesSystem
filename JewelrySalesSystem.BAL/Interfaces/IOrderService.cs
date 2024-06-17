@@ -7,5 +7,9 @@ namespace JewelrySalesSystem.BAL.Interfaces
         Task<List<GetOrderResponse>> GetAllAsync();
 
         Task<GetOrderResponse?> GetByIdWithIncludeAsync(int id);
+
+        Task<CreateUpdateOrderRequest> AddAsync(CreateUpdateOrderRequest createRequest);
+
+        Task UpdateAsync(CreateUpdateOrderRequest updateRequest);
     }
 }
