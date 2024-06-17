@@ -1,4 +1,5 @@
 ﻿using JewelrySalesSystem.BAL.Interfaces;
+using JewelrySalesSystem.BAL.Models.Orders;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +20,7 @@ namespace JewelrySalesSystem.API.Controllers
             _orderService = orderService;
         }
 
-        #region Get ALl Orders
+        #region Get All Orders
         /// <summary>
         /// Get all orders in the system
         /// </summary>
@@ -88,6 +89,56 @@ namespace JewelrySalesSystem.API.Controllers
         #endregion
 
         #region Add Order
+        /// <summary>
+        /// Add an order in the system
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     {
+        ///       "invoiceType": "Sale",
+        ///       "customerName": "Test Customer",
+        ///       "userName": "Test Creator",
+        ///       "warranty": "Test Warranty",
+        ///       "total": 6000000,
+        ///       "orderDetails": [
+        ///         {
+        ///           "productName": "Test Product 1",
+        ///           "sellPrice": 2000000,
+        ///           "buyPrice": 1500000,
+        ///           "perDiscount": 10
+        ///         },
+        ///         {
+        ///           "productName": "Test Product 2",
+        ///           "sellPrice": 1000000,
+        ///           "buyPrice": 950000,
+        ///           "perDiscount": 5
+        ///         }
+        ///       ]
+        ///     }
+        ///         
+        /// </remarks> 
+        /// <returns>Order that was created</returns>
+        /// <response code="200">Invoice that was created</response>
+        /// <response code="400">Failed validation</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server</response>
+        [HttpPost]
+        public async Task<IActionResult> AddAsync([FromBody] CreateUpdateOrderRequest createRequest)
+        {
+            try
+            {
+                await _orderService.AddAsync(createRequest);
+
+                return Ok(createRequest);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
         #endregion
 
         #region Update Order
