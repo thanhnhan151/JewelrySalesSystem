@@ -32,6 +32,8 @@ namespace JewelrySalesSystem.DAL.Infrastructures
 
         IOrderRepository Orders { get; }
 
+        IBuyInvoiceRepository BuyInvoices { get; }
+
         Task CompleteAsync();
     }
 }
