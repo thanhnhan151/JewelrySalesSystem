@@ -91,7 +91,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server</response>
         [HttpPost]
-        public async Task<IActionResult> AddAsync(CreateInvoiceRequest createInvoiceRequest)
+        public async Task<IActionResult> AddAsync([FromBody] CreateInvoiceRequest createInvoiceRequest)
         {
             try
             {

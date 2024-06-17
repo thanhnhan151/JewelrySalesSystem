@@ -23,7 +23,6 @@ namespace JewelrySalesSystem.API.Controllers
         /// <summary>
         /// Get user point based on name in the system
         /// </summary>
-        /// <param name="customerName">Name of the category you want to get</param>
         /// <returns>Customer point</returns>
         /// <response code="200">Return Customer point</response>
         /// <response code="400">If the customer is null</response>
@@ -31,7 +30,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// <response code="403">Forbidden</response>
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server</response>
-        [HttpGet("{customerName}/point")]
+        [HttpGet("point")]
         public async Task<IActionResult> GetCustomerPointByNameAsync(string customerName)
         {
             try
