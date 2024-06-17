@@ -1,5 +1,4 @@
-﻿using JewelrySalesSystem.BAL.Models.Categories;
-using JewelrySalesSystem.BAL.Models.ProductType;
+﻿using JewelrySalesSystem.BAL.Models.ProductType;
 
 namespace JewelrySalesSystem.BAL.Interfaces
 {
