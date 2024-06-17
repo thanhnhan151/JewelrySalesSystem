@@ -1,4 +1,5 @@
 using AutoMapper;
+using JewelrySalesSystem.BAL.Models.BuyInvoices;
 using JewelrySalesSystem.BAL.Models.Categories;
 using JewelrySalesSystem.BAL.Models.Colours;
 using JewelrySalesSystem.BAL.Models.Gems;
@@ -151,6 +152,10 @@ namespace JewelrySalesSystem.BAL.Mappings
             CreateMap<Order, GetOrderResponse>();
 
             CreateMap<OrderDetail, OrderItem>();
+            #endregion
+
+            #region Buy Invoice
+            CreateMap<BuyInvoice, GetBuyInvoiceResponse>();
             #endregion
         }
     }
