@@ -5,6 +5,7 @@ using JewelrySalesSystem.BAL.Models.Gems;
 using JewelrySalesSystem.BAL.Models.Genders;
 using JewelrySalesSystem.BAL.Models.Invoices;
 using JewelrySalesSystem.BAL.Models.Materials;
+using JewelrySalesSystem.BAL.Models.Orders;
 using JewelrySalesSystem.BAL.Models.Products;
 using JewelrySalesSystem.BAL.Models.ProductTypes;
 using JewelrySalesSystem.BAL.Models.Roles;
@@ -144,6 +145,12 @@ namespace JewelrySalesSystem.BAL.Mappings
 
             #region Colour
             CreateMap<Colour, GetColourResponse>();
+            #endregion
+
+            #region Order
+            CreateMap<Order, GetOrderResponse>();
+
+            CreateMap<OrderDetail, OrderItem>();
             #endregion
         }
     }

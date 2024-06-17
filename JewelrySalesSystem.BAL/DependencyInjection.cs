@@ -39,6 +39,8 @@ namespace JewelrySalesSystem.BAL
             services.AddScoped<IColourService, ColourService>();
 
             services.AddScoped<ICustomerService, CustomerService>();
+
+            services.AddScoped<IOrderService, OrderService>();
           
             return services;
         }
