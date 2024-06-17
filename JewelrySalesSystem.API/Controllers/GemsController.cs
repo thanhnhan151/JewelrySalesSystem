@@ -72,6 +72,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// 
         ///     {
         ///       "gemName": "Test Gem",
+        ///       "featuredImage": "url"
         ///       "origin": "Artificial",
         ///       "caratWeight": "1",
         ///       "colour": "light blue",

@@ -9,6 +9,7 @@ namespace JewelrySalesSystem.DAL.Entities
         [Key]
         public int GemId { get; set; }
         public string GemName { get; set; } = string.Empty;
+        public string FeaturedImage { get; set; } = string.Empty;
         public string Origin { get; set; } = string.Empty;
         public float CaratWeight { get; set; }
         public string Colour { get; set; } = string.Empty;

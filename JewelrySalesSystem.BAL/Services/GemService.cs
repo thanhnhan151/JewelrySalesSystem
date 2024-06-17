@@ -43,6 +43,7 @@ namespace JewelrySalesSystem.BAL.Services
             var gem = new Gem
             {
                 GemName = createGemRequest.GemName,
+                FeaturedImage = createGemRequest.FeaturedImage,
                 Origin = createGemRequest.Origin,
                 CaratWeight = createGemRequest.CaratWeight,
                 Colour = createGemRequest.Colour,
