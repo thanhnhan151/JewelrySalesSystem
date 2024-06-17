@@ -126,9 +126,9 @@ namespace JewelrySalesSystem.BAL.Mappings
             #endregion
 
             #region
-            CreateMap<ProductType, GetAllProductType>().ReverseMap();
+            CreateMap<ProductType, GetAllProductType>();
 
-            CreateMap<ProductType, GetProductTypeById>().ReverseMap();
+            CreateMap<ProductType, GetProductTypeById>();
             #endregion
         }
     }

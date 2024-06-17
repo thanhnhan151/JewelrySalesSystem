@@ -20,8 +20,8 @@ namespace JewelrySalesSystem.DAL.Repositories
 
         public async Task<ProductType> GetById(int id)
         {
-            var result = await _context.ProductTypes.FindAsync(id);
-            if(result == null)
+            var result = await _dbSet.FirstOrDefaultAsync(p => p.Id == id);
+            if (result == null)
             {
                 throw new Exception($"Can't find product type with '{id}'");
             }
