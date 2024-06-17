@@ -14,7 +14,11 @@ namespace JewelrySalesSystem.DAL.Entities
         public float PerDiscount { get; set; }
 
         // Order
-        public int OrderId { get; set; }
+        public int? OrderId { get; set; }
         public virtual Order Order { get; set; } = null!;
+
+        // Buy Invoice
+        public int? BuyInvoiceId { get; set; }
+        public virtual BuyInvoice BuyInvoice { get; set; } = null!;
     }
 }
