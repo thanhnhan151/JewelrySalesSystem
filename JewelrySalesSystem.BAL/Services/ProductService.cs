@@ -156,6 +156,7 @@ namespace JewelrySalesSystem.BAL.Services
             return result;
         }
 
-        private static float CalculateTotal(GemItem gemItem) => gemItem.GemPrice.ClarityPrice + gemItem.GemPrice.CutPrice + gemItem.GemPrice.CaratWeightPrice + gemItem.GemPrice.ColourPrice;
+        private static float CalculateTotal(GemItem gemItem)
+            => gemItem.GemPrice.CaratWeightPrice * (1 + gemItem.GemPrice.ColourPrice / 100 + gemItem.GemPrice.CutPrice / 100 + gemItem.GemPrice.ClarityPrice / 100);
     }
 }

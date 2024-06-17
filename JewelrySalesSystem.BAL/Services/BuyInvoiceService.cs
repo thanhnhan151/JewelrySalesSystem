@@ -1,17 +1,17 @@
 ﻿using AutoMapper;
 using JewelrySalesSystem.BAL.Interfaces;
-using JewelrySalesSystem.BAL.Models.Orders;
+using JewelrySalesSystem.BAL.Models.BuyInvoices;
 using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
 
 namespace JewelrySalesSystem.BAL.Services
 {
-    public class OrderService : IOrderService
+    public class BuyInvoiceService : IBuyInvoiceService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public OrderService(
+        public BuyInvoiceService(
             IUnitOfWork unitOfWork,
             IMapper mapper)
         {
@@ -19,13 +19,13 @@ namespace JewelrySalesSystem.BAL.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<CreateUpdateOrderRequest> AddAsync(CreateUpdateOrderRequest createRequest)
+        public async Task<CreateUpdateBuyInvoiceRequest> AddAsync(CreateUpdateBuyInvoiceRequest createRequest)
         {
             var orderDetails = new List<OrderDetail>();
 
-            if (createRequest.OrderDetails.Count > 0)
+            if (createRequest.Items.Count > 0)
             {
-                foreach (var item in createRequest.OrderDetails)
+                foreach (var item in createRequest.Items)
                 {
                     orderDetails.Add(new()
                     {
@@ -37,28 +37,27 @@ namespace JewelrySalesSystem.BAL.Services
                 }
             }
 
-            var order = new Order
+            var buyInvoice = new BuyInvoice
             {
                 InvoiceType = createRequest.InvoiceType,
                 CustomerName = createRequest.CustomerName,
                 UserName = createRequest.UserName,
-                Warranty = createRequest.Warranty,
                 Total = createRequest.Total,
-                OrderDetails = orderDetails
+                Items = orderDetails
             };
 
-            _unitOfWork.Orders.AddEntity(order);
+            _unitOfWork.BuyInvoices.AddEntity(buyInvoice);
 
             await _unitOfWork.CompleteAsync();
 
             return createRequest;
         }
 
-        public async Task<List<GetOrderResponse>> GetAllAsync() => _mapper.Map<List<GetOrderResponse>>(await _unitOfWork.Orders.GetAllAsync());
+        public async Task<List<GetBuyInvoiceResponse>> GetAllAsync() => _mapper.Map<List<GetBuyInvoiceResponse>>(await _unitOfWork.BuyInvoices.GetAllAsync());
 
-        public async Task<GetOrderResponse?> GetByIdWithIncludeAsync(int id) => _mapper.Map<GetOrderResponse>(await _unitOfWork.Orders.GetByIdWithInclude(id));
+        public async Task<GetBuyInvoiceResponse?> GetByIdWithIncludeAsync(int id) => _mapper.Map<GetBuyInvoiceResponse>(await _unitOfWork.BuyInvoices.GetByIdWithInclude(id));
 
-        public Task UpdateAsync(CreateUpdateOrderRequest updateRequest)
+        public Task UpdateAsync(CreateUpdateBuyInvoiceRequest updateRequest)
         {
             throw new NotImplementedException();
         }

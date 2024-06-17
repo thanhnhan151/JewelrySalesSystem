@@ -80,6 +80,7 @@ namespace JewelrySalesSystem.BAL.Services
             return result;
         }
 
-        private static float CalculateTotal(GetGemResponse getGemResponse) => getGemResponse.GemPrice.ClarityPrice + getGemResponse.GemPrice.CutPrice + getGemResponse.GemPrice.CaratWeightPrice + getGemResponse.GemPrice.ColourPrice;
+        private static float CalculateTotal(GetGemResponse getGemResponse)
+            => getGemResponse.GemPrice.CaratWeightPrice * (1 + getGemResponse.GemPrice.ColourPrice / 100 + getGemResponse.GemPrice.CutPrice / 100 + getGemResponse.GemPrice.ClarityPrice / 100);
     }
 }
