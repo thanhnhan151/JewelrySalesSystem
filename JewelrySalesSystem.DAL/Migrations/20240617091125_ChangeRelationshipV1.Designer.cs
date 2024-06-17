@@ -4,6 +4,7 @@ using JewelrySalesSystem.DAL.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JewelrySalesSystem.DAL.Migrations
 {
     [DbContext(typeof(JewelryDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240617091125_ChangeRelationshipV1")]
+    partial class ChangeRelationshipV1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,40 +24,6 @@ namespace JewelrySalesSystem.DAL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("JewelrySalesSystem.DAL.Entities.BuyInvoice", b =>
-                {
-                    b.Property<int>("BuyInvoiceId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BuyInvoiceId"));
-
-                    b.Property<string>("CustomerName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("InvoiceType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.Property<float>("Total")
-                        .HasColumnType("real");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("BuyInvoiceId");
-
-                    b.ToTable("BuyInvoice");
-                });
 
             modelBuilder.Entity("JewelrySalesSystem.DAL.Entities.Category", b =>
                 {
@@ -361,9 +330,6 @@ namespace JewelrySalesSystem.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("BuyInvoiceId")
-                        .HasColumnType("int");
-
                     b.Property<float>("BuyPrice")
                         .HasColumnType("real");
 
@@ -381,8 +347,6 @@ namespace JewelrySalesSystem.DAL.Migrations
                         .HasColumnType("real");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BuyInvoiceId");
 
                     b.HasIndex("OrderId");
 
@@ -655,15 +619,9 @@ namespace JewelrySalesSystem.DAL.Migrations
 
             modelBuilder.Entity("JewelrySalesSystem.DAL.Entities.OrderDetail", b =>
                 {
-                    b.HasOne("JewelrySalesSystem.DAL.Entities.BuyInvoice", "BuyInvoice")
-                        .WithMany("Items")
-                        .HasForeignKey("BuyInvoiceId");
-
                     b.HasOne("JewelrySalesSystem.DAL.Entities.Order", "Order")
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderId");
-
-                    b.Navigation("BuyInvoice");
 
                     b.Navigation("Order");
                 });
@@ -742,11 +700,6 @@ namespace JewelrySalesSystem.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("JewelrySalesSystem.DAL.Entities.BuyInvoice", b =>
-                {
-                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("JewelrySalesSystem.DAL.Entities.Category", b =>

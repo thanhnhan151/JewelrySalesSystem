@@ -105,5 +105,6 @@ namespace JewelrySalesSystem.DAL.Persistence
         public DbSet<GemPriceList> GemPrices { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<BuyInvoice> BuyInvoices { get; set; }
     }
 }
