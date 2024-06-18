@@ -96,7 +96,6 @@ namespace JewelrySalesSystem.API.Controllers
         /// Sample request:
         /// 
         ///     {
-        ///       "invoiceType": "Sale",
         ///       "customerName": "Test Customer",
         ///       "userName": "Test Creator",
         ///       "warranty": "Test Warranty",
