@@ -15,7 +15,7 @@ namespace JewelrySalesSystem.BAL.Interfaces
 
         Task<CreateInvoiceRequest> AddAsync(CreateInvoiceRequest createInvoiceRequest);
 
-        Task UpdateAsync(Invoice invoice);
+        Task<UpdateInvoiceRequest> UpdateAsync(UpdateInvoiceRequest updateInvoiceRequest);
 
         Task<GetInvoiceResponse?> GetByIdAsync(int id);
 

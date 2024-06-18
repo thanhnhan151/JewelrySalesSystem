@@ -149,17 +149,19 @@ namespace JewelrySalesSystem.API.Controllers
         /// <remarks>
         /// Sample request:
         /// 
-        ///     {
-        ///       "userId" : 2,
-        ///       "userName": "newtestaccount",
-        ///       "fullName": "Nguyen Van C",
-        ///       "phoneNumber": "0999123456",
-        ///       "email": "testemail@gmail.com",
-        ///       "password" : "test",
-        ///       "address" : "test",
-        ///       "roleId" : 2
-        ///     }
+        ///             {
+        ///             "invoiceId": 0,
+        ///             "status": true,
+        ///             "invoiceType": true,
+        ///             "customerId": 0,
+        ///             "userId": 0,
+        ///             "warrantyId": 0,
+        ///             "invoiceDetails": [
+        ///                    productId: 0
+        ///                ]
+        ///              }
         ///         
+        /// 
         /// </remarks> 
         /// <returns>No content</returns>
         /// <response code="204">No content</response>
@@ -169,13 +171,13 @@ namespace JewelrySalesSystem.API.Controllers
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server</response>
         [HttpPut]
-        public async Task<IActionResult> UpdateAsync(Invoice invoice)
+        public async Task<IActionResult> UpdateAsync(UpdateInvoiceRequest invoice)
         {
             try
             {
                 await _invoiceService.UpdateAsync(invoice);
 
-                return Ok();
+                return Ok(invoice);
             }
             catch (Exception ex)
             {
