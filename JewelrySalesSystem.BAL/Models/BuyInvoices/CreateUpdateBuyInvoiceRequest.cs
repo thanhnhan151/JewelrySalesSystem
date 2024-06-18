@@ -6,7 +6,6 @@ namespace JewelrySalesSystem.BAL.Models.BuyInvoices
     {
         public string CustomerName { get; set; } = string.Empty;
         public string UserName { get; set; } = string.Empty;
-        public float Total { get; set; }
 
         // Order Details
         public virtual ICollection<OrderItem> Items { get; set; } = [];

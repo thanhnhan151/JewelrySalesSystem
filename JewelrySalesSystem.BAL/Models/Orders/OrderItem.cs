@@ -3,8 +3,7 @@
     public class OrderItem
     {
         public string ProductName { get; set; } = string.Empty;
-        public float SellPrice { get; set; }
-        public float BuyPrice { get; set; }
+        public float PurchaseTotal { get; set; }
         public float PerDiscount { get; set; }
     }
 }
