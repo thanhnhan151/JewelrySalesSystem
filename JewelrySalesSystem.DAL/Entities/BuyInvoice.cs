@@ -8,7 +8,7 @@ namespace JewelrySalesSystem.DAL.Entities
     {
         [Key]
         public int BuyInvoiceId { get; set; }
-        public string InvoiceType { get; set; } = string.Empty;
+        public string InvoiceType { get; set; } = "Buy";
         public string CustomerName { get; set; } = string.Empty;
         public string UserName { get; set; } = string.Empty;
         public DateTime OrderDate { get; set; } = DateTime.Now;
