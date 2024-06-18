@@ -5,6 +5,7 @@
         public string ProductName { get; set; } = string.Empty;
         public int PercentPriceRate { get; set; }
         public float ProductionCost { get; set; }
+        public string MaterialType { get; set; } = string.Empty;
         public string FeaturedImage { get; set; } = string.Empty;
 
         // Category

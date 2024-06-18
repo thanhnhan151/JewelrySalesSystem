@@ -10,6 +10,7 @@ namespace JewelrySalesSystem.BAL.Models.Products
         public int PercentPriceRate { get; set; }
         public float ProductionCost { get; set; }
         public bool Status { get; set; }
+        public string MaterialType { get; set; } = string.Empty;
         public string FeaturedImage { get; set; } = string.Empty;
 
         // Category
