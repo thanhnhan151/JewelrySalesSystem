@@ -9,6 +9,7 @@
         public string Colour { get; set; } = string.Empty;
         public string Clarity { get; set; } = string.Empty;
         public string Cut { get; set; } = string.Empty;
+        public string FeaturedImage { get; set; } = string.Empty;
         public GemPrice GemPrice { get; set; } = null!;
     }
 }
