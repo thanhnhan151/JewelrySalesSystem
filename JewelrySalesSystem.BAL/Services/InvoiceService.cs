@@ -60,11 +60,41 @@ namespace JewelrySalesSystem.BAL.Services
             return createInvoiceRequest;
         }
 
-        public async Task UpdateAsync(Invoice invoice)
+        public async Task<UpdateInvoiceRequest> UpdateAsync(UpdateInvoiceRequest updateInvoiceRequest)
         {
-            _unitOfWork.Invoices.UpdateEntity(invoice);
+            var invoiceDetails = new List<InvoiceDetail>();
+
+            if (updateInvoiceRequest.InvoiceDetails.Count > 0)
+            {
+                foreach (var item in updateInvoiceRequest.InvoiceDetails)
+                {
+                    invoiceDetails.Add(new InvoiceDetail
+                    {
+                        ProductId = item,
+                        ProductPrice = await CalculateProductPrice(item)
+                    });
+                }
+            }
+
+            var invoice = new Invoice
+            {
+                InvoiceId = updateInvoiceRequest.InvoiceId,
+                OrderDate = DateTime.Now,
+                CustomerId = updateInvoiceRequest.CustomerId,
+                UserId = updateInvoiceRequest.UserId,
+                WarrantyId = updateInvoiceRequest.WarrantyId,
+                InvoiceDetails = invoiceDetails,
+                InvoiceType = updateInvoiceRequest.InvoiceType
+            };
+
+           await _unitOfWork.Invoices.UpdateInvoice(invoice);
+
             await _unitOfWork.CompleteAsync();
+
+            return updateInvoiceRequest;
         }
+
+
 
         public async Task<GetInvoiceResponse?> GetByIdWithIncludeAsync(int id) => _mapper.Map<GetInvoiceResponse>(await _unitOfWork.Invoices.GetByIdWithIncludeAsync(id));
 

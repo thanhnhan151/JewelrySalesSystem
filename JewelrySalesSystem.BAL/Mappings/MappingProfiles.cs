@@ -113,7 +113,7 @@ namespace JewelrySalesSystem.BAL.Mappings
             CreateMap<PaginatedList<Invoice>, PaginatedList<GetInvoiceResponse>>();
 
             CreateMap<InvoiceDetail, InvoiceItem>()
-                .ForMember(i => i.ProductName, i => i.MapFrom(i => i.Product.ProductName));
+                .ForMember(i => i.ProductName, i => i.MapFrom(i => i.Product.ProductName));         
             #endregion
 
             #region Warranty
