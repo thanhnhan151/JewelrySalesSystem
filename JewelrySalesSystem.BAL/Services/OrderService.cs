@@ -30,8 +30,7 @@ namespace JewelrySalesSystem.BAL.Services
                     orderDetails.Add(new()
                     {
                         ProductName = item.ProductName,
-                        SellPrice = item.SellPrice,
-                        BuyPrice = item.BuyPrice,
+                        PurchaseTotal = item.PurchaseTotal,
                         PerDiscount = item.PerDiscount
                     });
                 }
@@ -39,11 +38,9 @@ namespace JewelrySalesSystem.BAL.Services
 
             var order = new Order
             {
-                InvoiceType = createRequest.InvoiceType,
                 CustomerName = createRequest.CustomerName,
                 UserName = createRequest.UserName,
                 Warranty = createRequest.Warranty,
-                Total = createRequest.Total,
                 OrderDetails = orderDetails
             };
 

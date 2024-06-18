@@ -30,7 +30,7 @@ namespace JewelrySalesSystem.BAL.Services
         {
             var result = _mapper.Map<PaginatedList<GetProductResponse>>(await _unitOfWork.Products.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize));
 
-            foreach(var item in result.Items)
+            foreach (var item in result.Items)
             {
                 foreach (var gem in item.Gems)
                 {
@@ -74,6 +74,7 @@ namespace JewelrySalesSystem.BAL.Services
                 ProductName = createProductRequest.ProductName,
                 PercentPriceRate = createProductRequest.PercentPriceRate,
                 ProductionCost = createProductRequest.ProductionCost,
+                MaterialType = createProductRequest.MaterialType,
                 FeaturedImage = createProductRequest.FeaturedImage,
                 CategoryId = createProductRequest.CategoryId,
                 ProductTypeId = createProductRequest.ProductTypeId,
@@ -122,6 +123,7 @@ namespace JewelrySalesSystem.BAL.Services
                 ProductName = updateProductRequest.ProductName,
                 PercentPriceRate = updateProductRequest.PercentPriceRate,
                 ProductionCost = updateProductRequest.ProductionCost,
+                MaterialType = updateProductRequest.MaterialType,
                 FeaturedImage = updateProductRequest.FeaturedImage,
                 CategoryId = updateProductRequest.CategoryId,
                 ProductTypeId = updateProductRequest.ProductTypeId,
@@ -148,7 +150,7 @@ namespace JewelrySalesSystem.BAL.Services
         {
             var result = _mapper.Map<GetProductResponse>(await _unitOfWork.Products.GetEntityByIdAsync(id));
 
-            foreach(var item in result.Gems)
+            foreach (var item in result.Gems)
             {
                 item.GemPrice.Total = CalculateTotal(item);
             }
