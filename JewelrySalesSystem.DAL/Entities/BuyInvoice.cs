@@ -13,7 +13,6 @@ namespace JewelrySalesSystem.DAL.Entities
         public string UserName { get; set; } = string.Empty;
         public DateTime OrderDate { get; set; } = DateTime.Now;
         public bool Status { get; set; } = false;
-        public float Total { get; set; }
 
         // Order Details
         public virtual ICollection<OrderDetail> Items { get; set; } = [];
