@@ -79,7 +79,7 @@ namespace JewelrySalesSystem.API.Controllers
         ///       "clarity" : "test",
         ///       "cut": "test",
         ///       "gemPrice": {
-        ///          "caratWeightPrice": 10,
+        ///          "caratWeightPrice": 2500000,
         ///          "colourPrice": 10,
         ///          "clarityPrice": 10,
         ///          "cutPrice": 10

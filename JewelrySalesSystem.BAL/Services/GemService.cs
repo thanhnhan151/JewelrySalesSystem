@@ -32,6 +32,7 @@ namespace JewelrySalesSystem.BAL.Services
             foreach (var item in result.Items)
             {
                 item.GemPrice.Total = CalculateTotal(item);
+                RefactorGemPrice(item);
             }
 
             return result;
@@ -77,10 +78,19 @@ namespace JewelrySalesSystem.BAL.Services
 
             result.GemPrice.Total = CalculateTotal(result);
 
+            RefactorGemPrice(result);
+
             return result;
         }
 
         private static float CalculateTotal(GetGemResponse getGemResponse)
             => getGemResponse.GemPrice.CaratWeightPrice * (1 + getGemResponse.GemPrice.ColourPrice / 100 + getGemResponse.GemPrice.CutPrice / 100 + getGemResponse.GemPrice.ClarityPrice / 100);
+
+        private static void RefactorGemPrice(GetGemResponse gem)
+        {
+            gem.GemPrice.ClarityPrice = gem.GemPrice.ClarityPrice / 100;
+            gem.GemPrice.ColourPrice = gem.GemPrice.ColourPrice / 100;
+            gem.GemPrice.CutPrice = gem.GemPrice.CutPrice / 100;
+        }
     }
 }
