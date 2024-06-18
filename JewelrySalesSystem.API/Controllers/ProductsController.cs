@@ -74,6 +74,7 @@ namespace JewelrySalesSystem.API.Controllers
         ///       "productName": "Test Product",
         ///       "percentPriceRate": 10,
         ///       "productionCost": 100,
+        ///       "materialType": "Gold"
         ///       "featuredImage": "testurl",
         ///       "categoryId": 2,
         ///       "productTypeId": 3,

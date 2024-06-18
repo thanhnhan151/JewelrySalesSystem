@@ -98,18 +98,15 @@ namespace JewelrySalesSystem.API.Controllers
         ///     {
         ///       "customerName": "Test Buy Customer",
         ///       "userName": "Test Buy Creator",
-        ///       "total": 6000000,
         ///       "items": [
         ///         {
         ///           "productName": "Test Buy Product 1",
-        ///           "sellPrice": 2000000,
-        ///           "buyPrice": 1500000,
+        ///           "purchaseTotal": 2000000,
         ///           "perDiscount": 10
         ///         },
         ///         {
         ///           "productName": "Test Buy Product 2",
-        ///           "sellPrice": 1000000,
-        ///           "buyPrice": 950000,
+        ///           "purchaseTotal": 1000000,
         ///           "perDiscount": 5
         ///         }
         ///       ]
