@@ -139,5 +139,85 @@ namespace JewelrySalesSystem.API.Controllers
 
         #region Update Order
         #endregion
+
+        #region Delete Order
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            try
+            {
+                var result = await _orderService.GetByIdAsync(id);
+
+                if (result != null)
+                {
+                    await _orderService.DeleteAsync(id);
+
+                    return NoContent();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+
+            return NotFound(new
+            {
+                ErrorMessage = $"Order with {id} does not exist"
+            });
+        }
+        #endregion
+
+        #region Update Order Status
+        [HttpPut("{id}/status")]
+        public async Task<IActionResult> ChangeOrderStatusAsync(int id)
+        {
+            try
+            {
+                var result = await _orderService.GetByIdAsync(id);
+
+                if (result != null)
+                {
+                    await _orderService.ChangeOrderStatusAsync(id);
+                    return NoContent();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return NotFound(new
+            {
+                ErrorMessage = $"Order with {id} does not exist"
+            });
+        }
+        #endregion
+
+        #region Cancel Order
+        [HttpPut("{id}/cancel")]
+        public async Task<IActionResult> CancelOrderAsync(int id)
+        {
+            try
+            {
+                var result = await _orderService.GetByIdAsync(id);
+
+                if (result != null)
+                {
+                    await _orderService.CancelOrderAsync(id);
+                    return NoContent();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return NotFound(new
+            {
+                ErrorMessage = $"Order with {id} does not exist"
+            });
+        }
+        #endregion
     }
 }
