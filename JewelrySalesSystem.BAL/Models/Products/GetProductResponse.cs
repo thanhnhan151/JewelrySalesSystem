@@ -12,6 +12,7 @@ namespace JewelrySalesSystem.BAL.Models.Products
         public bool Status { get; set; }
         public string MaterialType { get; set; } = string.Empty;
         public string FeaturedImage { get; set; } = string.Empty;
+        public float Weight { get; set; }
 
         // Category
         public string Category { get; set; } = string.Empty;

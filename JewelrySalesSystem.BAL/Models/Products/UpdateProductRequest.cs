@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace JewelrySalesSystem.BAL.Models.Products
+﻿namespace JewelrySalesSystem.BAL.Models.Products
 {
     public class UpdateProductRequest
     {
@@ -15,6 +9,7 @@ namespace JewelrySalesSystem.BAL.Models.Products
         public bool Status { get; set; }
         public string MaterialType { get; set; } = string.Empty;
         public string FeaturedImage { get; set; } = string.Empty;
+        public float Weight { get; set; }
         // Category
         public int CategoryId { get; set; }
         
