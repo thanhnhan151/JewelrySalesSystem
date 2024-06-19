@@ -73,7 +73,7 @@ namespace JewelrySalesSystem.API.Controllers
         ///     {
         ///       "status": true,
         ///       "invoiceType": true,
-        ///       "customerId": 1,
+        ///       "customerName": "Tran Van A",
         ///       "userId": 1,
         ///       "warrantyId": 1,
         ///       "invoiceDetails": [
@@ -153,7 +153,7 @@ namespace JewelrySalesSystem.API.Controllers
         ///             "invoiceId": 0,
         ///             "status": true,
         ///             "invoiceType": true,
-        ///             "customerId": 0,
+        ///             "customerName": "Tran Van A",
         ///             "userId": 0,
         ///             "warrantyId": 0,
         ///             "invoiceDetails": [
