@@ -13,6 +13,12 @@ namespace JewelrySalesSystem.DAL.Repositories
         {
         }
 
+        public async Task<int> GetCustomerByNameAsync(string customerName)
+            => await _dbSet
+            .Where(c => c.FullName.Equals(customerName))
+            .Select(c => c.CustomerId)
+            .FirstOrDefaultAsync();
+
         public async Task<Customer?> GetCustomerPointByNameAsync(string customerName)
             => await _dbSet.FirstOrDefaultAsync(c => c.FullName.Equals(customerName));
     }
