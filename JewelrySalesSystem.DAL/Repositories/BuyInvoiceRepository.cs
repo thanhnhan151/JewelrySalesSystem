@@ -17,14 +17,24 @@ namespace JewelrySalesSystem.DAL.Repositories
         {
             var result = await _dbSet.FirstOrDefaultAsync(o => o.BuyInvoiceId == id);
 
-            if (result != null) result.BuyInvoiceStatus = "Cancelled";
+            if (result != null)
+            {
+                result.BuyInvoiceStatus = "Cancelled";
+
+                _dbSet.Update(result);
+            }            
         }
 
         public async Task ChangeBuyInvoiceStatusAsync(int id)
         {
             var result = await _dbSet.FirstOrDefaultAsync(o => o.BuyInvoiceId == id);
 
-            if (result != null) ChangeStatus(result);
+            if (result != null)
+            {
+                ChangeStatus(result);
+
+                _dbSet.Update(result);
+            }              
         }
 
         public async Task<List<BuyInvoice>> GetAllAsync() => await _dbSet.Include(o => o.Items).ToListAsync();

@@ -34,7 +34,12 @@ namespace JewelrySalesSystem.DAL.Repositories
         {
             var result = await _dbSet.FirstOrDefaultAsync(o => o.OrderId == id);
 
-            if (result != null) ChangeStatus(result);
+            if (result != null)
+            {
+                ChangeStatus(result);
+
+                _dbSet.Update(result);
+            }
         }
 
         private static void ChangeStatus(Order order)
@@ -53,7 +58,12 @@ namespace JewelrySalesSystem.DAL.Repositories
         {
             var result = await _dbSet.FirstOrDefaultAsync(o => o.OrderId == id);
 
-            if (result != null) result.OrderStatus = "Cancelled";
+            if (result != null)
+            {
+                result.OrderStatus = "Cancelled";
+
+                _dbSet.Update(result);
+            }
         }
     }
 }
