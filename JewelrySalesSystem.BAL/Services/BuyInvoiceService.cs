@@ -30,7 +30,7 @@ namespace JewelrySalesSystem.BAL.Services
                     orderDetails.Add(new()
                     {
                         ProductName = item.ProductName,
-                        PurchaseTotal = item.PurchaseTotal,
+                        Total = item.Total,
                         PerDiscount = item.PerDiscount
                     });
                 }
@@ -50,7 +50,23 @@ namespace JewelrySalesSystem.BAL.Services
             return createRequest;
         }
 
+        public async Task CancelBuyInvoiceAsync(int id)
+        {
+            await _unitOfWork.BuyInvoices.CancelBuyInvoiceAsync(id);
+
+            await _unitOfWork.CompleteAsync();
+        }
+
+        public async Task ChangeBuyInvoiceStatusAsync(int id)
+        {
+            await _unitOfWork.BuyInvoices.ChangeBuyInvoiceStatusAsync(id);
+
+            await _unitOfWork.CompleteAsync();
+        }
+
         public async Task<List<GetBuyInvoiceResponse>> GetAllAsync() => _mapper.Map<List<GetBuyInvoiceResponse>>(await _unitOfWork.BuyInvoices.GetAllAsync());
+
+        public async Task<GetBuyInvoiceResponse?> GetByIdAsync(int id) => _mapper.Map<GetBuyInvoiceResponse?>(await _unitOfWork.BuyInvoices.GetEntityByIdAsync(id));
 
         public async Task<GetBuyInvoiceResponse?> GetByIdWithIncludeAsync(int id) => _mapper.Map<GetBuyInvoiceResponse>(await _unitOfWork.BuyInvoices.GetByIdWithInclude(id));
 

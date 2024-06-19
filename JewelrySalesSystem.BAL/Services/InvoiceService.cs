@@ -47,7 +47,7 @@ namespace JewelrySalesSystem.BAL.Services
             var invoice = new Invoice
             {
                 OrderDate = DateTime.Now,
-                CustomerId = createInvoiceRequest.CustomerId,
+                CustomerId = await _unitOfWork.Customers.GetCustomerByNameAsync(createInvoiceRequest.CustomerName),
                 UserId = createInvoiceRequest.UserId,
                 WarrantyId = createInvoiceRequest.WarrantyId,
                 InvoiceDetails = invoiceDetails
@@ -80,14 +80,14 @@ namespace JewelrySalesSystem.BAL.Services
             {
                 InvoiceId = updateInvoiceRequest.InvoiceId,
                 OrderDate = DateTime.Now,
-                CustomerId = updateInvoiceRequest.CustomerId,
+                CustomerId = await _unitOfWork.Customers.GetCustomerByNameAsync(updateInvoiceRequest.CustomerName),
                 UserId = updateInvoiceRequest.UserId,
                 WarrantyId = updateInvoiceRequest.WarrantyId,
                 InvoiceDetails = invoiceDetails,
                 InvoiceType = updateInvoiceRequest.InvoiceType
             };
 
-           await _unitOfWork.Invoices.UpdateInvoice(invoice);
+            await _unitOfWork.Invoices.UpdateInvoice(invoice);
 
             await _unitOfWork.CompleteAsync();
 
