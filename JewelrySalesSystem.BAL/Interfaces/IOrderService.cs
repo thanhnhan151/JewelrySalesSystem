@@ -11,5 +11,13 @@ namespace JewelrySalesSystem.BAL.Interfaces
         Task<CreateUpdateOrderRequest> AddAsync(CreateUpdateOrderRequest createRequest);
 
         Task UpdateAsync(CreateUpdateOrderRequest updateRequest);
+
+        Task<GetOrderResponse?> GetByIdAsync(int id);
+
+        Task DeleteAsync(int id);
+
+        Task ChangeOrderStatusAsync(int id);
+
+        Task CancelOrderAsync(int id);
     }
 }

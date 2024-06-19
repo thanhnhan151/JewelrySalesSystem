@@ -1,5 +1,4 @@
 ﻿using JewelrySalesSystem.BAL.Models.BuyInvoices;
-using JewelrySalesSystem.BAL.Models.Orders;
 
 namespace JewelrySalesSystem.BAL.Interfaces
 {
@@ -7,10 +6,16 @@ namespace JewelrySalesSystem.BAL.Interfaces
     {
         Task<List<GetBuyInvoiceResponse>> GetAllAsync();
 
+        Task<GetBuyInvoiceResponse?> GetByIdAsync(int id);
+
         Task<GetBuyInvoiceResponse?> GetByIdWithIncludeAsync(int id);
 
         Task<CreateUpdateBuyInvoiceRequest> AddAsync(CreateUpdateBuyInvoiceRequest createRequest);
 
         Task UpdateAsync(CreateUpdateBuyInvoiceRequest updateRequest);
+
+        Task ChangeBuyInvoiceStatusAsync(int id);
+
+        Task CancelBuyInvoiceAsync(int id);
     }
 }
