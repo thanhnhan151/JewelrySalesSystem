@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace JewelrySalesSystem.BAL.Models.Invoices
+﻿namespace JewelrySalesSystem.BAL.Models.Invoices
 {
     public class GetInvoiceResponse
     {
@@ -20,7 +18,5 @@ namespace JewelrySalesSystem.BAL.Models.Invoices
 
         // Invoice Details
         public ICollection<InvoiceItem> Items { get; set; } = new List<InvoiceItem>();
-
-        public float Total { get; set; }
     }
 }

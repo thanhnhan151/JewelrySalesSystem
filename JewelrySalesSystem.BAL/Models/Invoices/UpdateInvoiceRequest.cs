@@ -13,7 +13,7 @@ namespace JewelrySalesSystem.BAL.Models.Invoices
         public bool InvoiceType { get; set; }
 
         // Customer
-        public int CustomerId { get; set; }
+        public string CustomerName { get; set; } = string.Empty;
 
         // User
         public int UserId { get; set; }

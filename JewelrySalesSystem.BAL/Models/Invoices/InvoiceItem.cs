@@ -2,8 +2,8 @@
 {
     public class InvoiceItem
     {
-        public int ProductId { get; set; }
         public string ProductName { get; set; } = string.Empty;
-        public float ProductPrice { get; set; }
+        public float Total { get; set; }
+        public float PerDiscount { get; set; }
     }
 }
