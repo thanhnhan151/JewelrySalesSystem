@@ -138,5 +138,57 @@ namespace JewelrySalesSystem.API.Controllers
 
         #region Update Invoice
         #endregion
+
+        #region Update Order Status
+        [HttpPut("{id}/status")]
+        public async Task<IActionResult> ChangeBuyInvoiceStatusAsync(int id)
+        {
+            try
+            {
+                var result = await _buyInvoiceService.GetByIdAsync(id);
+
+                if (result != null)
+                {
+                    await _buyInvoiceService.ChangeBuyInvoiceStatusAsync(id);
+                    return NoContent();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return NotFound(new
+            {
+                ErrorMessage = $"Buy Invoice with {id} does not exist"
+            });
+        }
+        #endregion
+
+        #region Cancel Order
+        [HttpPut("{id}/cancel")]
+        public async Task<IActionResult> CancelBuyInvoiceAsync(int id)
+        {
+            try
+            {
+                var result = await _buyInvoiceService.GetByIdAsync(id);
+
+                if (result != null)
+                {
+                    await _buyInvoiceService.CancelBuyInvoiceAsync(id);
+                    return NoContent();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return NotFound(new
+            {
+                ErrorMessage = $"Buy Invoice with {id} does not exist"
+            });
+        }
+        #endregion
     }
 }
