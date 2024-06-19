@@ -76,6 +76,7 @@ namespace JewelrySalesSystem.API.Controllers
         ///       "productionCost": 100,
         ///       "materialType": "Gold"
         ///       "featuredImage": "testurl",
+        ///       "weight": 500,
         ///       "categoryId": 2,
         ///       "productTypeId": 3,
         ///       "genderId": 3,
@@ -163,6 +164,7 @@ namespace JewelrySalesSystem.API.Controllers
         ///       "percentPriceRate": 10,
         ///       "productionCost": 100,
         ///       "featuredImage": "testurl",
+        ///       "weight": 500,
         ///       "categoryId": 2,
         ///       "productTypeId": 2,
         ///       "genderId": 3,
