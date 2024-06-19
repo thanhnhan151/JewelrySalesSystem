@@ -7,5 +7,7 @@ namespace JewelrySalesSystem.DAL.Interfaces
     {
         Task<List<BuyInvoice>> GetAllAsync();
         Task<BuyInvoice?> GetByIdWithInclude(int id);
+        Task ChangeBuyInvoiceStatusAsync(int id);
+        Task CancelBuyInvoiceAsync(int id);
     }
 }

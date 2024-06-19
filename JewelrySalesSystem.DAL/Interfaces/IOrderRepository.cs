@@ -7,5 +7,8 @@ namespace JewelrySalesSystem.DAL.Interfaces
     {
         Task<List<Order>> GetAllAsync();
         Task<Order?> GetByIdWithInclude(int id);
+        Task DeleteAsync(int id);
+        Task ChangeOrderStatusAsync(int id);
+        Task CancelOrderAsync(int id);
     }
 }
