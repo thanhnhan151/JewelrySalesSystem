@@ -101,8 +101,8 @@ namespace JewelrySalesSystem.BAL.Mappings
             CreateMap<Invoice, GetInvoiceResponse>()
                 .ForMember(i => i.Items, i => i.MapFrom(i => i.InvoiceDetails))
 
-                .ForMember(i => i.Total, i => i.MapFrom(i => i.InvoiceDetails
-                .Sum(i => i.ProductPrice)))
+                //.ForMember(i => i.Total, i => i.MapFrom(i => i.InvoiceDetails
+                //.Sum(i => i.ProductPrice)))
 
                 .ForMember(i => i.CustomerName, i => i.MapFrom(i => i.Customer.FullName))
 
@@ -113,7 +113,8 @@ namespace JewelrySalesSystem.BAL.Mappings
             CreateMap<PaginatedList<Invoice>, PaginatedList<GetInvoiceResponse>>();
 
             CreateMap<InvoiceDetail, InvoiceItem>()
-                .ForMember(i => i.ProductName, i => i.MapFrom(i => i.Product.ProductName));         
+                .ForMember(i => i.ProductName, i => i.MapFrom(i => i.Product.ProductName))
+                .ForMember(i => i.Total, i => i.MapFrom(i => i.ProductPrice));         
             #endregion
 
             #region Warranty
