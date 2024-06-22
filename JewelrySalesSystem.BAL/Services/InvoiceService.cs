@@ -21,12 +21,13 @@ namespace JewelrySalesSystem.BAL.Services
         }
 
         public async Task<PaginatedList<GetInvoiceResponse>> PaginationAsync(
+            string? invoiceStatus,
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
             int page,
             int pageSize)
-        => _mapper.Map<PaginatedList<GetInvoiceResponse>>(await _unitOfWork.Invoices.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize));
+        => _mapper.Map<PaginatedList<GetInvoiceResponse>>(await _unitOfWork.Invoices.PaginationAsync(invoiceStatus, searchTerm, sortColumn, sortOrder, page, pageSize));
 
         public async Task<CreateInvoiceRequest> AddAsync(CreateInvoiceRequest createInvoiceRequest)
         {
@@ -50,6 +51,10 @@ namespace JewelrySalesSystem.BAL.Services
                 CustomerId = await _unitOfWork.Customers.GetCustomerByNameAsync(createInvoiceRequest.CustomerName),
                 UserId = createInvoiceRequest.UserId,
                 WarrantyId = createInvoiceRequest.WarrantyId,
+                InvoiceType = createInvoiceRequest.InvoiceType,
+                Total = createInvoiceRequest.Total,
+                PerDiscount = createInvoiceRequest.PerDiscount,
+                TotalWithDiscount = createInvoiceRequest.TotalWithDiscount,
                 InvoiceDetails = invoiceDetails
             };
 
@@ -84,7 +89,11 @@ namespace JewelrySalesSystem.BAL.Services
                 UserId = updateInvoiceRequest.UserId,
                 WarrantyId = updateInvoiceRequest.WarrantyId,
                 InvoiceDetails = invoiceDetails,
-                InvoiceType = updateInvoiceRequest.InvoiceType
+                InvoiceType = updateInvoiceRequest.InvoiceType,
+                InvoiceStatus = updateInvoiceRequest.InvoiceStatus,
+                Total = updateInvoiceRequest.Total,
+                PerDiscount = updateInvoiceRequest.PerDiscount,
+                TotalWithDiscount = updateInvoiceRequest.TotalWithDiscount
             };
 
             await _unitOfWork.Invoices.UpdateInvoice(invoice);
