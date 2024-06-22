@@ -160,6 +160,11 @@ namespace JewelrySalesSystem.BAL.Services
             return result;
         }
 
+        public async Task<GetProductResponse?> GetProductByIdAsync(int id)
+        {
+            var result = _mapper.Map<GetProductResponse>(await _unitOfWork.Products.GetEntityByIdAsync(id));
+            return result;
+        }
         private static float CalculateTotal(GemItem gemItem)
             => gemItem.GemPrice.CaratWeightPrice * (1 + gemItem.GemPrice.ColourPrice / 100 + gemItem.GemPrice.CutPrice / 100 + gemItem.GemPrice.ClarityPrice / 100);
 
