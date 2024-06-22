@@ -2,8 +2,10 @@
 {
     public class CreateInvoiceRequest
     {
-        public bool Status { get; set; }
-        public bool InvoiceType { get; set; }
+        public string InvoiceType { get; set; } = string.Empty;
+        public float Total { get; set; }
+        public float PerDiscount { get; set; }
+        public float TotalWithDiscount { get; set; }
 
         // Customer
         public string CustomerName { get; set; } = string.Empty;
