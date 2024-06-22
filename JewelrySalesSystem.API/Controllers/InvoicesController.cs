@@ -25,6 +25,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// <summary>
         /// Get all invoices in the system
         /// </summary>
+        /// <param name="invoiceStatus">Invoice Status</param>
         /// <param name="page">Current page the user is on</param>
         /// <param name="pageSize">Number of entities you want to show</param>
         /// <param name="searchTerm">Search query</param>
@@ -39,6 +40,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// <response code="500">Internal Server</response>
         [HttpGet]
         public async Task<IActionResult> GetAllAsync(
+            string? invoiceStatus,
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
@@ -47,7 +49,7 @@ namespace JewelrySalesSystem.API.Controllers
         {
             try
             {
-                var result = await _invoiceService.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize);
+                var result = await _invoiceService.PaginationAsync(invoiceStatus, searchTerm, sortColumn, sortOrder, page, pageSize);
 
                 if (result is not null)
                 {
@@ -71,11 +73,13 @@ namespace JewelrySalesSystem.API.Controllers
         /// Sample request:
         /// 
         ///     {
-        ///       "status": true,
-        ///       "invoiceType": true,
+        ///       "invoiceType": "Sale",
         ///       "customerName": "Tran Van A",
         ///       "userId": 1,
         ///       "warrantyId": 1,
+        ///       "total": 1000000,
+        ///       "perDiscount": 10,
+        ///       "totalWithDiscount": 900000,
         ///       "invoiceDetails": [
         ///         1,
         ///         2
@@ -151,11 +155,14 @@ namespace JewelrySalesSystem.API.Controllers
         /// 
         ///             {
         ///             "invoiceId": 0,
-        ///             "status": true,
-        ///             "invoiceType": true,
+        ///             "invoiceStatus": "Processing",
+        ///             "invoiceType": "Purchase",
         ///             "customerName": "Tran Van A",
         ///             "userId": 0,
         ///             "warrantyId": 0,
+        ///             "total": 1200000,
+        ///             "perDiscount": 10,
+        ///             "totalWithDiscount": 1080000,
         ///             "invoiceDetails": [
         ///                    productId: 0
         ///                ]
