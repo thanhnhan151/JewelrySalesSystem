@@ -1,4 +1,5 @@
-﻿using JewelrySalesSystem.DAL.Common;
+﻿using Azure.Core;
+using JewelrySalesSystem.DAL.Common;
 using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
 using JewelrySalesSystem.DAL.Interfaces;
@@ -64,6 +65,53 @@ namespace JewelrySalesSystem.DAL.Repositories
 
             if (result == null) return null;
             return result;
+        }
+
+        public async Task UpdateGem(Gem gem)
+        {
+            //Check exist
+            var checkExistGemTask = _dbSet.FindAsync(gem.GemId);
+            var checkExistGem = await checkExistGemTask;
+            if (checkExistGem != null)
+            {
+                //Update data
+                checkExistGem.GemName = gem.GemName;
+                checkExistGem.FeaturedImage = gem.FeaturedImage;
+                checkExistGem.Origin = gem.Origin;
+                checkExistGem.CaratWeight = gem.CaratWeight;
+                checkExistGem.Colour = gem.Colour;
+                checkExistGem.Clarity = gem.Clarity;
+                checkExistGem.Cut = gem.Cut;
+                var gemPrice = await _context.GemPrices.FirstOrDefaultAsync(p => p.GemId == gem.GemId);
+                if (gemPrice == null)
+                {
+                    gemPrice = new GemPriceList
+                    {
+                        GemId = gem.GemId,
+                        CaratWeightPrice = gem.GemPrice.CaratWeightPrice,
+                        ColourPrice = gem.GemPrice.ColourPrice,
+                        ClarityPrice = gem.GemPrice.ClarityPrice,
+                        CutPrice = gem.GemPrice.CutPrice,
+                        
+                    };
+                    _context.GemPrices.Add(gemPrice);
+                }
+                else
+                {
+                    gemPrice.CaratWeightPrice = gem.GemPrice.CaratWeightPrice;
+                    gemPrice.ColourPrice = gem.GemPrice.ColourPrice;
+                    gemPrice.ClarityPrice = gem.GemPrice.ClarityPrice;
+                    gemPrice.CutPrice = gem.GemPrice.CutPrice;
+                    _context.GemPrices.Update(gemPrice);
+                    
+                }
+
+            }
+            else
+            {
+                throw new Exception($"Gem with ID = {gem.GemId} not found!");
+            }
+            _dbSet.Update(checkExistGem);
         }
     }
 }
