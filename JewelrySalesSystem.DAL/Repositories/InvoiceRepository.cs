@@ -25,7 +25,8 @@ namespace JewelrySalesSystem.DAL.Repositories
             , int page
             , int pageSize)
         {
-            IQueryable<Invoice> invoicesQuery = _dbSet.Include(i => i.InvoiceDetails)
+            IQueryable<Invoice> invoicesQuery = _dbSet.OrderByDescending(i => i.OrderDate)
+                                                      .Include(i => i.InvoiceDetails)
                                                             .ThenInclude(i => i.Product)
                                                       .Include(i => i.Customer)
                                                       .Include(i => i.User)
@@ -35,19 +36,19 @@ namespace JewelrySalesSystem.DAL.Repositories
             {
                 if (invoiceStatus.Equals("Pending"))
                 {
-                    invoicesQuery.Where(i => i.InvoiceStatus.Equals(invoiceStatus));
+                    invoicesQuery = invoicesQuery.Where(i => i.InvoiceStatus.Equals(invoiceStatus));
                 }
                 else if (invoiceStatus.Equals("Processing"))
                 {
-                    invoicesQuery.Where(i => i.InvoiceStatus.Equals(invoiceStatus));
+                    invoicesQuery = invoicesQuery.Where(i => i.InvoiceStatus.Equals(invoiceStatus));
                 }
                 else if (invoiceStatus.Equals("Delivered"))
                 {
-                    invoicesQuery.Where(i => i.InvoiceStatus.Equals(invoiceStatus));
+                    invoicesQuery = invoicesQuery.Where(i => i.InvoiceStatus.Equals(invoiceStatus));
                 }
                 else if (invoiceStatus.Equals("Cancelled"))
                 {
-                    invoicesQuery.Where(i => i.InvoiceStatus.Equals(invoiceStatus));
+                    invoicesQuery = invoicesQuery.Where(i => i.InvoiceStatus.Equals(invoiceStatus));
                 }
             }
 
@@ -59,14 +60,14 @@ namespace JewelrySalesSystem.DAL.Repositories
             //        c.Email.Contains(searchTerm));
             //}
 
-            if (sortOrder?.ToLower() == "desc")
-            {
-                invoicesQuery = invoicesQuery.OrderByDescending(GetSortProperty(sortColumn));
-            }
-            else
-            {
-                invoicesQuery = invoicesQuery.OrderBy(GetSortProperty(sortColumn));
-            }
+            //if (sortOrder?.ToLower() == "desc")
+            //{
+            //    invoicesQuery = invoicesQuery.OrderByDescending(GetSortProperty(sortColumn));
+            //}
+            //else
+            //{
+            //    invoicesQuery = invoicesQuery.OrderBy(GetSortProperty(sortColumn));
+            //}
 
             var invoices = await PaginatedList<Invoice>.CreateAsync(invoicesQuery, page, pageSize);
 
