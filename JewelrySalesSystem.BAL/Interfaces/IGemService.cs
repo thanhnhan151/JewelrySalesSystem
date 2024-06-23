@@ -1,4 +1,5 @@
 ﻿using JewelrySalesSystem.BAL.Models.Gems;
+using JewelrySalesSystem.BAL.Models.Warranties;
 using JewelrySalesSystem.DAL.Common;
 using JewelrySalesSystem.DAL.Entities;
 
@@ -15,8 +16,10 @@ namespace JewelrySalesSystem.BAL.Interfaces
 
         Task<CreateGemRequest> AddAsync(CreateGemRequest createGemRequest);
 
-        Task UpdateAsync(Gem gem);
+        Task UpdateAsync(UpdateGemRequest updateGemRequest);
 
         Task<GetGemResponse?> GetByIdWithIncludeAsync(int id);
+
+        Task<GetGemResponse?> GetGemById(int id);
     }
 }

@@ -13,6 +13,11 @@ namespace JewelrySalesSystem.BAL.Services
             _unitOfWork = unitOfWork;
         }
 
+        public async Task<int> GetCustomerByNameAsync(string customerName)
+        {
+            return await _unitOfWork.Customers.GetCustomerByNameAsync(customerName);
+        }
+
         public async Task<GetCustomerPointResponse?> GetCustomerPointByNameAsync(string customerName)
         {
             var customer = await _unitOfWork.Customers.GetCustomerPointByNameAsync(customerName);

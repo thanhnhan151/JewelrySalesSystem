@@ -14,5 +14,7 @@ namespace JewelrySalesSystem.DAL.Interfaces
             , int pageSize);
 
         Task<Gem?> GetByIdWithIncludeAsync(int id);
+
+        Task UpdateGem(Gem gem);  
     }
 }

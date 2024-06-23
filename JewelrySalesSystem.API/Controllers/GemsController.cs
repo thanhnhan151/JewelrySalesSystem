@@ -1,5 +1,8 @@
 ﻿using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.Gems;
+using JewelrySalesSystem.BAL.Models.Genders;
+using JewelrySalesSystem.BAL.Validators;
+using JewelrySalesSystem.BAL.Validators.Gems;
 using JewelrySalesSystem.DAL.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +15,7 @@ namespace JewelrySalesSystem.API.Controllers
     {
         private readonly ILogger<GemsController> _logger;
         private readonly IGemService _gemService;
-
+        
         public GemsController(
             ILogger<GemsController> logger,
             IGemService gemService)
@@ -99,6 +102,22 @@ namespace JewelrySalesSystem.API.Controllers
         {
             try
             {
+                //Use Fluent Validation
+                var validator = new CreateGemRequestValidator();
+                var result = validator.Validate(createGemRequest);
+                
+                if (!result.IsValid)
+                {
+                    //Add all error messages to an array
+                    var errorMessages = new List<string>();
+                    foreach (var error in result.Errors)
+                    {
+                        errorMessages.Add(error.ErrorMessage);
+                    }
+                    return BadRequest(errorMessages);
+                }
+
+
                 await _gemService.AddAsync(createGemRequest);
 
                 return Ok(createGemRequest);
@@ -173,11 +192,25 @@ namespace JewelrySalesSystem.API.Controllers
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server</response>
         [HttpPut]
-        public async Task<IActionResult> UpdateAsync(Gem gem)
+        public async Task<IActionResult> UpdateAsync(UpdateGemRequest updateGemRequest)
         {
             try
             {
-                await _gemService.UpdateAsync(gem);
+                //Use Fluent Validation
+                var validator = new UpdateGemRequestValidator(_gemService);
+                var result = await validator.ValidateAsync(updateGemRequest);
+                if(!result.IsValid)
+                {
+                    //Add all error messages to an array
+                    var errorMessages = new List<string>();
+                    foreach (var error in result.Errors)
+                    {
+                        errorMessages.Add(error.ErrorMessage);
+                        
+                    }
+                    return BadRequest(errorMessages);
+                }
+                await _gemService.UpdateAsync(updateGemRequest);
 
                 return Ok();
             }
