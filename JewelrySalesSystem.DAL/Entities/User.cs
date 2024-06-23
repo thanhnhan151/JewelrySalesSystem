@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace JewelrySalesSystem.DAL.Entities
 {
     [Table("User")]
-    public class User
+    public class User : IValidatableObject
     {
         [Key]
         public int UserId { get; set; }
@@ -22,5 +22,10 @@ namespace JewelrySalesSystem.DAL.Entities
 
         // Invoices
         public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

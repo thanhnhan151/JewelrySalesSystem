@@ -1,6 +1,10 @@
+using FluentValidation;
 using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Mappings;
+using JewelrySalesSystem.BAL.Models.Users;
 using JewelrySalesSystem.BAL.Services;
+using JewelrySalesSystem.BAL.Validators.User;
+using JewelrySalesSystem.DAL.Entities;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JewelrySalesSystem.BAL
@@ -43,7 +47,8 @@ namespace JewelrySalesSystem.BAL
             services.AddScoped<IOrderService, OrderService>();
 
             services.AddScoped<IBuyInvoiceService, BuyInvoiceService>();
-          
+
+            services.AddTransient<IValidator<CreateUserRequest>, CreateUserValidator>();
             return services;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.Users;
 using JewelrySalesSystem.DAL.Common;
@@ -11,13 +12,15 @@ namespace JewelrySalesSystem.BAL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IValidator<CreateUserRequest> _createUserValidator;
 
         public UserService(
             IUnitOfWork unitOfWork
-            , IMapper mapper)
+            , IMapper mapper,IValidator<CreateUserRequest> validator)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _createUserValidator = validator;
         }
 
         public async Task<User?> LoginAsync(string userName, string passWord)
@@ -32,10 +35,17 @@ namespace JewelrySalesSystem.BAL.Services
         => _mapper.Map<PaginatedList<GetUserResponse>>(await _unitOfWork.Users.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize));
 
         public async Task<CreateUserRequest> AddAsync(CreateUserRequest createUserRequest)
-        {  
+        {
 
-            var result = _unitOfWork.Users.AddEntity(_mapper.Map<User>(createUserRequest));
+            var validationResult = await _createUserValidator.ValidateAsync(createUserRequest);
 
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
+
+            var userEntity = _mapper.Map<User>(createUserRequest);
+            _unitOfWork.Users.AddEntity(userEntity);
             await _unitOfWork.CompleteAsync();
 
             return createUserRequest;
