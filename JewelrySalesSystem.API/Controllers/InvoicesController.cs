@@ -1,9 +1,6 @@
 ﻿using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.Invoices;
-using JewelrySalesSystem.BAL.Validators;
 using JewelrySalesSystem.BAL.Validators.Invoices;
-using JewelrySalesSystem.DAL.Entities;
-using JewelrySalesSystem.DAL.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -63,7 +60,7 @@ namespace JewelrySalesSystem.API.Controllers
             {
                 var result = await _invoiceService.PaginationAsync(invoiceStatus, searchTerm, sortColumn, sortOrder, page, pageSize);
 
-                if (result is not null)
+                if (result != null)
                 {
                     return Ok(result);
                 }
@@ -109,11 +106,11 @@ namespace JewelrySalesSystem.API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddAsync([FromBody] CreateInvoiceRequest createInvoiceRequest)
         {
-           
+
             try
             {
                 //Use Fluent Validation
-                var validator = new CreateInvoiceRequestValidator(_customerService, _userService, _warrantyService,_productService);
+                var validator = new CreateInvoiceRequestValidator(_customerService, _userService, _warrantyService, _productService);
                 var result = await validator.ValidateAsync(createInvoiceRequest);
                 if (!result.IsValid)
                 {
