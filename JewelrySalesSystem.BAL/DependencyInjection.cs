@@ -1,6 +1,10 @@
+using FluentValidation;
 using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Mappings;
+using JewelrySalesSystem.BAL.Models.Users;
 using JewelrySalesSystem.BAL.Services;
+using JewelrySalesSystem.BAL.Validators.User;
+using JewelrySalesSystem.DAL.Entities;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JewelrySalesSystem.BAL
@@ -39,7 +43,11 @@ namespace JewelrySalesSystem.BAL
             services.AddScoped<IColourService, ColourService>();
 
             services.AddScoped<ICustomerService, CustomerService>();
-          
+
+            services.AddScoped<IValidator<CreateUserRequest>, CreateUserValidator>();
+
+            services.AddScoped<IValidator<UpdateUserRequest>, UpdateUserValidator>();
+
             return services;
         }
     }
