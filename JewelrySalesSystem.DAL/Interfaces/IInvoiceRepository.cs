@@ -7,7 +7,8 @@ namespace JewelrySalesSystem.DAL.Interfaces
     public interface IInvoiceRepository : IGenericRepository<Invoice>
     {
         Task<PaginatedList<Invoice>> PaginationAsync
-            (string? searchTerm
+            (string? invoiceStatus
+            , string? searchTerm
             , string? sortColumn
             , string? sortOrder
             , int page
@@ -17,6 +18,6 @@ namespace JewelrySalesSystem.DAL.Interfaces
 
         Task DeleteById(int id);
 
-        Task UpdateInvoice (Invoice invoice);
+        Task UpdateInvoice(Invoice invoice);
     }
 }

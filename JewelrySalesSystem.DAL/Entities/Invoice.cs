@@ -8,9 +8,13 @@ namespace JewelrySalesSystem.DAL.Entities
     {
         [Key]
         public int InvoiceId { get; set; }
-        public DateTime OrderDate { get; set; }
+        public DateTime OrderDate { get; set; } = DateTime.Now;
         public bool Status { get; set; }
-        public bool InvoiceType { get; set; }
+        public string InvoiceType { get; set; } = string.Empty;
+        public string InvoiceStatus { get; set; } = "Pending";
+        public float Total { get; set; }
+        public float PerDiscount { get; set; }
+        public float TotalWithDiscount { get; set; }
 
         // Customer
         public int CustomerId { get; set; }

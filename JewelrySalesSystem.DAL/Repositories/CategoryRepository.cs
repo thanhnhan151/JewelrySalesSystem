@@ -16,6 +16,7 @@ namespace JewelrySalesSystem.DAL.Repositories
         }
 
         public async Task<List<Category>> GetAllAsync() => await _dbSet
+                                                                 .OrderByDescending(x => x.CategoryId)
                                                                  .Where(c => c.Status)
                                                                  .ToListAsync();
 
@@ -26,6 +27,6 @@ namespace JewelrySalesSystem.DAL.Repositories
                                 .ThenInclude(p => p.Colour)
                             .Include(c => c.Products)
                                 .ThenInclude(p => p.ProductType)
-                           .FirstOrDefaultAsync(c => c.Status && c.CategoryId == id);     
+                           .FirstOrDefaultAsync(c => c.Status && c.CategoryId == id);
     }
 }

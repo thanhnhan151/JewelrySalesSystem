@@ -18,17 +18,39 @@ namespace JewelrySalesSystem.DAL.Repositories
         }
 
         public async Task<PaginatedList<Invoice>> PaginationAsync(
+            string? invoiceStatus,
             string? searchTerm
             , string? sortColumn
             , string? sortOrder
             , int page
             , int pageSize)
         {
-            IQueryable<Invoice> invoicesQuery = _dbSet.Include(i => i.InvoiceDetails)
+            IQueryable<Invoice> invoicesQuery = _dbSet.OrderByDescending(i => i.OrderDate)
+                                                      .Include(i => i.InvoiceDetails)
                                                             .ThenInclude(i => i.Product)
                                                       .Include(i => i.Customer)
                                                       .Include(i => i.User)
                                                       .Include(i => i.Warranty);
+
+            if (invoiceStatus != null)
+            {
+                if (invoiceStatus.Equals("Pending"))
+                {
+                    invoicesQuery = invoicesQuery.Where(i => i.InvoiceStatus.Equals(invoiceStatus));
+                }
+                else if (invoiceStatus.Equals("Processing"))
+                {
+                    invoicesQuery = invoicesQuery.Where(i => i.InvoiceStatus.Equals(invoiceStatus));
+                }
+                else if (invoiceStatus.Equals("Delivered"))
+                {
+                    invoicesQuery = invoicesQuery.Where(i => i.InvoiceStatus.Equals(invoiceStatus));
+                }
+                else if (invoiceStatus.Equals("Cancelled"))
+                {
+                    invoicesQuery = invoicesQuery.Where(i => i.InvoiceStatus.Equals(invoiceStatus));
+                }
+            }
 
             //if (!string.IsNullOrWhiteSpace(searchTerm))
             //{
@@ -38,14 +60,14 @@ namespace JewelrySalesSystem.DAL.Repositories
             //        c.Email.Contains(searchTerm));
             //}
 
-            if (sortOrder?.ToLower() == "desc")
-            {
-                invoicesQuery = invoicesQuery.OrderByDescending(GetSortProperty(sortColumn));
-            }
-            else
-            {
-                invoicesQuery = invoicesQuery.OrderBy(GetSortProperty(sortColumn));
-            }
+            //if (sortOrder?.ToLower() == "desc")
+            //{
+            //    invoicesQuery = invoicesQuery.OrderByDescending(GetSortProperty(sortColumn));
+            //}
+            //else
+            //{
+            //    invoicesQuery = invoicesQuery.OrderBy(GetSortProperty(sortColumn));
+            //}
 
             var invoices = await PaginatedList<Invoice>.CreateAsync(invoicesQuery, page, pageSize);
 
@@ -77,13 +99,7 @@ namespace JewelrySalesSystem.DAL.Repositories
 
         public async Task DeleteById(int id)
         {
-            var found = await _dbSet.FindAsync(id);
-
-            if (found == null)
-            {
-                throw new Exception($"Invoice with {id} is not found!");
-            }
-
+            var found = await _dbSet.FindAsync(id) ?? throw new Exception($"Invoice with {id} is not found!");
             found.Status = false;
             _dbSet.Update(found);
         }
@@ -91,14 +107,8 @@ namespace JewelrySalesSystem.DAL.Repositories
         public async Task UpdateInvoice(Invoice invoice)
         {
             var existingInvoice = await _dbSet
-                .Include(i => i.InvoiceDetails) 
-                .FirstOrDefaultAsync(i => i.InvoiceId == invoice.InvoiceId);
-
-            if (existingInvoice == null)
-            {
-                throw new Exception($"Invoice with id {invoice.InvoiceId} not found.");
-            }
-
+                .Include(i => i.InvoiceDetails)
+                .FirstOrDefaultAsync(i => i.InvoiceId == invoice.InvoiceId) ?? throw new Exception($"Invoice with id {invoice.InvoiceId} not found.");
             existingInvoice.OrderDate = invoice.OrderDate;
             existingInvoice.CustomerId = invoice.CustomerId;
             existingInvoice.UserId = invoice.UserId;
@@ -106,14 +116,14 @@ namespace JewelrySalesSystem.DAL.Repositories
             existingInvoice.Status = invoice.Status;
             existingInvoice.InvoiceType = invoice.InvoiceType;
 
-        
+
             var detailsToRemove = existingInvoice.InvoiceDetails
                 .Where(d => !invoice.InvoiceDetails.Any(nd => nd.ProductId == d.ProductId))
                 .ToList();
 
             foreach (var detail in detailsToRemove)
             {
-                _context.InvoiceDetails.Remove(detail); 
+                _context.InvoiceDetails.Remove(detail);
             }
 
             foreach (var newDetail in invoice.InvoiceDetails)

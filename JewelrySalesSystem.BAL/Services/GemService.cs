@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.Gems;
+using JewelrySalesSystem.BAL.Models.Warranties;
 using JewelrySalesSystem.DAL.Common;
 using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
@@ -66,9 +67,27 @@ namespace JewelrySalesSystem.BAL.Services
             return createGemRequest;
         }
 
-        public async Task UpdateAsync(Gem gem)
+        public async Task UpdateAsync(UpdateGemRequest updateGemRequest)
         {
-            _unitOfWork.Gems.UpdateEntity(gem);
+            var gem = new Gem
+            {
+                GemId = updateGemRequest.GemId,
+                GemName = updateGemRequest.GemName,
+                FeaturedImage = updateGemRequest.FeaturedImage,
+                Origin = updateGemRequest.Origin,
+                CaratWeight = updateGemRequest.CaratWeight,
+                Colour = updateGemRequest.Colour,
+                Clarity = updateGemRequest.Clarity,
+                Cut = updateGemRequest.Cut,
+                GemPrice = new GemPriceList
+                {
+                    CaratWeightPrice = updateGemRequest.GemPrice.CaratWeightPrice,
+                    ColourPrice = updateGemRequest.GemPrice.ColourPrice,
+                    ClarityPrice = updateGemRequest.GemPrice.ClarityPrice,
+                    CutPrice = updateGemRequest.GemPrice.CutPrice
+                }
+            };
+            await _unitOfWork.Gems.UpdateGem(gem);
             await _unitOfWork.CompleteAsync();
         }
 
@@ -92,5 +111,7 @@ namespace JewelrySalesSystem.BAL.Services
             gem.GemPrice.ColourPrice = gem.GemPrice.ColourPrice / 100;
             gem.GemPrice.CutPrice = gem.GemPrice.CutPrice / 100;
         }
+
+        public async Task<GetGemResponse?> GetGemById(int id) => _mapper.Map<GetGemResponse>(await _unitOfWork.Gems.GetEntityByIdAsync(id));
     }
 }

@@ -25,6 +25,7 @@ namespace JewelrySalesSystem.DAL.Repositories
             , int pageSize)
         {
             IQueryable<Product> productsQuery = _dbSet
+                                                .OrderByDescending(p => p.ProductId)
                                                 .Include(p => p.ProductGems)
                                                     .ThenInclude(g => g.Gem)
                                                         .ThenInclude(g => g.GemPrice)

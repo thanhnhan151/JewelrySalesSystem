@@ -37,10 +37,6 @@ namespace JewelrySalesSystem.DAL.Infrastructures
 
         public ICustomerRepository Customers { get; private set; }
 
-        public IOrderRepository Orders { get; private set; }
-
-        public IBuyInvoiceRepository BuyInvoices { get; private set; }
-
         public UnitOfWork(
             JewelryDbContext context,
             ILoggerFactory loggerFactory)
@@ -74,10 +70,6 @@ namespace JewelrySalesSystem.DAL.Infrastructures
             Colours = new ColourRepository(_context, _logger);
 
             Customers = new CustomerRepository(_context, _logger);
-
-            Orders = new OrderRepository(_context, _logger);
-
-            BuyInvoices = new BuyInvoiceRepository(_context, _logger);
         }
 
         public async Task CompleteAsync() => await _context.SaveChangesAsync();

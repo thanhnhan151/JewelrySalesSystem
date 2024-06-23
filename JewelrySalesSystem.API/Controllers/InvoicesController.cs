@@ -1,6 +1,6 @@
 ﻿using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.Invoices;
-using JewelrySalesSystem.DAL.Entities;
+using JewelrySalesSystem.BAL.Validators.Invoices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,19 +12,29 @@ namespace JewelrySalesSystem.API.Controllers
     {
         private readonly ILogger<InvoicesController> _logger;
         private readonly IInvoiceService _invoiceService;
+        private readonly ICustomerService _customerService;
+        private readonly IUserService _userService;
+        private readonly IWarrantyService _warrantyService;
+        private readonly IProductService _productService;
+
 
         public InvoicesController(
             ILogger<InvoicesController> logger,
-            IInvoiceService invoiceService)
+            IInvoiceService invoiceService, ICustomerService customerService, IUserService userService, IWarrantyService warrantyService, IProductService productService)
         {
             _logger = logger;
             _invoiceService = invoiceService;
+            _customerService = customerService;
+            _userService = userService;
+            _productService = productService;
+            _warrantyService = warrantyService;
         }
 
         #region Get All Invoices
         /// <summary>
         /// Get all invoices in the system
         /// </summary>
+        /// <param name="invoiceStatus">Invoice Status</param>
         /// <param name="page">Current page the user is on</param>
         /// <param name="pageSize">Number of entities you want to show</param>
         /// <param name="searchTerm">Search query</param>
@@ -39,6 +49,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// <response code="500">Internal Server</response>
         [HttpGet]
         public async Task<IActionResult> GetAllAsync(
+            string? invoiceStatus,
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
@@ -47,9 +58,9 @@ namespace JewelrySalesSystem.API.Controllers
         {
             try
             {
-                var result = await _invoiceService.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize);
+                var result = await _invoiceService.PaginationAsync(invoiceStatus, searchTerm, sortColumn, sortOrder, page, pageSize);
 
-                if (result is not null)
+                if (result != null)
                 {
                     return Ok(result);
                 }
@@ -71,11 +82,13 @@ namespace JewelrySalesSystem.API.Controllers
         /// Sample request:
         /// 
         ///     {
-        ///       "status": true,
-        ///       "invoiceType": true,
+        ///       "invoiceType": "Sale",
         ///       "customerName": "Tran Van A",
         ///       "userId": 1,
         ///       "warrantyId": 1,
+        ///       "total": 1000000,
+        ///       "perDiscount": 10,
+        ///       "totalWithDiscount": 900000,
         ///       "invoiceDetails": [
         ///         1,
         ///         2
@@ -93,8 +106,23 @@ namespace JewelrySalesSystem.API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddAsync([FromBody] CreateInvoiceRequest createInvoiceRequest)
         {
+
             try
             {
+                //Use Fluent Validation
+                var validator = new CreateInvoiceRequestValidator(_customerService, _userService, _warrantyService, _productService);
+                var result = await validator.ValidateAsync(createInvoiceRequest);
+                if (!result.IsValid)
+                {
+                    //Add all error messages to an array
+                    var errorMessages = new List<string>();
+                    foreach (var error in result.Errors)
+                    {
+                        errorMessages.Add(error.ErrorMessage);
+                    }
+                    return BadRequest(errorMessages);
+                }
+
                 await _invoiceService.AddAsync(createInvoiceRequest);
 
                 return Ok(createInvoiceRequest);
@@ -151,11 +179,14 @@ namespace JewelrySalesSystem.API.Controllers
         /// 
         ///             {
         ///             "invoiceId": 0,
-        ///             "status": true,
-        ///             "invoiceType": true,
+        ///             "invoiceStatus": "Processing",
+        ///             "invoiceType": "Purchase",
         ///             "customerName": "Tran Van A",
         ///             "userId": 0,
         ///             "warrantyId": 0,
+        ///             "total": 1200000,
+        ///             "perDiscount": 10,
+        ///             "totalWithDiscount": 1080000,
         ///             "invoiceDetails": [
         ///                    productId: 0
         ///                ]
@@ -175,6 +206,19 @@ namespace JewelrySalesSystem.API.Controllers
         {
             try
             {
+                //Use Fluent Validation
+                var validator = new UpdateInvoiceRequestValidator(_customerService, _userService, _warrantyService, _productService, _invoiceService);
+                var result = await validator.ValidateAsync(invoice);
+                if (!result.IsValid)
+                {
+                    //Add all error messages to an array
+                    var errorMessages = new List<string>();
+                    foreach (var error in result.Errors)
+                    {
+                        errorMessages.Add(error.ErrorMessage);
+                    }
+                    return BadRequest(errorMessages);
+                }
                 await _invoiceService.UpdateAsync(invoice);
 
                 return Ok(invoice);
