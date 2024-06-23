@@ -16,6 +16,7 @@ namespace JewelrySalesSystem.DAL.Repositories
         }
 
         public async Task<List<Category>> GetAllAsync() => await _dbSet
+                                                                 .OrderByDescending(x => x.CategoryId)
                                                                  .Where(c => c.Status)
                                                                  .ToListAsync();
 

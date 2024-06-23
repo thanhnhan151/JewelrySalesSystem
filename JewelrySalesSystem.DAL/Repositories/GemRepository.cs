@@ -26,6 +26,7 @@ namespace JewelrySalesSystem.DAL.Repositories
             , int pageSize)
         {
             IQueryable<Gem> gemsQuery = _dbSet
+                .OrderByDescending(g => g.GemId)
                 .Include(g => g.GemPrice);
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
