@@ -48,7 +48,11 @@ namespace JewelrySalesSystem.BAL
 
             services.AddScoped<IBuyInvoiceService, BuyInvoiceService>();
 
-            services.AddTransient<IValidator<CreateUserRequest>, CreateUserValidator>();
+            services.AddScoped<IValidator<CreateUserRequest>, CreateUserValidator>();
+
+            services.AddScoped<IValidator<UpdateUserRequest>, UpdateUserValidator>();
+
+
             return services;
         }
     }
