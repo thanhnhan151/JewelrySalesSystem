@@ -144,10 +144,11 @@ namespace JewelrySalesSystem.BAL.Services
                         {
                             var materialPrice = temp.MaterialPrices.SingleOrDefault();
 
-                            if (materialPrice != null) productPrice += materialPrice.SellPrice;
+                            if (materialPrice != null) productPrice += (product.Weight * materialPrice.SellPrice);
                         }
                     }
                 }
+                productPrice += (productPrice * (product.PercentPriceRate) / 100);
             }
             return productPrice;
         }
