@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.ProductTypes;
 using JewelrySalesSystem.BAL.Models.Roles;
@@ -11,11 +12,14 @@ namespace JewelrySalesSystem.BAL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IValidator<CreateProductTypeRequest> _createValidator;
 
-        public ProductTypeService(IUnitOfWork unitOfWork, IMapper mapper)
+
+        public ProductTypeService(IUnitOfWork unitOfWork, IMapper mapper, IValidator<CreateProductTypeRequest> createValidator)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _createValidator = createValidator;
         }
         public async Task<ProductTypeIdCollectionResponse?> GetAllProductsByProductTypeIdAsync(int productTypeId)
             => _mapper.Map<ProductTypeIdCollectionResponse>(await _unitOfWork.ProductTypes.GetAllProductsByProductTypeIdAsync(productTypeId));
@@ -27,8 +31,13 @@ namespace JewelrySalesSystem.BAL.Services
 
         public async Task<CreateProductTypeRequest> AddAsync(CreateProductTypeRequest productType)
         {
-            var result = _unitOfWork.ProductTypes.AddEntity(_mapper.Map<ProductType>(productType));
+            var validateResult = await _createValidator.ValidateAsync(productType);
+            if (!validateResult.IsValid)
+            {
+                throw new ValidationException(validateResult.Errors);
+            }
 
+            var result = _unitOfWork.ProductTypes.AddEntity(_mapper.Map<ProductType>(productType));
             await _unitOfWork.CompleteAsync();
 
             return productType;

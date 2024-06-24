@@ -23,7 +23,13 @@ namespace JewelrySalesSystem.DAL.Repositories
                                  .ThenInclude(p => p.Category)
                 .FirstOrDefaultAsync(pt => pt.Id == productTypeId);
         }
-        
+
         public async Task<List<ProductType>> GetAllAsync() => await _dbSet.ToListAsync();
+
+        public async Task<ProductType> CheckDuplicate(string productType)
+        {
+            return await _dbSet.FirstOrDefaultAsync(pt => pt.Name == productType);
+        }
+
     }
 }
