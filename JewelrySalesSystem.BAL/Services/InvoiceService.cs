@@ -159,5 +159,19 @@ namespace JewelrySalesSystem.BAL.Services
         }
 
         public async Task<GetInvoiceResponse?> GetByIdAsync(int id) => _mapper.Map<GetInvoiceResponse>(await _unitOfWork.Invoices.GetEntityByIdAsync(id));
+
+        public async Task ChangeInvoiceStatus(int id)
+        {
+            await _unitOfWork.Invoices.ChangeInvoiceStatus(id);
+
+            await _unitOfWork.CompleteAsync();
+        }
+
+        public async Task CancelInvoice(int id)
+        {
+            await _unitOfWork.Invoices.CancelInvoice(id);
+
+            await _unitOfWork.CompleteAsync();
+        }
     }
 }
