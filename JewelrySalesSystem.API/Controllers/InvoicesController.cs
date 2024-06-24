@@ -165,7 +165,7 @@ namespace JewelrySalesSystem.API.Controllers
 
             return NotFound(new
             {
-                ErrorMessage = "Invoice does not exist"
+                ErrorMessage = $"Invoice with {id} does not exist"
             });
         }
         #endregion
@@ -261,6 +261,80 @@ namespace JewelrySalesSystem.API.Controllers
             {
                 throw new Exception(ex.Message);
             }
+        }
+        #endregion
+
+        #region Change Invoice Status
+        /// <summary>
+        /// Change an invoice status
+        /// </summary>
+        /// <param name="id">Id of the invoice you want to change</param>
+        /// <returns>An user</returns>
+        /// <response code="204">No content</response>
+        /// <response code="400">If the invoice is null</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server</response>
+        [HttpPut("{id}/change")]
+        public async Task<IActionResult> ChangeInvoiceStatus(int id)
+        {
+            try
+            {
+                var result = await _invoiceService.GetByIdAsync(id);
+
+                if (result is not null)
+                {
+                    await _invoiceService.ChangeInvoiceStatus(id);
+                    return NoContent();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return NotFound(new
+            {
+                ErrorMessage = $"Invoice with {id} does not exist"
+            });
+        }
+        #endregion
+
+        #region Cancel Invoice
+        /// <summary>
+        /// Cancel an invoice
+        /// </summary>
+        /// <param name="id">Id of the invoice you want to cancel</param>
+        /// <returns>An user</returns>
+        /// <response code="204">No content</response>
+        /// <response code="400">If the invoice is null</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server</response>
+        [HttpPut("{id}/cancel")]
+        public async Task<IActionResult> CancelInvoice(int id)
+        {
+            try
+            {
+                var result = await _invoiceService.GetByIdAsync(id);
+
+                if (result is not null)
+                {
+                    await _invoiceService.CancelInvoice(id);
+                    return NoContent();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return NotFound(new
+            {
+                ErrorMessage = $"Invoice with {id} does not exist"
+            });
         }
         #endregion
     }
