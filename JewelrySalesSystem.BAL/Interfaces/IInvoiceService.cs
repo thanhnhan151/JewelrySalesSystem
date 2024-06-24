@@ -22,5 +22,9 @@ namespace JewelrySalesSystem.BAL.Interfaces
         Task<GetInvoiceResponse?> GetByIdWithIncludeAsync(int id);
 
         Task DeleteInvoice(int id);
+
+        Task ChangeInvoiceStatus(int id);
+
+        Task CancelInvoice(int id);
     }
 }
