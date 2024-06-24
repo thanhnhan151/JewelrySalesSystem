@@ -8,5 +8,6 @@ namespace JewelrySalesSystem.DAL.Interfaces
         Task<ProductType?> GetAllProductsByProductTypeIdAsync(int productTypeId);
 
         Task<List<ProductType>> GetAllAsync();
+        Task<ProductType> CheckDuplicate(string productType);
     }
 }
