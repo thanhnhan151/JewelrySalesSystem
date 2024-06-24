@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.ProductTypes;
+using JewelrySalesSystem.BAL.Models.Roles;
+using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
 
 namespace JewelrySalesSystem.BAL.Services
@@ -22,5 +24,14 @@ namespace JewelrySalesSystem.BAL.Services
         public async Task<List<GetProductTypeResponse>> GetAllAsync() => _mapper.Map<List<GetProductTypeResponse>>(await _unitOfWork.ProductTypes.GetAllAsync());
 
         public async Task<GetProductTypeResponse?> GetByIdAsync(int id) => _mapper.Map<GetProductTypeResponse>(await _unitOfWork.ProductTypes.GetEntityByIdAsync(id));
+
+        public async Task<CreateProductTypeRequest> AddAsync(CreateProductTypeRequest productType)
+        {
+            var result = _unitOfWork.ProductTypes.AddEntity(_mapper.Map<ProductType>(productType));
+
+            await _unitOfWork.CompleteAsync();
+
+            return productType;
+        }
     }
 }

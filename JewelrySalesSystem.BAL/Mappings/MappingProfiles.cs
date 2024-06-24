@@ -142,6 +142,8 @@ namespace JewelrySalesSystem.BAL.Mappings
 
             CreateMap<ProductType, ProductTypeIdCollectionResponse>()
                 .ForMember(pt => pt.Products, pt => pt.MapFrom(pt => pt.Products));
+
+            CreateMap<ProductType, CreateProductTypeRequest>().ReverseMap();
             #endregion
 
             #region Colour
