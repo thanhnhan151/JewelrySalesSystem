@@ -4,7 +4,6 @@
     {
         public int InvoiceId { get; set; }
         public DateTime OrderDate { get; set; }
-        public bool Status { get; set; }
         public string InvoiceType { get; set; } = string.Empty;
         public string InvoiceStatus { get; set; } = string.Empty;
         public float Total { get; set; }
