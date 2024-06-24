@@ -150,5 +150,33 @@ namespace JewelrySalesSystem.DAL.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task ChangeInvoiceStatus(int id)
+        {
+            var result = await _dbSet.FindAsync(id);
+
+            if (result != null)
+            {
+                if (result.InvoiceStatus.Equals("Pending"))
+                {
+                    result.InvoiceStatus = "Processing";
+                }
+                else if (result.InvoiceStatus.Equals("Processing"))
+                {
+                    result.InvoiceStatus = "Delivered";
+                }
+                _dbSet.Update(result);
+            }
+        }
+
+        public async Task CancelInvoice(int id)
+        {
+            var result = await _dbSet.FindAsync(id);
+
+            if (result != null)
+            {
+                result.InvoiceStatus = "Cancelled";
+                _dbSet.Update(result);
+            }
+        }
     }
 }
