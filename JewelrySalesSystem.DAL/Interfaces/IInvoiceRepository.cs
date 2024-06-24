@@ -19,5 +19,9 @@ namespace JewelrySalesSystem.DAL.Interfaces
         Task DeleteById(int id);
 
         Task UpdateInvoice(Invoice invoice);
+
+        Task ChangeInvoiceStatus(int id);
+
+        Task CancelInvoice(int id);
     }
 }
