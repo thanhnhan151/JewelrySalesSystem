@@ -18,5 +18,9 @@ namespace JewelrySalesSystem.DAL.Interfaces
         Task<User?> GetByIdWithIncludeAsync(int id);
 
         Task DeleteAsync(int id);
+
+        Task<User> CheckDuplicate(string userName , string option);
+
+        Task<bool> CheckRoleIdExists(int roleId);
     }
 }

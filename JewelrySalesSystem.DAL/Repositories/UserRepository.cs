@@ -102,5 +102,32 @@ namespace JewelrySalesSystem.DAL.Repositories
             checkExistUser.Status = false;
             _dbSet.Update(checkExistUser);
         }
+
+        public async Task<User> CheckDuplicate(string detail, string option)
+        {
+
+            switch (option)
+            {
+                case "userName":
+                    return await _dbSet.FirstOrDefaultAsync(u => u.UserName == detail);
+                    break;
+
+                case "phoneNumber":
+                    return await _dbSet.FirstOrDefaultAsync(u => u.PhoneNumber == detail);
+                    break;
+
+                case "email":
+                    return await _dbSet.FirstOrDefaultAsync(u => u.Email == detail);
+                    break;
+
+                default:
+                    throw new ArgumentException("Invalid option provided.");
+            }
+        }
+
+        public async Task<bool> CheckRoleIdExists(int roleId)
+        {
+            return await _dbSet.AnyAsync(u => u.RoleId == roleId);
+        }
     }
 }
