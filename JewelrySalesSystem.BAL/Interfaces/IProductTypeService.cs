@@ -9,5 +9,7 @@ namespace JewelrySalesSystem.BAL.Interfaces
         Task<GetProductTypeResponse?> GetByIdAsync(int id);
 
         Task<List<GetProductTypeResponse>> GetAllAsync();
+
+        Task<CreateProductTypeRequest> AddAsync(CreateProductTypeRequest productType);
     }
 }

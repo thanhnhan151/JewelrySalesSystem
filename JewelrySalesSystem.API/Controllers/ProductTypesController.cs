@@ -1,4 +1,5 @@
 using JewelrySalesSystem.BAL.Interfaces;
+using JewelrySalesSystem.BAL.Models.ProductTypes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -103,6 +104,25 @@ namespace JewelrySalesSystem.API.Controllers
                 ErrorMessage = $"Product Type with {id} does not exist"
             });
         }
+        #endregion
+        #region Add Product Type
+        [HttpPost]
+        public async Task<IActionResult> AddAsync([FromBody] CreateProductTypeRequest productType)
+        {
+            try
+            {
+                var result = await _productTypeService.AddAsync(productType);
+                return Ok(result);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+        }
+
+
         #endregion
     }
 }
