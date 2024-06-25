@@ -11,5 +11,7 @@ namespace JewelrySalesSystem.BAL.Interfaces
         Task<List<GetProductTypeResponse>> GetAllAsync();
 
         Task<CreateProductTypeRequest> AddAsync(CreateProductTypeRequest productType);
+
+        Task<UpdateTypeRequest> UpdateAsync (UpdateTypeRequest productType);
     }
 }

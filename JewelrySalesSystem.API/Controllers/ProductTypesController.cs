@@ -1,7 +1,10 @@
 using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.ProductTypes;
+using JewelrySalesSystem.BAL.Models.Users;
+using JewelrySalesSystem.BAL.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing.Matching;
 
 namespace JewelrySalesSystem.API.Controllers
 {
@@ -106,6 +109,20 @@ namespace JewelrySalesSystem.API.Controllers
         }
         #endregion
         #region Add Product Type
+        /// <summary>
+        /// Add New Product Type
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     {
+        ///       "name": "string"
+        ///     }
+        /// </remarks>
+        /// <param name="productType"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         [HttpPost]
         public async Task<IActionResult> AddAsync([FromBody] CreateProductTypeRequest productType)
         {
@@ -119,10 +136,42 @@ namespace JewelrySalesSystem.API.Controllers
             {
                 throw new Exception(ex.Message);
             }
-
         }
+        #endregion
 
+        #region Update ProductType
+        /// <summary>
+        /// Update Product Type in the system
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     {
+        ///     "id": 0,
+        ///     "name": "string"
+        ///     }
+        /// </remarks>
+        /// <param name="productType"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        [HttpPut]
+        public async Task<IActionResult> UpdateAsync(UpdateTypeRequest productType)
+        {
+            try
+            {
+                var typeId = await _productTypeService.GetByIdAsync(productType.Id);
+                if (typeId == null)
+                    return BadRequest();
 
+                await _productTypeService.UpdateAsync(productType);
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
         #endregion
     }
 }
