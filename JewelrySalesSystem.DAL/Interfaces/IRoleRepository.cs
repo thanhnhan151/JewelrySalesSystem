@@ -7,5 +7,7 @@ namespace JewelrySalesSystem.DAL.Interfaces
     {
         /*Change here*/
         Task<Role> AddRoleAsync(Role role);
+
+        Task<Role> CheckDuplicate(string name );
     }
 }
