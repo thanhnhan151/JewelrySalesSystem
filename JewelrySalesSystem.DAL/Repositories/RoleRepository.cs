@@ -2,6 +2,7 @@
 using JewelrySalesSystem.DAL.Infrastructures;
 using JewelrySalesSystem.DAL.Interfaces;
 using JewelrySalesSystem.DAL.Persistence;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace JewelrySalesSystem.DAL.Repositories
@@ -19,6 +20,11 @@ namespace JewelrySalesSystem.DAL.Repositories
             _context.Roles.Add(role);
             await _context.SaveChangesAsync();
             return role;
+        }
+
+        public async Task<Role> CheckDuplicate(string name)
+        {
+            return await _dbSet.FirstOrDefaultAsync(r => r.RoleName == name);
         }
     }
 }
