@@ -15,6 +15,11 @@ namespace JewelrySalesSystem.DAL.Repositories
         {
         }
 
+        public async Task<Category> CheckDuplicate(string name)
+        {
+            return await _dbSet.FirstOrDefaultAsync(c => c.CategoryName == name);
+        }
+
         public async Task<List<Category>> GetAllAsync() => await _dbSet
                                                                  .OrderByDescending(x => x.CategoryId)
                                                                  .Where(c => c.Status)
