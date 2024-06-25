@@ -52,6 +52,8 @@ namespace JewelrySalesSystem.BAL
 
             services.AddScoped<IValidator<CreateProductTypeRequest>, CreateProductTypeValidator>();
 
+            services.AddScoped<IValidator<UpdateTypeRequest>, UpdateProductTypeValidator>();
+
             return services;
         }
     }
