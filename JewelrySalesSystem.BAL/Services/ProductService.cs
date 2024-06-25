@@ -81,6 +81,7 @@ namespace JewelrySalesSystem.BAL.Services
                 ProductTypeId = createProductRequest.ProductTypeId,
                 GenderId = createProductRequest.GenderId,
                 ColourId = createProductRequest.ColourId,
+                Weight = createProductRequest.Weight,
                 ProductGems = productGems,
                 ProductMaterials = productMaterials
             };
@@ -130,6 +131,7 @@ namespace JewelrySalesSystem.BAL.Services
                 ProductTypeId = updateProductRequest.ProductTypeId,
                 GenderId = updateProductRequest.GenderId,
                 ColourId = updateProductRequest.ColourId,
+                Weight = updateProductRequest.Weight,
                 ProductGems = productGems,
                 ProductMaterials = productMaterials
             };

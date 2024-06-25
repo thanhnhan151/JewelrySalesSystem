@@ -120,6 +120,7 @@ namespace JewelrySalesSystem.DAL.Repositories
                 checkExistProduct.ProductTypeId = product.ProductTypeId;
                 checkExistProduct.GenderId = product.GenderId;
                 checkExistProduct.ColourId = product.ColourId;
+                checkExistProduct.Weight = product.Weight;
 
 
                 var existProductGems = await _context.ProductGems.Where(pe => pe.ProductId == product.ProductId).ToListAsync();
