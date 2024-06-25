@@ -3,6 +3,7 @@ using FluentValidation;
 using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.ProductTypes;
 using JewelrySalesSystem.BAL.Models.Roles;
+using JewelrySalesSystem.BAL.Models.Users;
 using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
 
@@ -38,6 +39,14 @@ namespace JewelrySalesSystem.BAL.Services
             }
 
             var result = _unitOfWork.ProductTypes.AddEntity(_mapper.Map<ProductType>(productType));
+            await _unitOfWork.CompleteAsync();
+
+            return productType;
+        }
+
+        public async Task<UpdateTypeRequest> UpdateAsync(UpdateTypeRequest productType)
+        {
+            _unitOfWork.ProductTypes.UpdateEntity(_mapper.Map<ProductType>(productType));
             await _unitOfWork.CompleteAsync();
 
             return productType;
