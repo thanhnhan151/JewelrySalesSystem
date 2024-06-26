@@ -9,12 +9,11 @@ namespace JewelrySalesSystem.DAL.Entities
         [Key]
         public int ProductId { get; set; }
         public string ProductName { get; set; } = string.Empty;
-        public int PercentPriceRate { get; set; }
-        public float ProductionCost { get; set; }
+        public int PercentPriceRate { get; set; } = 0;
+        public float ProductionCost { get; set; } = 0;
         public bool Status { get; set; }
         public string FeaturedImage { get; set; } = string.Empty;
-        public string MaterialType { get; set; } = string.Empty;
-        public float Weight { get; set; }
+        public float Weight { get; set; } = 0;
 
         // Category
         public int? CategoryId { get; set; }
