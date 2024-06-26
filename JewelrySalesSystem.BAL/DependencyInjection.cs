@@ -10,7 +10,6 @@ using JewelrySalesSystem.BAL.Validators.Category;
 using JewelrySalesSystem.BAL.Validators.ProductType;
 using JewelrySalesSystem.BAL.Validators.Role;
 using JewelrySalesSystem.BAL.Validators.User;
-using JewelrySalesSystem.DAL.Entities;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JewelrySalesSystem.BAL
