@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentValidation;
+﻿using FluentValidation;
 using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.Invoices;
-using JewelrySalesSystem.DAL.Entities;
-using JewelrySalesSystem.DAL.Interfaces;
-using JewelrySalesSystem.DAL.Persistence;
-using JewelrySalesSystem.DAL.Repositories;
-using Microsoft.EntityFrameworkCore;
 
 namespace JewelrySalesSystem.BAL.Validators.Invoices
 {
@@ -24,7 +14,7 @@ namespace JewelrySalesSystem.BAL.Validators.Invoices
         private readonly IProductService _productService;
         public CreateInvoiceRequestValidator(ICustomerService customerService, IUserService userService, IWarrantyService warrantyService, IProductService productService)
         {
-            
+
             _customerService = customerService;
             _userService = userService;
             _productService = productService;
@@ -64,7 +54,7 @@ namespace JewelrySalesSystem.BAL.Validators.Invoices
 
         }
 
-       
+
         /*Methods check ValidProperty call from Services*/
 
         //Check User is existed by Id
@@ -82,7 +72,7 @@ namespace JewelrySalesSystem.BAL.Validators.Invoices
         private async Task<bool> beValidWarranty(int id, CancellationToken cancellationToken)
         {
             var checkExist = await _warrantyService.GetWarrantyById(id);
-            if(checkExist != null)
+            if (checkExist != null)
             {
                 return true;
             }
@@ -90,7 +80,7 @@ namespace JewelrySalesSystem.BAL.Validators.Invoices
         }
 
         //Check Customer is existed by name
-        private async Task<bool> beValidCustomer(string customerName,  CancellationToken cancellationToken)
+        private async Task<bool> beValidCustomer(string customerName, CancellationToken cancellationToken)
         {
             var checkExist = await _customerService.GetCustomerByNameAsync(customerName);
             if (checkExist != 0)
@@ -103,7 +93,7 @@ namespace JewelrySalesSystem.BAL.Validators.Invoices
         //Check Product is existed by id
         private async Task<bool> beValidProduct(int id, CancellationToken cancellationToken)
         {
-            var checkExist = await _productService.GetProductByIdAsync(id);
+            var checkExist = await _productService.GetByIdAsync(id);
             if (checkExist != null)
             {
                 return true;

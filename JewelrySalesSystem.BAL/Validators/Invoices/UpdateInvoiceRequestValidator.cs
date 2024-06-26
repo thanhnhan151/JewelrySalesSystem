@@ -99,7 +99,7 @@ namespace JewelrySalesSystem.BAL.Validators.Invoices
         //Check Product is existed by id
         private async Task<bool> beValidProduct(int id, CancellationToken cancellationToken)
         {
-            var checkExist = await _productService.GetProductByIdAsync(id);
+            var checkExist = await _productService.GetByIdAsync(id);
             if (checkExist != null)
             {
                 return true;
