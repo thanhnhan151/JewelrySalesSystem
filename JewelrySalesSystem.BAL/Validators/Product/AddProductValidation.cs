@@ -45,7 +45,7 @@ namespace JewelrySalesSystem.BAL.Validators.Product
             RuleFor(p => p.GenderId)
                 .NotEmpty().WithMessage("Gender ID is required!")
                 .MustAsync(async (genderId, cancellation) => await AlreadyExitId(genderId, "GenderId"))
-                .WithMessage("Gender ID does no exit!");
+                .WithMessage("Gender ID does not exit!");
 
             RuleFor(p => p.ColourId)
                 .NotEmpty().WithMessage("Colour ID is required!")
