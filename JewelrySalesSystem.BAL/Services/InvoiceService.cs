@@ -39,11 +39,48 @@ namespace JewelrySalesSystem.BAL.Services
             {
                 foreach (var item in createInvoiceRequest.InvoiceDetails)
                 {
-                    invoiceDetails.Add(new InvoiceDetail
+                    var existedProduct = await _unitOfWork.Products.GetEntityByIdAsync(item);
+
+                    if (existedProduct != null)
                     {
-                        ProductId = item,
-                        ProductPrice = await CalculateProductPrice(item)
-                    });
+                        switch (existedProduct.ProductTypeId)
+                        {
+                            case 2:
+                                var material = await _unitOfWork.Materials.GetByNameWithIncludeAsync(existedProduct.ProductName);
+
+                                if (material != null)
+                                {
+                                    invoiceDetails.Add(new InvoiceDetail
+                                    {
+                                        ProductId = item,
+                                        ProductPrice = material.MaterialPrices.Select(m => m.SellPrice).SingleOrDefault()
+                                    });
+                                }
+
+                                break;
+                            case 3:
+                                invoiceDetails.Add(new InvoiceDetail
+                                {
+                                    ProductId = item,
+                                    ProductPrice = await CalculateProductPrice(item)
+                                });
+
+                                break;
+                            default:
+                                var gem = await _unitOfWork.Gems.GetByNameWithIncludeAsync(existedProduct.ProductName);
+
+                                if (gem != null)
+                                {
+                                    invoiceDetails.Add(new InvoiceDetail
+                                    {
+                                        ProductId = item,
+                                        ProductPrice = gem.GemPrice.CaratWeightPrice * (1 + gem.GemPrice.ColourPrice / 100 + gem.GemPrice.CutPrice / 100 + gem.GemPrice.ClarityPrice / 100)
+                                    });
+                                }
+
+                                break;
+                        }
+                    }
                 }
             }
 
@@ -81,11 +118,48 @@ namespace JewelrySalesSystem.BAL.Services
             {
                 foreach (var item in updateInvoiceRequest.InvoiceDetails)
                 {
-                    invoiceDetails.Add(new InvoiceDetail
+                    var existedProduct = await _unitOfWork.Products.GetEntityByIdAsync(item);
+
+                    if (existedProduct != null)
                     {
-                        ProductId = item,
-                        ProductPrice = await CalculateProductPrice(item)
-                    });
+                        switch (existedProduct.ProductTypeId)
+                        {
+                            case 2:
+                                var material = await _unitOfWork.Materials.GetByNameWithIncludeAsync(existedProduct.ProductName);
+
+                                if (material != null)
+                                {
+                                    invoiceDetails.Add(new InvoiceDetail
+                                    {
+                                        ProductId = item,
+                                        ProductPrice = material.MaterialPrices.Select(m => m.SellPrice).SingleOrDefault()
+                                    });
+                                }
+
+                                break;
+                            case 3:
+                                invoiceDetails.Add(new InvoiceDetail
+                                {
+                                    ProductId = item,
+                                    ProductPrice = await CalculateProductPrice(item)
+                                });
+
+                                break;
+                            default:
+                                var gem = await _unitOfWork.Gems.GetByNameWithIncludeAsync(existedProduct.ProductName);
+
+                                if (gem != null)
+                                {
+                                    invoiceDetails.Add(new InvoiceDetail
+                                    {
+                                        ProductId = item,
+                                        ProductPrice = gem.GemPrice.CaratWeightPrice * (1 + gem.GemPrice.ColourPrice / 100 + gem.GemPrice.CutPrice / 100 + gem.GemPrice.ClarityPrice / 100)
+                                    });
+                                }
+
+                                break;
+                        }
+                    }
                 }
             }
 
@@ -114,8 +188,6 @@ namespace JewelrySalesSystem.BAL.Services
 
             return updateInvoiceRequest;
         }
-
-
 
         public async Task<GetInvoiceResponse?> GetByIdWithIncludeAsync(int id) => _mapper.Map<GetInvoiceResponse>(await _unitOfWork.Invoices.GetByIdWithIncludeAsync(id));
 
