@@ -61,7 +61,15 @@ namespace JewelrySalesSystem.BAL.Services
                 }
             };
 
-            var result = _unitOfWork.Materials.AddEntity(material);
+            var product = new Product
+            {
+                ProductName = createMaterialRequest.MaterialName,
+                ProductTypeId = 2
+            };
+
+            var produtResult = _unitOfWork.Products.AddEntity(product);
+
+            var materialResult = _unitOfWork.Materials.AddEntity(material);
 
             await _unitOfWork.CompleteAsync();
 

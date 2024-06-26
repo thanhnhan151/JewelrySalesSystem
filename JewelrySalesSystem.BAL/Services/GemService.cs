@@ -60,7 +60,16 @@ namespace JewelrySalesSystem.BAL.Services
                 }
             };
 
-            var result = _unitOfWork.Gems.AddEntity(gem);
+            var product = new Product
+            {
+                ProductName = createGemRequest.GemName,
+                FeaturedImage = createGemRequest.FeaturedImage,
+                ProductTypeId = 4
+            };
+
+            var produtResult = _unitOfWork.Products.AddEntity(product);
+
+            var gemResult = _unitOfWork.Gems.AddEntity(gem);
 
             await _unitOfWork.CompleteAsync();
 

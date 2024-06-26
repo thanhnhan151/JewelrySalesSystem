@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.Gems;
+using JewelrySalesSystem.BAL.Models.Materials;
 using JewelrySalesSystem.BAL.Models.Products;
 using JewelrySalesSystem.DAL.Common;
 using JewelrySalesSystem.DAL.Entities;
@@ -21,14 +22,16 @@ namespace JewelrySalesSystem.BAL.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<PaginatedList<GetProductResponse>> PaginationAsync(
+        public async Task<PaginatedList<GetProductResponse>> ProductPaginationAsync(
+            int productTypeId,
+            int? categoryId,
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
             int page,
             int pageSize)
         {
-            var result = _mapper.Map<PaginatedList<GetProductResponse>>(await _unitOfWork.Products.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize));
+            var result = _mapper.Map<PaginatedList<GetProductResponse>>(await _unitOfWork.Products.JewelryPaginationAsync(productTypeId, categoryId, searchTerm, sortColumn, sortOrder, page, pageSize));
 
             foreach (var item in result.Items)
             {
@@ -41,6 +44,61 @@ namespace JewelrySalesSystem.BAL.Services
                 CalculateProductPrice(item);
             }
 
+            return result;
+        }
+
+        public async Task<PaginatedList<GetGemProductResponse>> GemPaginationAsync(
+            int productTypeId,
+            string? searchTerm,
+            string? sortColumn,
+            string? sortOrder,
+            int page,
+            int pageSize)
+        {
+            var result = _mapper.Map<PaginatedList<GetGemProductResponse>>(await _unitOfWork.Products.PaginationAsync(productTypeId, searchTerm, sortColumn, sortOrder, page, pageSize));
+
+            foreach (var item in result.Items)
+            {
+                var gem = await _unitOfWork.Gems.GetByNameWithIncludeAsync(item.ProductName);
+
+                if (gem != null)
+                {
+                    item.Origin = gem.Origin;
+                    item.CaratWeight = gem.CaratWeight;
+                    item.Cut = gem.Cut;
+                    item.Colour = gem.Colour;
+                    item.Clarity = gem.Clarity;
+                    item.GemPrice = _mapper.Map<GemPrice>(gem.GemPrice);
+
+                    item.GemPrice.Total = item.GemPrice.CaratWeightPrice * (1 + item.GemPrice.ColourPrice / 100 + item.GemPrice.CutPrice / 100 + item.GemPrice.ClarityPrice / 100);
+
+                    item.GemPrice.ClarityPrice = item.GemPrice.ClarityPrice / 100;
+                    item.GemPrice.ColourPrice = item.GemPrice.ColourPrice / 100;
+                    item.GemPrice.CutPrice = item.GemPrice.CutPrice / 100;
+                }
+            }
+            return result;
+        }
+
+        public async Task<PaginatedList<GetMaterialProductResponse>> MaterialPaginationAsync(
+            int productTypeId,
+            string? searchTerm,
+            string? sortColumn,
+            string? sortOrder,
+            int page,
+            int pageSize)
+        {
+            var result = _mapper.Map<PaginatedList<GetMaterialProductResponse>>(await _unitOfWork.Products.PaginationAsync(productTypeId, searchTerm, sortColumn, sortOrder, page, pageSize));
+
+            foreach (var item in result.Items)
+            {
+                var material = await _unitOfWork.Materials.GetByNameWithIncludeAsync(item.ProductName);
+
+                if (material != null)
+                {
+                    item.MaterialPrice = _mapper.Map<MaterialPrice>(material.MaterialPrices.SingleOrDefault());
+                }
+            }
             return result;
         }
 
@@ -77,7 +135,6 @@ namespace JewelrySalesSystem.BAL.Services
                 ProductName = createProductRequest.ProductName,
                 PercentPriceRate = createProductRequest.PercentPriceRate,
                 ProductionCost = createProductRequest.ProductionCost,
-                MaterialType = createProductRequest.MaterialType,
                 FeaturedImage = createProductRequest.FeaturedImage,
                 CategoryId = createProductRequest.CategoryId,
                 ProductTypeId = createProductRequest.ProductTypeId,
@@ -127,7 +184,6 @@ namespace JewelrySalesSystem.BAL.Services
                 ProductName = updateProductRequest.ProductName,
                 PercentPriceRate = updateProductRequest.PercentPriceRate,
                 ProductionCost = updateProductRequest.ProductionCost,
-                MaterialType = updateProductRequest.MaterialType,
                 FeaturedImage = updateProductRequest.FeaturedImage,
                 CategoryId = updateProductRequest.CategoryId,
                 ProductTypeId = updateProductRequest.ProductTypeId,
@@ -143,7 +199,7 @@ namespace JewelrySalesSystem.BAL.Services
             await _unitOfWork.CompleteAsync();
         }
 
-        public async Task<GetProductResponse?> GetByIdWithIncludeAsync(int id) => _mapper.Map<GetProductResponse>(await _unitOfWork.Products.GetByIdWithIncludeAsync(id));
+        public async Task<GetProductResponse?> GetByIdAsync(int id) => _mapper.Map<GetProductResponse>(await _unitOfWork.Products.GetByIdWithIncludeAsync(id));
 
         public async Task DeleteAsync(int id)
         {
@@ -151,9 +207,9 @@ namespace JewelrySalesSystem.BAL.Services
             await _unitOfWork.CompleteAsync();
         }
 
-        public async Task<GetProductResponse?> GetByIdAsync(int id)
+        public async Task<GetProductResponse?> GetByIdWithIncludeAsync(int id)
         {
-            var result = _mapper.Map<GetProductResponse>(await _unitOfWork.Products.GetEntityByIdAsync(id));
+            var result = _mapper.Map<GetProductResponse>(await _unitOfWork.Products.GetByIdWithIncludeAsync(id));
 
             foreach (var item in result.Gems)
             {
@@ -161,12 +217,8 @@ namespace JewelrySalesSystem.BAL.Services
                 RefactorGemPrice(item);
             }
 
-            return result;
-        }
+            CalculateProductPrice(result);
 
-        public async Task<GetProductResponse?> GetProductByIdAsync(int id)
-        {
-            var result = _mapper.Map<GetProductResponse>(await _unitOfWork.Products.GetEntityByIdAsync(id));
             return result;
         }
 
@@ -182,7 +234,6 @@ namespace JewelrySalesSystem.BAL.Services
 
         private void CalculateProductPrice(GetProductResponse productResponse)
         {
-
             productResponse.ProductPrice += productResponse.ProductionCost;
 
             if (productResponse.Gems.Count > 0)
