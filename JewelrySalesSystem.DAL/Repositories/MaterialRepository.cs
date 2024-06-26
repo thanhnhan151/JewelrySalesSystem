@@ -79,5 +79,8 @@ namespace JewelrySalesSystem.DAL.Repositories
             if (result == null) return null;
             return result;
         }
+
+        //changes here
+        public async Task<Material> CheckDuplicate(string materialName) => await _dbSet.FirstOrDefaultAsync(m => m.MaterialName == materialName);
     }
 }
