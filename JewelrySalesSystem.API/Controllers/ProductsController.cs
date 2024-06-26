@@ -1,6 +1,5 @@
 ﻿using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.Products;
-using JewelrySalesSystem.DAL.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,10 +20,12 @@ namespace JewelrySalesSystem.API.Controllers
             _productService = productService;
         }
 
-        #region Get All Products
+        #region Get All Jewelry Products
         /// <summary>
-        /// Get all products in the system
+        /// Get all jewelry products in the system
         /// </summary>
+        /// <param name="productTypeId">Id of the product type</param>
+        /// <param name="categoryId">Product category</param>
         /// <param name="page">Current page the user is on</param>
         /// <param name="pageSize">Number of entities you want to show</param>
         /// <param name="searchTerm">Search query</param>
@@ -37,17 +38,107 @@ namespace JewelrySalesSystem.API.Controllers
         /// <response code="403">Forbidden</response>
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server</response>
-        [HttpGet]
-        public async Task<IActionResult> GetAllAsync(
+        [HttpGet("jewelries")]
+        public async Task<IActionResult> GetAllJewelryProductsAsync(
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
+            int? categoryId,
+            int productTypeId = 3,
             int page = 1,
             int pageSize = 5)
         {
             try
             {
-                var result = await _productService.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize);
+                var result = await _productService.ProductPaginationAsync(productTypeId, categoryId, searchTerm, sortColumn, sortOrder, page, pageSize);
+
+                if (result is not null)
+                {
+                    return Ok(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return BadRequest();
+        }
+        #endregion
+
+        #region Get All Gem Products
+        /// <summary>
+        /// Get all gem products in the system
+        /// </summary>
+        /// <param name="productTypeId">Id of the product type</param>
+        /// <param name="page">Current page the user is on</param>
+        /// <param name="pageSize">Number of entities you want to show</param>
+        /// <param name="searchTerm">Search query</param>
+        /// <param name="sortColumn">Column you want to sort</param>
+        /// <param name="sortOrder">Sort column by ascending or descening</param>
+        /// <returns>A list of all users</returns>
+        /// <response code="200">Return all products in the system</response>
+        /// <response code="400">If no products are in the system</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server</response>
+        [HttpGet("gems")]
+        public async Task<IActionResult> GetAllGemProductsAsync(
+            string? searchTerm,
+            string? sortColumn,
+            string? sortOrder,
+            int productTypeId = 4,
+            int page = 1,
+            int pageSize = 5)
+        {
+            try
+            {
+                var result = await _productService.GemPaginationAsync(productTypeId, searchTerm, sortColumn, sortOrder, page, pageSize);
+
+                if (result is not null)
+                {
+                    return Ok(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return BadRequest();
+        }
+        #endregion
+
+        #region Get All Material Products
+        /// <summary>
+        /// Get all material products in the system
+        /// </summary>
+        /// <param name="productTypeId">Id of the product type</param>
+        /// <param name="page">Current page the user is on</param>
+        /// <param name="pageSize">Number of entities you want to show</param>
+        /// <param name="searchTerm">Search query</param>
+        /// <param name="sortColumn">Column you want to sort</param>
+        /// <param name="sortOrder">Sort column by ascending or descening</param>
+        /// <returns>A list of all users</returns>
+        /// <response code="200">Return all products in the system</response>
+        /// <response code="400">If no products are in the system</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server</response>
+        [HttpGet("materials")]
+        public async Task<IActionResult> GetAllJewelryProductAsync(
+            string? searchTerm,
+            string? sortColumn,
+            string? sortOrder,
+            int productTypeId = 2,
+            int page = 1,
+            int pageSize = 5)
+        {
+            try
+            {
+                var result = await _productService.MaterialPaginationAsync(productTypeId, searchTerm, sortColumn, sortOrder, page, pageSize);
 
                 if (result is not null)
                 {
@@ -74,7 +165,6 @@ namespace JewelrySalesSystem.API.Controllers
         ///       "productName": "Test Product",
         ///       "percentPriceRate": 10,
         ///       "productionCost": 100,
-        ///       "materialType": "Gold"
         ///       "featuredImage": "testurl",
         ///       "weight": 500,
         ///       "categoryId": 2,
