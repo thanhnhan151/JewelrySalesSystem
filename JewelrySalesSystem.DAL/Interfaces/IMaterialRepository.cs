@@ -13,6 +13,8 @@ namespace JewelrySalesSystem.DAL.Interfaces
             , int page
             , int pageSize);
 
+        Task<Material?> GetByNameWithIncludeAsync(string name);
+
         Task<List<Material>> GetAllGoldMaterials();
 
         Task<Material?> GetByIdWithIncludeAsync(int id);

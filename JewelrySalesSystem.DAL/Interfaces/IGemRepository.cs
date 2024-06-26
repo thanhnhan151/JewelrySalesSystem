@@ -13,8 +13,10 @@ namespace JewelrySalesSystem.DAL.Interfaces
             , int page
             , int pageSize);
 
+        Task<Gem?> GetByNameWithIncludeAsync(string name);
+
         Task<Gem?> GetByIdWithIncludeAsync(int id);
 
-        Task UpdateGem(Gem gem);  
+        Task UpdateGem(Gem gem);
     }
 }

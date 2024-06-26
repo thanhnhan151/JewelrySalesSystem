@@ -6,8 +6,18 @@ namespace JewelrySalesSystem.DAL.Interfaces
 {
     public interface IProductRepository : IGenericRepository<Product>
     {
+        Task<PaginatedList<Product>> JewelryPaginationAsync
+            (int productTypeId
+            , int? categoryId
+            , string? searchTerm
+            , string? sortColumn
+            , string? sortOrder
+            , int page
+            , int pageSize);
+
         Task<PaginatedList<Product>> PaginationAsync
-            (string? searchTerm
+            (int productTypeId
+            , string? searchTerm
             , string? sortColumn
             , string? sortOrder
             , int page
