@@ -15,8 +15,9 @@ namespace JewelrySalesSystem.DAL.Entities
         public string FeaturedImage { get; set; } = string.Empty;
         public string MaterialType { get; set; } = string.Empty;
         public float Weight { get; set; }
+
         // Category
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
         public virtual Category Category { get; set; } = null!;
 
         // Product Type
@@ -24,11 +25,11 @@ namespace JewelrySalesSystem.DAL.Entities
         public virtual ProductType ProductType { get; set; } = null!;
 
         // Gender
-        public int GenderId { get; set; }
+        public int? GenderId { get; set; }
         public virtual Gender Gender { get; set; } = null!;
 
         // Colour
-        public int ColourId { get; set; }
+        public int? ColourId { get; set; }
         public virtual Colour Colour { get; set; } = null!;
 
         // Invoice Details
