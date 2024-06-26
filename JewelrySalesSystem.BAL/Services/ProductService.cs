@@ -37,6 +37,8 @@ namespace JewelrySalesSystem.BAL.Services
                     gem.GemPrice.Total = CalculateTotal(gem);
                     RefactorGemPrice(gem);
                 }
+
+                CalculateProductPrice(item);
             }
 
             return result;
@@ -167,6 +169,7 @@ namespace JewelrySalesSystem.BAL.Services
             var result = _mapper.Map<GetProductResponse>(await _unitOfWork.Products.GetEntityByIdAsync(id));
             return result;
         }
+
         private static float CalculateTotal(GemItem gemItem)
             => gemItem.GemPrice.CaratWeightPrice * (1 + gemItem.GemPrice.ColourPrice / 100 + gemItem.GemPrice.CutPrice / 100 + gemItem.GemPrice.ClarityPrice / 100);
 
@@ -175,6 +178,29 @@ namespace JewelrySalesSystem.BAL.Services
             gem.GemPrice.ClarityPrice = gem.GemPrice.ClarityPrice / 100;
             gem.GemPrice.ColourPrice = gem.GemPrice.ColourPrice / 100;
             gem.GemPrice.CutPrice = gem.GemPrice.CutPrice / 100;
+        }
+
+        private void CalculateProductPrice(GetProductResponse productResponse)
+        {
+
+            productResponse.ProductPrice += productResponse.ProductionCost;
+
+            if (productResponse.Gems.Count > 0)
+            {
+                foreach (var gem in productResponse.Gems)
+                {
+                    productResponse.ProductPrice += gem.GemPrice.Total;
+                }
+            }
+
+            if (productResponse.Materials.Count > 0)
+            {
+                foreach (var material in productResponse.Materials)
+                {
+                    productResponse.ProductPrice += (productResponse.Weight * material.MaterialPrice.SellPrice);
+                }
+            }
+            productResponse.ProductPrice += (productResponse.ProductPrice * (productResponse.PercentPriceRate) / 100);
         }
     }
 }
