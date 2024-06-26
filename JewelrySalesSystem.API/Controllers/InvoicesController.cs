@@ -82,11 +82,9 @@ namespace JewelrySalesSystem.API.Controllers
         /// Sample request:
         /// 
         ///     {
-        ///       "invoiceType": "Sale",
         ///       "customerName": "Tran Van A",
         ///       "userId": 1,
         ///       "warrantyId": 1,
-        ///       "total": 1000000,
         ///       "perDiscount": 10,
         ///       "invoiceDetails": [
         ///         1,
@@ -176,22 +174,18 @@ namespace JewelrySalesSystem.API.Controllers
         /// <remarks>
         /// Sample request:
         /// 
-        ///             {
-        ///             "invoiceId": 0,
-        ///             "invoiceStatus": "Processing",
-        ///             "invoiceType": "Purchase",
-        ///             "customerName": "Tran Van A",
-        ///             "userId": 0,
-        ///             "warrantyId": 0,
-        ///             "total": 1200000,
-        ///             "perDiscount": 10,
-        ///             "totalWithDiscount": 1080000,
-        ///             "invoiceDetails": [
-        ///                    productId: 0
-        ///                ]
-        ///              }
+        ///     {
+        ///       "invoiceId": 1,
+        ///       "invoiceStatus": "Processing",
+        ///       "customerName": "Tran Van A",
+        ///       "userId": 0,
+        ///       "warrantyId": 0,
+        ///       "perDiscount": 10,
+        ///       "invoiceDetails": [
+        ///         productId: 0
+        ///       ]
+        ///     }
         ///         
-        /// 
         /// </remarks> 
         /// <returns>No content</returns>
         /// <response code="204">No content</response>
