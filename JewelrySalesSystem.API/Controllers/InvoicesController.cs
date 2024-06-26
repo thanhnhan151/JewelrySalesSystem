@@ -88,7 +88,6 @@ namespace JewelrySalesSystem.API.Controllers
         ///       "warrantyId": 1,
         ///       "total": 1000000,
         ///       "perDiscount": 10,
-        ///       "totalWithDiscount": 900000,
         ///       "invoiceDetails": [
         ///         1,
         ///         2
