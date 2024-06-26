@@ -54,7 +54,7 @@ namespace JewelrySalesSystem.BAL.Services
                 InvoiceType = createInvoiceRequest.InvoiceType,
                 Total = createInvoiceRequest.Total,
                 PerDiscount = createInvoiceRequest.PerDiscount,
-                TotalWithDiscount = createInvoiceRequest.TotalWithDiscount,
+                TotalWithDiscount = createInvoiceRequest.Total - (createInvoiceRequest.Total * createInvoiceRequest.PerDiscount) / 100,
                 InvoiceDetails = invoiceDetails
             };
 
