@@ -3,11 +3,11 @@
     public class UpdateInvoiceRequest
     {
         public int InvoiceId { get; set; }
-        public string InvoiceType { get; set; } = string.Empty;
+        //public string InvoiceType { get; set; } = string.Empty;
         public string InvoiceStatus { get; set; } = string.Empty;
-        public float Total { get; set; }
+        //public float Total { get; set; }
         public float PerDiscount { get; set; }
-        public float TotalWithDiscount { get; set; }
+        //public float TotalWithDiscount { get; set; }
 
         // Customer
         public string CustomerName { get; set; } = string.Empty;

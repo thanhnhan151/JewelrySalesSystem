@@ -33,6 +33,8 @@ namespace JewelrySalesSystem.BAL.Services
         {
             var invoiceDetails = new List<InvoiceDetail>();
 
+            float total = 0;
+
             if (createInvoiceRequest.InvoiceDetails.Count > 0)
             {
                 foreach (var item in createInvoiceRequest.InvoiceDetails)
@@ -45,16 +47,20 @@ namespace JewelrySalesSystem.BAL.Services
                 }
             }
 
+            foreach (var item in invoiceDetails)
+            {
+                total += item.ProductPrice;
+            }
+
             var invoice = new Invoice
             {
                 OrderDate = DateTime.Now,
                 CustomerId = await _unitOfWork.Customers.GetCustomerByNameAsync(createInvoiceRequest.CustomerName),
                 UserId = createInvoiceRequest.UserId,
                 WarrantyId = createInvoiceRequest.WarrantyId,
-                InvoiceType = createInvoiceRequest.InvoiceType,
-                Total = createInvoiceRequest.Total,
+                Total = total,
                 PerDiscount = createInvoiceRequest.PerDiscount,
-                TotalWithDiscount = createInvoiceRequest.Total - (createInvoiceRequest.Total * createInvoiceRequest.PerDiscount) / 100,
+                TotalWithDiscount = total - (total * createInvoiceRequest.PerDiscount) / 100,
                 InvoiceDetails = invoiceDetails
             };
 
@@ -69,6 +75,8 @@ namespace JewelrySalesSystem.BAL.Services
         {
             var invoiceDetails = new List<InvoiceDetail>();
 
+            float total = 0;
+
             if (updateInvoiceRequest.InvoiceDetails.Count > 0)
             {
                 foreach (var item in updateInvoiceRequest.InvoiceDetails)
@@ -81,6 +89,11 @@ namespace JewelrySalesSystem.BAL.Services
                 }
             }
 
+            foreach (var item in invoiceDetails)
+            {
+                total += item.ProductPrice;
+            }
+
             var invoice = new Invoice
             {
                 InvoiceId = updateInvoiceRequest.InvoiceId,
@@ -89,11 +102,10 @@ namespace JewelrySalesSystem.BAL.Services
                 UserId = updateInvoiceRequest.UserId,
                 WarrantyId = updateInvoiceRequest.WarrantyId,
                 InvoiceDetails = invoiceDetails,
-                InvoiceType = updateInvoiceRequest.InvoiceType,
                 InvoiceStatus = updateInvoiceRequest.InvoiceStatus,
-                Total = updateInvoiceRequest.Total,
+                Total = total,
                 PerDiscount = updateInvoiceRequest.PerDiscount,
-                TotalWithDiscount = updateInvoiceRequest.TotalWithDiscount
+                TotalWithDiscount = total - (total * updateInvoiceRequest.PerDiscount) / 100
             };
 
             await _unitOfWork.Invoices.UpdateInvoice(invoice);
