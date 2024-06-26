@@ -5,8 +5,26 @@ namespace JewelrySalesSystem.BAL.Interfaces
 {
     public interface IProductService
     {
-        Task<PaginatedList<GetProductResponse>> PaginationAsync
-            (string? searchTerm
+        Task<PaginatedList<GetProductResponse>> ProductPaginationAsync
+            (int productTypeId
+            , int? categoryId
+            , string? searchTerm
+            , string? sortColumn
+            , string? sortOrder
+            , int page
+            , int pageSize);
+
+        Task<PaginatedList<GetGemProductResponse>> GemPaginationAsync
+            (int productTypeId
+            , string? searchTerm
+            , string? sortColumn
+            , string? sortOrder
+            , int page
+            , int pageSize);
+
+        Task<PaginatedList<GetMaterialProductResponse>> MaterialPaginationAsync
+            (int productTypeId
+            , string? searchTerm
             , string? sortColumn
             , string? sortOrder
             , int page
@@ -18,7 +36,6 @@ namespace JewelrySalesSystem.BAL.Interfaces
 
         Task<GetProductResponse?> GetByIdAsync(int id);
 
-        Task<GetProductResponse?> GetProductByIdAsync(int id);
         Task<GetProductResponse?> GetByIdWithIncludeAsync(int id);
 
         Task DeleteAsync(int id);
