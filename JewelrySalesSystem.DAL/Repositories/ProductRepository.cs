@@ -207,5 +207,16 @@ namespace JewelrySalesSystem.DAL.Repositories
             }
             _dbSet.Update(checkExistProduct);
         }
+
+        //changes here
+        public async Task<Product> CheckDuplicate(string productName) => await _dbSet.FirstOrDefaultAsync(p => p.ProductName == productName);
+
+        public async Task<bool> CategoryExit(int categoryId) => await _dbSet.AnyAsync(p => p.CategoryId == categoryId);
+
+        public async Task<bool> ProductTypeExit(int productTypeId) => await _dbSet.AnyAsync(p => p.ProductTypeId == productTypeId);
+
+        public async Task<bool> GenderExit(int genderId) => await _dbSet.AnyAsync(p => p.GenderId == genderId);
+
+        public async Task<bool> ColourExit(int colourId) => await _dbSet.AnyAsync(p => p.ColourId == colourId);
     }
 }

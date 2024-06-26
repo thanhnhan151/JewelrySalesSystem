@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.Gems;
 using JewelrySalesSystem.BAL.Models.Materials;
@@ -13,13 +14,18 @@ namespace JewelrySalesSystem.BAL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        //changes here
+        private readonly IValidator<CreateProductRequest> _addProductValidator;
+        private readonly IValidator<UpdateProductRequest> _updateProductValidator;
 
         public ProductService(
             IUnitOfWork unitOfWork
-            , IMapper mapper)
+            , IMapper mapper, IValidator<CreateProductRequest> validator, IValidator<UpdateProductRequest> updateProductValidator)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _addProductValidator = validator;
+            _updateProductValidator = updateProductValidator;
         }
 
         public async Task<PaginatedList<GetProductResponse>> ProductPaginationAsync(
@@ -104,6 +110,13 @@ namespace JewelrySalesSystem.BAL.Services
 
         public async Task<CreateProductRequest> AddAsync(CreateProductRequest createProductRequest)
         {
+            //change here
+            var validation = await _addProductValidator.ValidateAsync(createProductRequest);
+            if (!validation.IsValid)
+            {
+                throw new ValidationException(validation.Errors);
+            }
+
             var productGems = new List<ProductGem>();
 
             if (createProductRequest.Gems.Count > 0)
@@ -154,6 +167,13 @@ namespace JewelrySalesSystem.BAL.Services
 
         public async Task UpdateAsync(UpdateProductRequest updateProductRequest)
         {
+            //changes here
+            var validation = await _updateProductValidator.ValidateAsync(updateProductRequest);
+            if(!validation.IsValid)
+            {
+                throw new ValidationException(validation.Errors);
+            }
+
             var productGems = new List<ProductGem>();
             if (updateProductRequest.Gems.Count > 0)
             {
