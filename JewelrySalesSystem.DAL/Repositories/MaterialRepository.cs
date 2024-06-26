@@ -70,5 +70,14 @@ namespace JewelrySalesSystem.DAL.Repositories
                                 .Include(m => m.MaterialPrices.OrderByDescending(m => m.EffDate).Take(1))
                                 .Where(m => String.Equals(m.MaterialName, "Gold", StringComparison.OrdinalIgnoreCase))
                                 .ToListAsync();
+
+        public async Task<Material?> GetByNameWithIncludeAsync(string name)
+        {
+            var result = await _dbSet
+                                .Include(m => m.MaterialPrices.OrderByDescending(m => m.EffDate).Take(1))
+                                .FirstOrDefaultAsync(x => x.MaterialName.Equals(name));
+            if (result == null) return null;
+            return result;
+        }
     }
 }

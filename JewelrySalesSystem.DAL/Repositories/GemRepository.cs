@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using JewelrySalesSystem.DAL.Common;
+﻿using JewelrySalesSystem.DAL.Common;
 using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
 using JewelrySalesSystem.DAL.Interfaces;
@@ -61,7 +60,7 @@ namespace JewelrySalesSystem.DAL.Repositories
         public async Task<Gem?> GetByIdWithIncludeAsync(int id)
         {
             var result = await _dbSet
-                .Include(g => g.GemPrice)             
+                .Include(g => g.GemPrice)
                 .FirstOrDefaultAsync(g => g.GemId == id);
 
             if (result == null) return null;
@@ -93,7 +92,7 @@ namespace JewelrySalesSystem.DAL.Repositories
                         ColourPrice = gem.GemPrice.ColourPrice,
                         ClarityPrice = gem.GemPrice.ClarityPrice,
                         CutPrice = gem.GemPrice.CutPrice,
-                        
+
                     };
                     _context.GemPrices.Add(gemPrice);
                 }
@@ -104,7 +103,7 @@ namespace JewelrySalesSystem.DAL.Repositories
                     gemPrice.ClarityPrice = gem.GemPrice.ClarityPrice;
                     gemPrice.CutPrice = gem.GemPrice.CutPrice;
                     _context.GemPrices.Update(gemPrice);
-                    
+
                 }
 
             }
@@ -113,6 +112,16 @@ namespace JewelrySalesSystem.DAL.Repositories
                 throw new Exception($"Gem with ID = {gem.GemId} not found!");
             }
             _dbSet.Update(checkExistGem);
+        }
+
+        public async Task<Gem?> GetByNameWithIncludeAsync(string name)
+        {
+            var result = await _dbSet
+                .Include(g => g.GemPrice)
+                .FirstOrDefaultAsync(g => g.GemName.Equals(name));
+
+            if (result == null) return null;
+            return result;
         }
     }
 }

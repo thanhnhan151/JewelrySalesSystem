@@ -17,8 +17,9 @@ namespace JewelrySalesSystem.DAL.Repositories
         {
         }
 
-        public async Task<PaginatedList<Product>> PaginationAsync(
-            string? searchTerm
+        public async Task<PaginatedList<Product>> PaginationAsync
+            (int productTypeId
+            , string? searchTerm
             , string? sortColumn
             , string? sortOrder
             , int page
@@ -26,6 +27,7 @@ namespace JewelrySalesSystem.DAL.Repositories
         {
             IQueryable<Product> productsQuery = _dbSet
                                                 .OrderByDescending(p => p.ProductId)
+                                                .Where(p => p.ProductTypeId == productTypeId)
                                                 .Include(p => p.ProductGems)
                                                     .ThenInclude(g => g.Gem)
                                                         .ThenInclude(g => g.GemPrice)
@@ -38,6 +40,55 @@ namespace JewelrySalesSystem.DAL.Repositories
                                                 .Include(p => p.ProductType)
                                                 .Include(p => p.Gender)
                                                 .Include(p => p.Colour);
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                productsQuery = productsQuery.Where(c =>
+                    c.ProductName.Contains(searchTerm));
+            }
+
+            if (sortOrder?.ToLower() == "desc")
+            {
+                productsQuery = productsQuery.OrderByDescending(GetSortProperty(sortColumn));
+            }
+            else
+            {
+                productsQuery = productsQuery.OrderBy(GetSortProperty(sortColumn));
+            }
+
+            var products = await PaginatedList<Product>.CreateAsync(productsQuery, page, pageSize);
+
+            return products;
+        }
+
+        public async Task<PaginatedList<Product>> JewelryPaginationAsync
+            (int productTypeId
+            , int? categoryId
+            , string? searchTerm
+            , string? sortColumn
+            , string? sortOrder
+            , int page
+            , int pageSize)
+        {
+            IQueryable<Product> productsQuery = _dbSet
+                                                .OrderByDescending(p => p.ProductId);
+
+            productsQuery = productsQuery.Include(p => p.ProductGems)
+                                                    .ThenInclude(g => g.Gem)
+                                                        .ThenInclude(g => g.GemPrice)
+                                                .Include(p => p.ProductMaterials)
+                                                    .ThenInclude(m => m.Material)
+                                                        .ThenInclude(g => g.MaterialPrices
+                                                        .OrderByDescending(g => g.EffDate)
+                                                        .Take(1))
+                                                .Include(p => p.Category)
+                                                .Include(p => p.ProductType)
+                                                .Include(p => p.Gender)
+                                                .Include(p => p.Colour);
+
+            productsQuery = productsQuery.Where(p => p.ProductTypeId == productTypeId);
+
+            if (categoryId != null) productsQuery = productsQuery.Where(p => p.CategoryId == categoryId);
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
@@ -92,12 +143,7 @@ namespace JewelrySalesSystem.DAL.Repositories
         //Change status of product = false
         public async Task DeleteProduct(int id)
         {
-            var checkExistProduct = await _dbSet.FindAsync(id);
-
-            if (checkExistProduct == null)
-            {
-                throw new Exception($"Product with {id} not found");
-            }
+            var checkExistProduct = await _dbSet.FindAsync(id) ?? throw new Exception($"Product with {id} not found");
             //Delete by change property status = false
             checkExistProduct.Status = false;
             _dbSet.Update(checkExistProduct);
