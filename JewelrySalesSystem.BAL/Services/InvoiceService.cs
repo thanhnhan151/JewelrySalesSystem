@@ -53,7 +53,7 @@ namespace JewelrySalesSystem.BAL.Services
                                     invoiceDetails.Add(new InvoiceDetail
                                     {
                                         ProductId = item,
-                                        ProductPrice = material.MaterialPrices.Select(m => m.SellPrice).SingleOrDefault()
+                                        ProductPrice = existedProduct.ProductPrice
                                     });
                                 }
 
@@ -62,7 +62,7 @@ namespace JewelrySalesSystem.BAL.Services
                                 invoiceDetails.Add(new InvoiceDetail
                                 {
                                     ProductId = item,
-                                    ProductPrice = await CalculateProductPrice(item)
+                                    ProductPrice = existedProduct.ProductPrice
                                 });
 
                                 break;
@@ -74,7 +74,7 @@ namespace JewelrySalesSystem.BAL.Services
                                     invoiceDetails.Add(new InvoiceDetail
                                     {
                                         ProductId = item,
-                                        ProductPrice = gem.GemPrice.CaratWeightPrice * (1 + gem.GemPrice.ColourPrice / 100 + gem.GemPrice.CutPrice / 100 + gem.GemPrice.ClarityPrice / 100)
+                                        ProductPrice = existedProduct.ProductPrice
                                     });
                                 }
 
@@ -132,7 +132,7 @@ namespace JewelrySalesSystem.BAL.Services
                                     invoiceDetails.Add(new InvoiceDetail
                                     {
                                         ProductId = item,
-                                        ProductPrice = material.MaterialPrices.Select(m => m.SellPrice).SingleOrDefault()
+                                        ProductPrice = existedProduct.ProductPrice
                                     });
                                 }
 
@@ -141,7 +141,7 @@ namespace JewelrySalesSystem.BAL.Services
                                 invoiceDetails.Add(new InvoiceDetail
                                 {
                                     ProductId = item,
-                                    ProductPrice = await CalculateProductPrice(item)
+                                    ProductPrice = existedProduct.ProductPrice
                                 });
 
                                 break;
@@ -153,7 +153,7 @@ namespace JewelrySalesSystem.BAL.Services
                                     invoiceDetails.Add(new InvoiceDetail
                                     {
                                         ProductId = item,
-                                        ProductPrice = gem.GemPrice.CaratWeightPrice * (1 + gem.GemPrice.ColourPrice / 100 + gem.GemPrice.CutPrice / 100 + gem.GemPrice.ClarityPrice / 100)
+                                        ProductPrice = existedProduct.ProductPrice
                                     });
                                 }
 
@@ -191,51 +191,51 @@ namespace JewelrySalesSystem.BAL.Services
 
         public async Task<GetInvoiceResponse?> GetByIdWithIncludeAsync(int id) => _mapper.Map<GetInvoiceResponse>(await _unitOfWork.Invoices.GetByIdWithIncludeAsync(id));
 
-        private async Task<float> CalculateProductPrice(int productId)
-        {
-            var product = await _unitOfWork.Products.GetByIdWithIncludeAsync(productId);
+        //private async Task<float> CalculateProductPrice(int productId)
+        //{
+        //    var product = await _unitOfWork.Products.GetByIdWithIncludeAsync(productId);
 
-            float productPrice = 0;
+        //    float productPrice = 0;
 
-            if (product != null)
-            {
-                productPrice += product.ProductionCost;
-                if (product.ProductGems.Count > 0)
-                {
-                    foreach (var gem in product.ProductGems)
-                    {
-                        var temp = await _unitOfWork.Gems.GetByIdWithIncludeAsync(gem.GemId);
+        //    if (product != null)
+        //    {
+        //        productPrice += product.ProductionCost;
+        //        if (product.ProductGems.Count > 0)
+        //        {
+        //            foreach (var gem in product.ProductGems)
+        //            {
+        //                var temp = await _unitOfWork.Gems.GetByIdWithIncludeAsync(gem.GemId);
 
-                        if (temp != null)
-                        {
-                            var gemPrice = temp.GemPrice;
+        //                if (temp != null)
+        //                {
+        //                    var gemPrice = temp.GemPrice;
 
-                            if (gemPrice != null)
-                            {
-                                productPrice += gemPrice.CutPrice + gemPrice.CaratWeightPrice + gemPrice.ClarityPrice + gemPrice.ColourPrice;
-                            }
-                        }
-                    }
-                }
+        //                    if (gemPrice != null)
+        //                    {
+        //                        productPrice += gemPrice.CutPrice + gemPrice.CaratWeightPrice + gemPrice.ClarityPrice + gemPrice.ColourPrice;
+        //                    }
+        //                }
+        //            }
+        //        }
 
-                if (product.ProductMaterials.Count > 0)
-                {
-                    foreach (var material in product.ProductMaterials)
-                    {
-                        var temp = await _unitOfWork.Materials.GetByIdWithIncludeAsync(material.MaterialId);
+        //        if (product.ProductMaterials.Count > 0)
+        //        {
+        //            foreach (var material in product.ProductMaterials)
+        //            {
+        //                var temp = await _unitOfWork.Materials.GetByIdWithIncludeAsync(material.MaterialId);
 
-                        if (temp != null)
-                        {
-                            var materialPrice = temp.MaterialPrices.SingleOrDefault();
+        //                if (temp != null)
+        //                {
+        //                    var materialPrice = temp.MaterialPrices.SingleOrDefault();
 
-                            if (materialPrice != null) productPrice += (product.Weight * materialPrice.SellPrice);
-                        }
-                    }
-                }
-                productPrice += (productPrice * (product.PercentPriceRate) / 100);
-            }
-            return productPrice;
-        }
+        //                    if (materialPrice != null) productPrice += (product.Weight * materialPrice.SellPrice);
+        //                }
+        //            }
+        //        }
+        //        productPrice += (productPrice * (product.PercentPriceRate) / 100);
+        //    }
+        //    return productPrice;
+        //}
 
         public async Task DeleteInvoice(int id)
         {

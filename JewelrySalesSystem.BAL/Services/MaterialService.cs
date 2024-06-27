@@ -75,6 +75,7 @@ namespace JewelrySalesSystem.BAL.Services
             var product = new Product
             {
                 ProductName = createMaterialRequest.MaterialName,
+                ProductPrice = createMaterialRequest.MaterialPrice.SellPrice,
                 ProductTypeId = 2
             };
 

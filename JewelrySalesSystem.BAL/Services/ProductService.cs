@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.Gems;
 using JewelrySalesSystem.BAL.Models.Materials;
@@ -13,13 +14,18 @@ namespace JewelrySalesSystem.BAL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        //changes here
+        private readonly IValidator<CreateProductRequest> _addProductValidator;
+        private readonly IValidator<UpdateProductRequest> _updateProductValidator;
 
         public ProductService(
             IUnitOfWork unitOfWork
-            , IMapper mapper)
+            , IMapper mapper, IValidator<CreateProductRequest> validator, IValidator<UpdateProductRequest> updateProductValidator)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _addProductValidator = validator;
+            _updateProductValidator = updateProductValidator;
         }
 
         public async Task<PaginatedList<GetProductResponse>> ProductPaginationAsync(
@@ -40,8 +46,6 @@ namespace JewelrySalesSystem.BAL.Services
                     gem.GemPrice.Total = CalculateTotal(gem);
                     RefactorGemPrice(gem);
                 }
-
-                CalculateProductPrice(item);
             }
 
             return result;
@@ -104,6 +108,13 @@ namespace JewelrySalesSystem.BAL.Services
 
         public async Task<CreateProductRequest> AddAsync(CreateProductRequest createProductRequest)
         {
+            //change here
+            var validation = await _addProductValidator.ValidateAsync(createProductRequest);
+            if (!validation.IsValid)
+            {
+                throw new ValidationException(validation.Errors);
+            }
+
             var productGems = new List<ProductGem>();
 
             if (createProductRequest.Gems.Count > 0)
@@ -141,6 +152,7 @@ namespace JewelrySalesSystem.BAL.Services
                 GenderId = createProductRequest.GenderId,
                 ColourId = createProductRequest.ColourId,
                 Weight = createProductRequest.Weight,
+                ProductPrice = await CalculateProductPrice(createProductRequest),
                 ProductGems = productGems,
                 ProductMaterials = productMaterials
             };
@@ -154,6 +166,13 @@ namespace JewelrySalesSystem.BAL.Services
 
         public async Task UpdateAsync(UpdateProductRequest updateProductRequest)
         {
+            //changes here
+            var validation = await _updateProductValidator.ValidateAsync(updateProductRequest);
+            if(!validation.IsValid)
+            {
+                throw new ValidationException(validation.Errors);
+            }
+
             var productGems = new List<ProductGem>();
             if (updateProductRequest.Gems.Count > 0)
             {
@@ -217,8 +236,6 @@ namespace JewelrySalesSystem.BAL.Services
                 RefactorGemPrice(item);
             }
 
-            CalculateProductPrice(result);
-
             return result;
         }
 
@@ -232,26 +249,42 @@ namespace JewelrySalesSystem.BAL.Services
             gem.GemPrice.CutPrice = gem.GemPrice.CutPrice / 100;
         }
 
-        private void CalculateProductPrice(GetProductResponse productResponse)
+        private async Task<float> CalculateProductPrice(CreateProductRequest productResponse)
         {
-            productResponse.ProductPrice += productResponse.ProductionCost;
+            float productPrice = 0;
+
+            productPrice += productResponse.ProductionCost;
 
             if (productResponse.Gems.Count > 0)
             {
-                foreach (var gem in productResponse.Gems)
+                foreach (var item in productResponse.Gems)
                 {
-                    productResponse.ProductPrice += gem.GemPrice.Total;
+                    var gem = await _unitOfWork.Gems.GetByIdWithIncludeAsync(item);
+
+                    if (gem != null)
+                    {
+                        productPrice += gem.GemPrice.CaratWeightPrice * (1 + gem.GemPrice.ColourPrice / 100 + gem.GemPrice.CutPrice / 100 + gem.GemPrice.ClarityPrice / 100);
+                    }
                 }
             }
 
             if (productResponse.Materials.Count > 0)
             {
-                foreach (var material in productResponse.Materials)
+                foreach (var item in productResponse.Materials)
                 {
-                    productResponse.ProductPrice += (productResponse.Weight * material.MaterialPrice.SellPrice);
+                    var temp = await _unitOfWork.Materials.GetByIdWithIncludeAsync(item);
+
+                    if (temp != null)
+                    {
+                        var materialPrice = temp.MaterialPrices.SingleOrDefault();
+
+                        if (materialPrice != null) productPrice += (productResponse.Weight * materialPrice.SellPrice);
+                    }
                 }
             }
-            productResponse.ProductPrice += (productResponse.ProductPrice * (productResponse.PercentPriceRate) / 100);
+            productPrice += (productPrice * (productResponse.PercentPriceRate) / 100);
+
+            return productPrice;
         }
     }
 }

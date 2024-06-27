@@ -4,12 +4,14 @@ using JewelrySalesSystem.BAL.Mappings;
 using JewelrySalesSystem.BAL.Models.Categories;
 using JewelrySalesSystem.BAL.Models.MaterialPriceList;
 using JewelrySalesSystem.BAL.Models.Materials;
+using JewelrySalesSystem.BAL.Models.Products;
 using JewelrySalesSystem.BAL.Models.ProductTypes;
 using JewelrySalesSystem.BAL.Models.Roles;
 using JewelrySalesSystem.BAL.Models.Users;
 using JewelrySalesSystem.BAL.Services;
 using JewelrySalesSystem.BAL.Validators.Category;
 using JewelrySalesSystem.BAL.Validators.Materials;
+using JewelrySalesSystem.BAL.Validators.Product;
 using JewelrySalesSystem.BAL.Validators.ProductType;
 using JewelrySalesSystem.BAL.Validators.Role;
 using JewelrySalesSystem.BAL.Validators.User;
@@ -72,6 +74,10 @@ namespace JewelrySalesSystem.BAL
             services.AddScoped<IValidator<CreateMaterialRequest>, AddMaterialsValidation>();
 
             services.AddScoped<IValidator<MaterialPrice>, MaterialPriceValidation>();
+
+            services.AddScoped<IValidator<CreateProductRequest>, AddProductValidation>();
+
+            services.AddScoped<IValidator<UpdateProductRequest>, UpdateProductValidation>();
 
             return services;
         }
