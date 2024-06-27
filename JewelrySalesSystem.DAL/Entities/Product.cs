@@ -13,6 +13,7 @@ namespace JewelrySalesSystem.DAL.Entities
         public float ProductionCost { get; set; } = 0;
         public bool Status { get; set; }
         public string FeaturedImage { get; set; } = string.Empty;
+        public float ProductPrice { get; set; } = 0;
         public float Weight { get; set; } = 0;
 
         // Category
