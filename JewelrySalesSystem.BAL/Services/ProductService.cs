@@ -168,7 +168,7 @@ namespace JewelrySalesSystem.BAL.Services
         {
             //changes here
             var validation = await _updateProductValidator.ValidateAsync(updateProductRequest);
-            if(!validation.IsValid)
+            if (!validation.IsValid)
             {
                 throw new ValidationException(validation.Errors);
             }
@@ -278,7 +278,7 @@ namespace JewelrySalesSystem.BAL.Services
                     {
                         var materialPrice = temp.MaterialPrices.SingleOrDefault();
 
-                        if (materialPrice != null) productPrice += (productResponse.Weight * materialPrice.SellPrice);
+                        if (materialPrice != null) productPrice += ((productResponse.Weight / 100) * materialPrice.SellPrice) * 375 / 100;
                     }
                 }
             }
