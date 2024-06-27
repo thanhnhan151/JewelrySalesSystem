@@ -64,6 +64,7 @@ namespace JewelrySalesSystem.BAL.Services
             {
                 ProductName = createGemRequest.GemName,
                 FeaturedImage = createGemRequest.FeaturedImage,
+                ProductPrice = createGemRequest.GemPrice.CaratWeightPrice * (1 + createGemRequest.GemPrice.ColourPrice / 100 + createGemRequest.GemPrice.CutPrice / 100 + createGemRequest.GemPrice.ClarityPrice / 100),
                 ProductTypeId = 4
             };
 
