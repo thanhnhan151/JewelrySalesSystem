@@ -26,7 +26,6 @@ namespace JewelrySalesSystem.DAL.Repositories
             , int pageSize)
         {
             IQueryable<Product> productsQuery = _dbSet
-                                                .OrderByDescending(p => p.ProductId)
                                                 .Where(p => p.ProductTypeId == productTypeId)
                                                 .Include(p => p.ProductGems)
                                                     .ThenInclude(g => g.Gem)
@@ -47,13 +46,13 @@ namespace JewelrySalesSystem.DAL.Repositories
                     c.ProductName.Contains(searchTerm));
             }
 
-            if (sortOrder?.ToLower() == "desc")
+            if (sortOrder?.ToLower() == "asc")
             {
-                productsQuery = productsQuery.OrderByDescending(GetSortProperty(sortColumn));
+                productsQuery = productsQuery.OrderBy(GetSortProperty(sortColumn));
             }
             else
             {
-                productsQuery = productsQuery.OrderBy(GetSortProperty(sortColumn));
+                productsQuery = productsQuery.OrderByDescending(GetSortProperty(sortColumn));
             }
 
             var products = await PaginatedList<Product>.CreateAsync(productsQuery, page, pageSize);
@@ -70,10 +69,7 @@ namespace JewelrySalesSystem.DAL.Repositories
             , int page
             , int pageSize)
         {
-            IQueryable<Product> productsQuery = _dbSet
-                                                .OrderByDescending(p => p.ProductId);
-
-            productsQuery = productsQuery.Include(p => p.ProductGems)
+            IQueryable<Product> productsQuery = _dbSet.Include(p => p.ProductGems)
                                                     .ThenInclude(g => g.Gem)
                                                         .ThenInclude(g => g.GemPrice)
                                                 .Include(p => p.ProductMaterials)
@@ -96,13 +92,13 @@ namespace JewelrySalesSystem.DAL.Repositories
                     c.ProductName.Contains(searchTerm));
             }
 
-            if (sortOrder?.ToLower() == "desc")
+            if (sortOrder?.ToLower() == "asc")
             {
-                productsQuery = productsQuery.OrderByDescending(GetSortProperty(sortColumn));
+                productsQuery = productsQuery.OrderBy(GetSortProperty(sortColumn));
             }
             else
             {
-                productsQuery = productsQuery.OrderBy(GetSortProperty(sortColumn));
+                productsQuery = productsQuery.OrderByDescending(GetSortProperty(sortColumn));
             }
 
             var products = await PaginatedList<Product>.CreateAsync(productsQuery, page, pageSize);
@@ -113,7 +109,7 @@ namespace JewelrySalesSystem.DAL.Repositories
         private static Expression<Func<Product, object>> GetSortProperty(string? sortColumn)
         => sortColumn?.ToLower() switch
         {
-            "name" => product => product.ProductName,
+            "price" => product => product.ProductPrice,
             //"dob" => product => product.DoB,
             _ => product => product.ProductId
         };
