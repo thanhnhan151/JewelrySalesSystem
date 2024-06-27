@@ -28,5 +28,15 @@ namespace JewelrySalesSystem.DAL.Interfaces
         Task UpdateProduct(Product product);
 
         Task DeleteProduct(int id);
+        //changes here
+        Task<Product> CheckDuplicate(string productName);
+
+        Task<bool> CategoryExit(int categoryId);
+
+        Task<bool> ProductTypeExit(int productTypeId);
+
+        Task<bool> GenderExit(int genderId);
+
+        Task<bool> ColourExit(int colourId);
     }
 }
