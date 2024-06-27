@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.Materials;
 using JewelrySalesSystem.DAL.Common;
@@ -11,13 +12,16 @@ namespace JewelrySalesSystem.BAL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        //changes here
+        private readonly IValidator<CreateMaterialRequest> _createValidator;
 
         public MaterialService(
             IUnitOfWork unitOfWork
-            , IMapper mapper)
+            , IMapper mapper, IValidator<CreateMaterialRequest> validator)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _createValidator = validator;
         }
 
         public async Task<PaginatedList<GetMaterialResponse>> PaginationAsync(
@@ -47,6 +51,13 @@ namespace JewelrySalesSystem.BAL.Services
 
         public async Task<CreateMaterialRequest> AddAsync(CreateMaterialRequest createMaterialRequest)
         {
+            //changes here
+            var validation = await _createValidator.ValidateAsync(createMaterialRequest);
+            if (!validation.IsValid)
+            {
+                throw new ValidationException(validation.Errors);
+            }
+
             var material = new Material
             {
                 MaterialName = createMaterialRequest.MaterialName,

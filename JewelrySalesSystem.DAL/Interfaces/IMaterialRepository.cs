@@ -18,5 +18,8 @@ namespace JewelrySalesSystem.DAL.Interfaces
         Task<List<Material>> GetAllGoldMaterials();
 
         Task<Material?> GetByIdWithIncludeAsync(int id);
+
+        //changes here
+        Task<Material> CheckDuplicate(string materialName);
     }
 }
