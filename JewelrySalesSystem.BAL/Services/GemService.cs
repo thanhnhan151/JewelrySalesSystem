@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.Gems;
-using JewelrySalesSystem.BAL.Models.Warranties;
 using JewelrySalesSystem.DAL.Common;
 using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
@@ -32,8 +31,20 @@ namespace JewelrySalesSystem.BAL.Services
 
             foreach (var item in result.Items)
             {
-                item.GemPrice.Total = CalculateTotal(item);
-                RefactorGemPrice(item);
+                float price = 0;
+
+                var gem = await _unitOfWork.Gems.GetEntityByIdAsync(item.GemId);
+
+                if (gem != null)
+                {
+                    price = await _unitOfWork.Gems.GetGemPriceAsync(gem);
+
+                    float shapePriceRate = await _unitOfWork.Gems.GetShapePriceRateAsync(gem.ShapeId);
+
+                    price = price * (1 + shapePriceRate / 100);
+                }
+
+                item.Price = price;
             }
 
             return result;
@@ -46,25 +57,23 @@ namespace JewelrySalesSystem.BAL.Services
             {
                 GemName = createGemRequest.GemName,
                 FeaturedImage = createGemRequest.FeaturedImage,
-                Origin = createGemRequest.Origin,
-                CaratWeight = createGemRequest.CaratWeight,
-                Colour = createGemRequest.Colour,
-                Clarity = createGemRequest.Clarity,
-                Cut = createGemRequest.Cut,
-                GemPrice = new GemPriceList
-                {
-                    CaratWeightPrice = createGemRequest.GemPrice.CaratWeightPrice,
-                    ColourPrice = createGemRequest.GemPrice.ColourPrice,
-                    ClarityPrice = createGemRequest.GemPrice.ClarityPrice,
-                    CutPrice = createGemRequest.GemPrice.CutPrice
-                }
+                OriginId = createGemRequest.OriginId,
+                CaratId = createGemRequest.CaratId,
+                ColorId = createGemRequest.ColorId,
+                ClarityId = createGemRequest.ClarityId,
+                CutId = createGemRequest.CutId,
+                ShapeId = createGemRequest.ShapeId
             };
+
+            float price = await _unitOfWork.Gems.GetGemPriceAsync(gem);
+
+            float shapePriceRate = await _unitOfWork.Gems.GetShapePriceRateAsync(gem.ShapeId);
 
             var product = new Product
             {
                 ProductName = createGemRequest.GemName,
                 FeaturedImage = createGemRequest.FeaturedImage,
-                ProductPrice = createGemRequest.GemPrice.CaratWeightPrice * (1 + createGemRequest.GemPrice.ColourPrice / 100 + createGemRequest.GemPrice.CutPrice / 100 + createGemRequest.GemPrice.ClarityPrice / 100),
+                ProductPrice = price * (1 + shapePriceRate / 100),
                 ProductTypeId = 4
             };
 
@@ -84,18 +93,12 @@ namespace JewelrySalesSystem.BAL.Services
                 GemId = updateGemRequest.GemId,
                 GemName = updateGemRequest.GemName,
                 FeaturedImage = updateGemRequest.FeaturedImage,
-                Origin = updateGemRequest.Origin,
-                CaratWeight = updateGemRequest.CaratWeight,
-                Colour = updateGemRequest.Colour,
-                Clarity = updateGemRequest.Clarity,
-                Cut = updateGemRequest.Cut,
-                GemPrice = new GemPriceList
-                {
-                    CaratWeightPrice = updateGemRequest.GemPrice.CaratWeightPrice,
-                    ColourPrice = updateGemRequest.GemPrice.ColourPrice,
-                    ClarityPrice = updateGemRequest.GemPrice.ClarityPrice,
-                    CutPrice = updateGemRequest.GemPrice.CutPrice
-                }
+                OriginId = updateGemRequest.OriginId,
+                CaratId = updateGemRequest.CaratId,
+                ColorId = updateGemRequest.ColorId,
+                ClarityId = updateGemRequest.ClarityId,
+                CutId = updateGemRequest.CutId,
+                ShapeId = updateGemRequest.ShapeId
             };
             await _unitOfWork.Gems.UpdateGem(gem);
             await _unitOfWork.CompleteAsync();
@@ -105,21 +108,22 @@ namespace JewelrySalesSystem.BAL.Services
         {
             var result = _mapper.Map<GetGemResponse>(await _unitOfWork.Gems.GetByIdWithIncludeAsync(id));
 
-            result.GemPrice.Total = CalculateTotal(result);
+            float price = 0;
 
-            RefactorGemPrice(result);
+            var gem = await _unitOfWork.Gems.GetEntityByIdAsync(id);
+
+            if (gem != null)
+            {
+                price = await _unitOfWork.Gems.GetGemPriceAsync(gem);
+
+                float shapePriceRate = await _unitOfWork.Gems.GetShapePriceRateAsync(gem.ShapeId);
+
+                price = price * (1 + shapePriceRate / 100);
+            }
+
+            result.Price = price;
 
             return result;
-        }
-
-        private static float CalculateTotal(GetGemResponse getGemResponse)
-            => getGemResponse.GemPrice.CaratWeightPrice * (1 + getGemResponse.GemPrice.ColourPrice / 100 + getGemResponse.GemPrice.CutPrice / 100 + getGemResponse.GemPrice.ClarityPrice / 100);
-
-        private static void RefactorGemPrice(GetGemResponse gem)
-        {
-            gem.GemPrice.ClarityPrice = gem.GemPrice.ClarityPrice / 100;
-            gem.GemPrice.ColourPrice = gem.GemPrice.ColourPrice / 100;
-            gem.GemPrice.CutPrice = gem.GemPrice.CutPrice / 100;
         }
 
         public async Task<GetGemResponse?> GetGemById(int id) => _mapper.Map<GetGemResponse>(await _unitOfWork.Gems.GetEntityByIdAsync(id));

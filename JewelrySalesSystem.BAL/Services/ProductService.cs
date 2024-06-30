@@ -43,8 +43,32 @@ namespace JewelrySalesSystem.BAL.Services
             {
                 foreach (var gem in item.Gems)
                 {
-                    gem.GemPrice.Total = CalculateTotal(gem);
-                    RefactorGemPrice(gem);
+                    var tempGem = _mapper.Map<GetGemResponse>(await _unitOfWork.Gems.GetByIdWithIncludeAsync(gem.GemId));
+
+                    if (tempGem != null)
+                    {
+                        gem.Origin = tempGem.Origin;
+                        gem.Carat = tempGem.Carat;
+                        gem.Shape = tempGem.Shape;
+                        gem.Cut = tempGem.Cut;
+                        gem.Color = tempGem.Color;
+                        gem.Clarity = tempGem.Clarity;
+                    }
+
+                    float price = 0;
+
+                    var temp = await _unitOfWork.Gems.GetEntityByIdAsync(gem.GemId);
+
+                    if (temp != null)
+                    {
+                        price = await _unitOfWork.Gems.GetGemPriceAsync(temp);
+
+                        float shapePriceRate = await _unitOfWork.Gems.GetShapePriceRateAsync(temp.ShapeId);
+
+                        price = price * (1 + shapePriceRate / 100);
+                    }
+
+                    gem.Price = price;
                 }
             }
 
@@ -67,18 +91,12 @@ namespace JewelrySalesSystem.BAL.Services
 
                 if (gem != null)
                 {
-                    item.Origin = gem.Origin;
-                    item.CaratWeight = gem.CaratWeight;
-                    item.Cut = gem.Cut;
-                    item.Colour = gem.Colour;
-                    item.Clarity = gem.Clarity;
-                    item.GemPrice = _mapper.Map<GemPrice>(gem.GemPrice);
-
-                    item.GemPrice.Total = item.GemPrice.CaratWeightPrice * (1 + item.GemPrice.ColourPrice / 100 + item.GemPrice.CutPrice / 100 + item.GemPrice.ClarityPrice / 100);
-
-                    item.GemPrice.ClarityPrice = item.GemPrice.ClarityPrice / 100;
-                    item.GemPrice.ColourPrice = item.GemPrice.ColourPrice / 100;
-                    item.GemPrice.CutPrice = item.GemPrice.CutPrice / 100;
+                    item.Origin = gem.Origin.Name;
+                    item.Carat = gem.Carat.Weight;
+                    item.Shape = gem.Shape.Name;
+                    item.Cut = gem.Cut.Level;
+                    item.Color = gem.Color.Name;
+                    item.Clarity = gem.Clarity.Level;
                 }
             }
             return result;
@@ -150,8 +168,6 @@ namespace JewelrySalesSystem.BAL.Services
                 CategoryId = createProductRequest.CategoryId,
                 ProductTypeId = createProductRequest.ProductTypeId,
                 GenderId = createProductRequest.GenderId,
-                ColourId = createProductRequest.ColourId,
-                Weight = createProductRequest.Weight,
                 ProductPrice = await CalculateProductPrice(createProductRequest),
                 ProductGems = productGems,
                 ProductMaterials = productMaterials
@@ -207,8 +223,6 @@ namespace JewelrySalesSystem.BAL.Services
                 CategoryId = updateProductRequest.CategoryId,
                 ProductTypeId = updateProductRequest.ProductTypeId,
                 GenderId = updateProductRequest.GenderId,
-                ColourId = updateProductRequest.ColourId,
-                Weight = updateProductRequest.Weight,
                 ProductGems = productGems,
                 ProductMaterials = productMaterials
             };
@@ -232,21 +246,23 @@ namespace JewelrySalesSystem.BAL.Services
 
             foreach (var item in result.Gems)
             {
-                item.GemPrice.Total = CalculateTotal(item);
-                RefactorGemPrice(item);
+                float price = 0;
+
+                var gem = await _unitOfWork.Gems.GetEntityByIdAsync(item.GemId);
+
+                if (gem != null)
+                {
+                    price = await _unitOfWork.Gems.GetGemPriceAsync(gem);
+
+                    float shapePriceRate = await _unitOfWork.Gems.GetShapePriceRateAsync(gem.ShapeId);
+
+                    price = price * (1 + shapePriceRate / 100);
+                }
+
+                item.Price = price;
             }
 
             return result;
-        }
-
-        private static float CalculateTotal(GemItem gemItem)
-            => gemItem.GemPrice.CaratWeightPrice * (1 + gemItem.GemPrice.ColourPrice / 100 + gemItem.GemPrice.CutPrice / 100 + gemItem.GemPrice.ClarityPrice / 100);
-
-        private static void RefactorGemPrice(GemItem gem)
-        {
-            gem.GemPrice.ClarityPrice = gem.GemPrice.ClarityPrice / 100;
-            gem.GemPrice.ColourPrice = gem.GemPrice.ColourPrice / 100;
-            gem.GemPrice.CutPrice = gem.GemPrice.CutPrice / 100;
         }
 
         private async Task<float> CalculateProductPrice(CreateProductRequest productResponse)
@@ -263,7 +279,11 @@ namespace JewelrySalesSystem.BAL.Services
 
                     if (gem != null)
                     {
-                        productPrice += gem.GemPrice.CaratWeightPrice * (1 + gem.GemPrice.ColourPrice / 100 + gem.GemPrice.CutPrice / 100 + gem.GemPrice.ClarityPrice / 100);
+                        float price = await _unitOfWork.Gems.GetGemPriceAsync(gem);
+
+                        float shapePriceRate = await _unitOfWork.Gems.GetShapePriceRateAsync(gem.ShapeId);
+
+                        productPrice += price * (1 + shapePriceRate / 100);
                     }
                 }
             }
@@ -274,11 +294,13 @@ namespace JewelrySalesSystem.BAL.Services
                 {
                     var temp = await _unitOfWork.Materials.GetByIdWithIncludeAsync(item);
 
+                    var weight = await _unitOfWork.ProductMaterials.GetProductMaterialWeightAsync(item);
+
                     if (temp != null)
                     {
                         var materialPrice = temp.MaterialPrices.SingleOrDefault();
 
-                        if (materialPrice != null) productPrice += ((productResponse.Weight / 100) * materialPrice.SellPrice) * 375 / 100;
+                        if (materialPrice != null) productPrice += ((weight / 100) * materialPrice.SellPrice) * 375 / 100;
                     }
                 }
             }
