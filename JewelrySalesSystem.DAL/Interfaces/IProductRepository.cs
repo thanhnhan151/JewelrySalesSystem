@@ -36,7 +36,5 @@ namespace JewelrySalesSystem.DAL.Interfaces
         Task<bool> ProductTypeExit(int productTypeId);
 
         Task<bool> GenderExit(int genderId);
-
-        Task<bool> ColourExit(int colourId);
     }
 }
