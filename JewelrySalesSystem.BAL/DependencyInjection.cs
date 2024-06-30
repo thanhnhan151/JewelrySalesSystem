@@ -50,7 +50,7 @@ namespace JewelrySalesSystem.BAL
 
             services.AddScoped<IProductTypeService, ProductTypeService>();
 
-            services.AddScoped<IColourService, ColourService>();
+            services.AddScoped<IColorService, ColorService>();
 
             services.AddScoped<ICustomerService, CustomerService>();
 

@@ -28,9 +28,6 @@ namespace JewelrySalesSystem.BAL.Validators.Product
             RuleFor(p => p.FeaturedImage)
                 .NotEmpty().WithMessage("Featured Image is required!");
 
-            RuleFor(p => p.Weight)
-                .NotEmpty().WithMessage("Weight is required!")
-                .GreaterThan(0).WithMessage("Product weight must greater than 0!");
 
             RuleFor(p => p.CategoryId)
                 .NotEmpty().WithMessage("Category ID is required!")
@@ -45,11 +42,7 @@ namespace JewelrySalesSystem.BAL.Validators.Product
             RuleFor(p => p.GenderId)
                 .NotEmpty().WithMessage("Gender ID is required!")
                 .MustAsync(async (genderId, cancellation) => await AlreadyExitId(genderId, "GenderId"))
-                .WithMessage("Gender ID does not exit!");
-
-            RuleFor(p => p.ColourId)
-                .NotEmpty().WithMessage("Colour ID is required!")
-                .MustAsync(async (colourId,cancellation) => await AlreadyExitId(colourId, "ColourId"));
+                .WithMessage("Gender ID does not exit!");          
 
             RuleFor(p => p.Gems)
                 .NotEmpty().WithMessage("Gem is required!");
@@ -73,9 +66,7 @@ namespace JewelrySalesSystem.BAL.Validators.Product
                 case "producttypeid":
                     return await _unitOfWork.Products.ProductTypeExit(id);
                 case "genderid":
-                    return await _unitOfWork.Products.GenderExit(id);
-                case "colourid":
-                    return await _unitOfWork.Products.ColourExit(id);
+                    return await _unitOfWork.Products.GenderExit(id);               
                 default:
                     return false;
             }
