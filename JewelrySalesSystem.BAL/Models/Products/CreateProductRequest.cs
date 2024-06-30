@@ -6,7 +6,6 @@
         public int PercentPriceRate { get; set; }
         public float ProductionCost { get; set; }
         public string FeaturedImage { get; set; } = string.Empty;
-        public float Weight { get; set; }
 
         // Category
         public int CategoryId { get; set; }
@@ -17,8 +16,6 @@
         // Gender
         public int GenderId { get; set; }
 
-        // Colour
-        public int ColourId { get; set; }
 
         // Product Gems
         public ICollection<int> Gems { get; set; } = new List<int>();

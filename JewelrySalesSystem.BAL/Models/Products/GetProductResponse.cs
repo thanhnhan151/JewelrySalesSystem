@@ -9,9 +9,7 @@ namespace JewelrySalesSystem.BAL.Models.Products
         public string ProductName { get; set; } = string.Empty;
         public int PercentPriceRate { get; set; }
         public float ProductionCost { get; set; }
-        public bool Status { get; set; }
         public string FeaturedImage { get; set; } = string.Empty;
-        public float Weight { get; set; }
         public float ProductPrice { get; set; }
 
         // Category
@@ -23,13 +21,10 @@ namespace JewelrySalesSystem.BAL.Models.Products
         // Gender
         public string Gender { get; set; } = string.Empty;
 
-        // Colour
-        public string Colour { get; set; } = string.Empty;
-
         // Product Gems
-        public ICollection<GemItem> Gems { get; set; } = new List<GemItem>();
+        public ICollection<GetGemResponse> Gems { get; set; } = [];
 
         // Product Materials
-        public ICollection<MaterialItem> Materials { get; set; } = new List<MaterialItem>();
+        public ICollection<MaterialItem> Materials { get; set; } = [];
     }
 }

@@ -6,7 +6,6 @@ namespace JewelrySalesSystem.BAL.Models.Products
     {
         public int ProductId { get; set; }
         public string ProductName { get; set; } = string.Empty;
-        public bool Status { get; set; }
         public MaterialPrice MaterialPrice { get; set; } = null!;
 
         // Product Type
