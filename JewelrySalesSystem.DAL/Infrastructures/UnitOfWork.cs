@@ -33,9 +33,11 @@ namespace JewelrySalesSystem.DAL.Infrastructures
 
         public IProductTypeRepository ProductTypes { get; private set; }
 
-        public IColourRepository Colours { get; private set; }
+        public IColorRepository Colors { get; private set; }
 
         public ICustomerRepository Customers { get; private set; }
+
+        public IProductMaterialRepository ProductMaterials { get; set; }
 
         public UnitOfWork(
             JewelryDbContext context,
@@ -67,9 +69,11 @@ namespace JewelrySalesSystem.DAL.Infrastructures
 
             ProductTypes = new ProductTypeRepository(_context, _logger);
 
-            Colours = new ColourRepository(_context, _logger);
+            Colors = new ColorRepository(_context, _logger);
 
             Customers = new CustomerRepository(_context, _logger);
+
+            ProductMaterials = new ProductMaterialRepository(_context, _logger);
         }
 
         public async Task CompleteAsync() => await _context.SaveChangesAsync();
