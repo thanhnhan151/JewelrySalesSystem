@@ -56,10 +56,7 @@ namespace JewelrySalesSystem.DAL.Persistence
                     .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(g => g.Gender).WithMany(i => i.Products)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
-
-                entity.HasOne(c => c.Colour).WithMany(i => i.Products)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
+                    .OnDelete(DeleteBehavior.ClientSetNull);              
 
                 entity.HasOne(c => c.Category).WithMany(i => i.Products)
                     .OnDelete(DeleteBehavior.ClientSetNull);
@@ -90,7 +87,12 @@ namespace JewelrySalesSystem.DAL.Persistence
         public DbSet<Role> Roles { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Colour> Colours { get; set; }
+        public DbSet<Color> Colors { get; set; }
+        public DbSet<Carat> Carats { get; set; }
+        public DbSet<Cut> Cuts { get; set; }
+        public DbSet<Clarity> Clarities { get; set; }
+        public DbSet<Shape> Shapes { get; set; }
+        public DbSet<Origin> Origins { get; set; }
         public DbSet<Gender> Genders { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
