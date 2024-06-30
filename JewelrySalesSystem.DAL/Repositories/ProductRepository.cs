@@ -26,10 +26,10 @@ namespace JewelrySalesSystem.DAL.Repositories
             , int pageSize)
         {
             IQueryable<Product> productsQuery = _dbSet
-                                                .Where(p => p.ProductTypeId == productTypeId)
+                                                .Where(p => p.ProductTypeId == productTypeId
+                                                         && p.IsActive)
                                                 .Include(p => p.ProductGems)
                                                     .ThenInclude(g => g.Gem)
-                                                        .ThenInclude(g => g.GemPrice)
                                                 .Include(p => p.ProductMaterials)
                                                     .ThenInclude(m => m.Material)
                                                         .ThenInclude(g => g.MaterialPrices
@@ -37,8 +37,7 @@ namespace JewelrySalesSystem.DAL.Repositories
                                                         .Take(1))
                                                 .Include(p => p.Category)
                                                 .Include(p => p.ProductType)
-                                                .Include(p => p.Gender)
-                                                .Include(p => p.Colour);
+                                                .Include(p => p.Gender);
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
@@ -71,7 +70,6 @@ namespace JewelrySalesSystem.DAL.Repositories
         {
             IQueryable<Product> productsQuery = _dbSet.Include(p => p.ProductGems)
                                                     .ThenInclude(g => g.Gem)
-                                                        .ThenInclude(g => g.GemPrice)
                                                 .Include(p => p.ProductMaterials)
                                                     .ThenInclude(m => m.Material)
                                                         .ThenInclude(g => g.MaterialPrices
@@ -79,10 +77,9 @@ namespace JewelrySalesSystem.DAL.Repositories
                                                         .Take(1))
                                                 .Include(p => p.Category)
                                                 .Include(p => p.ProductType)
-                                                .Include(p => p.Gender)
-                                                .Include(p => p.Colour);
+                                                .Include(p => p.Gender);
 
-            productsQuery = productsQuery.Where(p => p.ProductTypeId == productTypeId);
+            productsQuery = productsQuery.Where(p => p.ProductTypeId == productTypeId && p.IsActive);
 
             if (categoryId != null) productsQuery = productsQuery.Where(p => p.CategoryId == categoryId);
 
@@ -118,7 +115,6 @@ namespace JewelrySalesSystem.DAL.Repositories
         {
             var result = await _dbSet.Include(p => p.ProductGems)
                                     .ThenInclude(g => g.Gem)
-                                        .ThenInclude(g => g.GemPrice)
                                .Include(p => p.ProductMaterials)
                                     .ThenInclude(m => m.Material)
                                         .ThenInclude(g => g.MaterialPrices
@@ -127,7 +123,6 @@ namespace JewelrySalesSystem.DAL.Repositories
                                .Include(p => p.Category)
                                .Include(p => p.ProductType)
                                .Include(p => p.Gender)
-                               .Include(p => p.Colour)
                                .FirstOrDefaultAsync(p => p.ProductId == id);
 
             if (result == null) return null;
@@ -141,7 +136,7 @@ namespace JewelrySalesSystem.DAL.Repositories
         {
             var checkExistProduct = await _dbSet.FindAsync(id) ?? throw new Exception($"Product with {id} not found");
             //Delete by change property status = false
-            checkExistProduct.Status = false;
+            checkExistProduct.IsActive = false;
             _dbSet.Update(checkExistProduct);
         }
 
@@ -156,13 +151,11 @@ namespace JewelrySalesSystem.DAL.Repositories
                 checkExistProduct.ProductName = product.ProductName;
                 checkExistProduct.PercentPriceRate = product.PercentPriceRate;
                 checkExistProduct.ProductionCost = product.ProductionCost;
-                checkExistProduct.Status = product.Status;
+                checkExistProduct.IsActive = product.IsActive;
                 checkExistProduct.FeaturedImage = product.FeaturedImage;
                 checkExistProduct.CategoryId = product.CategoryId;
                 checkExistProduct.ProductTypeId = product.ProductTypeId;
                 checkExistProduct.GenderId = product.GenderId;
-                checkExistProduct.ColourId = product.ColourId;
-                checkExistProduct.Weight = product.Weight;
 
 
                 var existProductGems = await _context.ProductGems.Where(pe => pe.ProductId == product.ProductId).ToListAsync();
@@ -212,7 +205,5 @@ namespace JewelrySalesSystem.DAL.Repositories
         public async Task<bool> ProductTypeExit(int productTypeId) => await _dbSet.AnyAsync(p => p.ProductTypeId == productTypeId);
 
         public async Task<bool> GenderExit(int genderId) => await _dbSet.AnyAsync(p => p.GenderId == genderId);
-
-        public async Task<bool> ColourExit(int colourId) => await _dbSet.AnyAsync(p => p.ColourId == colourId);
     }
 }

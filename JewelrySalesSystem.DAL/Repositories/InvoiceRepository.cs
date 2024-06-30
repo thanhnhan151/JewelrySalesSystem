@@ -100,7 +100,7 @@ namespace JewelrySalesSystem.DAL.Repositories
         public async Task DeleteById(int id)
         {
             var found = await _dbSet.FindAsync(id) ?? throw new Exception($"Invoice with {id} is not found!");
-            found.Status = false;
+            found.IsActive = false;
             _dbSet.Update(found);
         }
 
@@ -113,7 +113,7 @@ namespace JewelrySalesSystem.DAL.Repositories
             existingInvoice.CustomerId = invoice.CustomerId;
             existingInvoice.UserId = invoice.UserId;
             existingInvoice.WarrantyId = invoice.WarrantyId;
-            existingInvoice.Status = invoice.Status;
+            existingInvoice.IsActive = invoice.IsActive;
             existingInvoice.InvoiceType = invoice.InvoiceType;
 
 

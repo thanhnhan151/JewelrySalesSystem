@@ -81,6 +81,6 @@ namespace JewelrySalesSystem.DAL.Repositories
         }
 
         //changes here
-        public async Task<Material> CheckDuplicate(string materialName) => await _dbSet.FirstOrDefaultAsync(m => m.MaterialName == materialName);
+        public async Task<Material> CheckDuplicate(string materialName) => await _dbSet.FirstOrDefaultAsync(m => m.MaterialName == materialName);      
     }
 }

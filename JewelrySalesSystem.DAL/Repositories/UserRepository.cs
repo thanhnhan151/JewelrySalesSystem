@@ -99,7 +99,7 @@ namespace JewelrySalesSystem.DAL.Repositories
                 throw new Exception($"User with {id} not found");
             }
             //Delete by change property status = false
-            checkExistUser.Status = false;
+            checkExistUser.IsActive = false;
             _dbSet.Update(checkExistUser);
         }
 

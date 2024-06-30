@@ -16,9 +16,7 @@ namespace JewelrySalesSystem.DAL.Repositories
         public async Task<ProductType?> GetAllProductsByProductTypeIdAsync(int productTypeId)
         {
             return await _dbSet.Include(pt => pt.Products)
-                                    .ThenInclude(p => p.Gender)
-                            .Include(pt => pt.Products)
-                                .ThenInclude(p => p.Colour)
+                                    .ThenInclude(p => p.Gender)                          
                             .Include(pt => pt.Products)
                                  .ThenInclude(p => p.Category)
                 .FirstOrDefaultAsync(pt => pt.Id == productTypeId);
