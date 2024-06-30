@@ -9,6 +9,7 @@ namespace JewelrySalesSystem.DAL.Entities
         [Key]
         public int MaterialId { get; set; }
         public string MaterialName { get; set; } = string.Empty;
+        public bool IsActive { get; set; } = true;
 
         // Product Materials
         public virtual ICollection<ProductMaterial> ProductMaterials { get; set; } = new List<ProductMaterial>();

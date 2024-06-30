@@ -9,7 +9,7 @@ namespace JewelrySalesSystem.DAL.Entities
         [Key]
         public int CategoryId { get; set; }
         public string CategoryName { get; set; } = string.Empty;
-        public bool Status { get; set; }
+        public bool IsActive { get; set; }
 
         // Products
         public virtual ICollection<Product> Products { get; set; } = new List<Product>();

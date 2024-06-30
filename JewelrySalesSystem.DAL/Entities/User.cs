@@ -14,7 +14,7 @@ namespace JewelrySalesSystem.DAL.Entities
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
-        public bool Status { get; set; }
+        public bool IsActive { get; set; } = true;
 
         // Role
         public int RoleId { get; set; }

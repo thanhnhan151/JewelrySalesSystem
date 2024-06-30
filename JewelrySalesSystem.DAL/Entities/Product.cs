@@ -11,10 +11,9 @@ namespace JewelrySalesSystem.DAL.Entities
         public string ProductName { get; set; } = string.Empty;
         public int PercentPriceRate { get; set; } = 0;
         public float ProductionCost { get; set; } = 0;
-        public bool Status { get; set; }
+        public bool IsActive { get; set; } = true;
         public string FeaturedImage { get; set; } = string.Empty;
         public float ProductPrice { get; set; } = 0;
-        public float Weight { get; set; } = 0;
 
         // Category
         public int? CategoryId { get; set; }
@@ -26,11 +25,7 @@ namespace JewelrySalesSystem.DAL.Entities
 
         // Gender
         public int? GenderId { get; set; }
-        public virtual Gender Gender { get; set; } = null!;
-
-        // Colour
-        public int? ColourId { get; set; }
-        public virtual Colour Colour { get; set; } = null!;
+        public virtual Gender Gender { get; set; } = null!;        
 
         // Invoice Details
         public virtual ICollection<InvoiceDetail> InvoiceDetails { get; set; } = new List<InvoiceDetail>();

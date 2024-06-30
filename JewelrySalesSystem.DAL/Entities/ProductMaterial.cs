@@ -16,5 +16,7 @@ namespace JewelrySalesSystem.DAL.Entities
         // Material
         public int MaterialId { get; set; }
         public virtual Material Material { get; set; } = null!;
+
+        public float Weight { get; set; } = 0;
     }
 }
