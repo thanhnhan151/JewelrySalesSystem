@@ -1,32 +1,31 @@
 ﻿using JewelrySalesSystem.BAL.Interfaces;
-using JewelrySalesSystem.BAL.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JewelrySalesSystem.API.Controllers
 {
-    [Route("api/colours")]
+    [Route("api/colors")]
     [ApiController]
-    public class ColoursController : ControllerBase
+    public class ColorsController : ControllerBase
     {
-        private readonly ILogger<ColoursController> _logger;
-        private readonly IColourService _colourService;
+        private readonly ILogger<ColorsController> _logger;
+        private readonly IColorService _colorService;
 
-        public ColoursController(
-            ILogger<ColoursController> logger,
-            IColourService colourService)
+        public ColorsController(
+            ILogger<ColorsController> logger,
+            IColorService colorService)
         {
             _logger = logger;
-            _colourService = colourService;
+            _colorService = colorService;
         }
 
-        #region Get All Colours
+        #region Get All Colors
         /// <summary>
-        /// Get all colours in the system
+        /// Get all colors in the system
         /// </summary>
-        /// <returns>A list of all colours</returns>
-        /// <response code="200">Return all colours in the system</response>
-        /// <response code="400">If no colours are in the system</response>
+        /// <returns>A list of all colors</returns>
+        /// <response code="200">Return all colors in the system</response>
+        /// <response code="400">If no colors are in the system</response>
         /// <response code="401">Unauthorized</response>
         /// <response code="403">Forbidden</response>
         /// <response code="404">Not Found</response>
@@ -36,7 +35,7 @@ namespace JewelrySalesSystem.API.Controllers
         {
             try
             {
-                var result = await _colourService.GetAllAsync();
+                var result = await _colorService.GetAllAsync();
 
                 if (result is not null)
                 {
@@ -54,12 +53,12 @@ namespace JewelrySalesSystem.API.Controllers
 
         #region Get Colour By Id
         /// <summary>
-        /// Get a colour based on Id in the system
+        /// Get a color based on Id in the system
         /// </summary>
-        /// <param name="id">Id of the colour you want to get</param>
+        /// <param name="id">Id of the color you want to get</param>
         /// <returns>A colour</returns>
-        /// <response code="200">Return a colour in the system</response>
-        /// <response code="400">If the colour is null</response>
+        /// <response code="200">Return a color in the system</response>
+        /// <response code="400">If the color is null</response>
         /// <response code="401">Unauthorized</response>
         /// <response code="403">Forbidden</response>
         /// <response code="404">Not Found</response>
@@ -69,7 +68,7 @@ namespace JewelrySalesSystem.API.Controllers
         {
             try
             {
-                var result = await _colourService.GetByIdAsync(id);
+                var result = await _colorService.GetByIdAsync(id);
 
                 if (result is not null)
                 {
@@ -83,7 +82,7 @@ namespace JewelrySalesSystem.API.Controllers
 
             return NotFound(new
             {
-                ErrorMessage = $"Colour with {id} does not exist"
+                ErrorMessage = $"Color with {id} does not exist"
             });
         }
         #endregion

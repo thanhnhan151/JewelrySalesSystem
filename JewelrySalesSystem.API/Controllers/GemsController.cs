@@ -1,9 +1,6 @@
 ﻿using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.Gems;
-using JewelrySalesSystem.BAL.Models.Genders;
-using JewelrySalesSystem.BAL.Validators;
 using JewelrySalesSystem.BAL.Validators.Gems;
-using JewelrySalesSystem.DAL.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +12,7 @@ namespace JewelrySalesSystem.API.Controllers
     {
         private readonly ILogger<GemsController> _logger;
         private readonly IGemService _gemService;
-        
+
         public GemsController(
             ILogger<GemsController> logger,
             IGemService gemService)
@@ -75,18 +72,13 @@ namespace JewelrySalesSystem.API.Controllers
         /// 
         ///     {
         ///       "gemName": "Test Gem",
-        ///       "featuredImage": "url"
-        ///       "origin": "Artificial",
-        ///       "caratWeight": "1",
-        ///       "colour": "light blue",
-        ///       "clarity" : "test",
-        ///       "cut": "test",
-        ///       "gemPrice": {
-        ///          "caratWeightPrice": 2500000,
-        ///          "colourPrice": 10,
-        ///          "clarityPrice": 10,
-        ///          "cutPrice": 10
-        ///        }
+        ///       "featuredImage": "url",
+        ///       "shapeId": 1,
+        ///       "originId": 1,
+        ///       "caratId": 1,
+        ///       "colorId": 1,
+        ///       "clarityId" : 1,
+        ///       "cutId": 1
         ///     }
         ///         
         /// </remarks> 
@@ -105,7 +97,7 @@ namespace JewelrySalesSystem.API.Controllers
                 //Use Fluent Validation
                 var validator = new CreateGemRequestValidator();
                 var result = validator.Validate(createGemRequest);
-                
+
                 if (!result.IsValid)
                 {
                     //Add all error messages to an array
@@ -173,14 +165,15 @@ namespace JewelrySalesSystem.API.Controllers
         /// Sample request:
         /// 
         ///     {
-        ///       "userId" : 2,
-        ///       "userName": "newtestaccount",
-        ///       "fullName": "Nguyen Van C",
-        ///       "phoneNumber": "0999123456",
-        ///       "email": "testemail@gmail.com",
-        ///       "password" : "test",
-        ///       "address" : "test",
-        ///       "roleId" : 2
+        ///       "gemId": 1,
+        ///       "gemName": "Test Gem",
+        ///       "featuredImage": "url",
+        ///       "shapeId": 1,
+        ///       "originId": 1,
+        ///       "caratId": 1,
+        ///       "colorId": 1,
+        ///       "clarityId" : 1,
+        ///       "cutId": 1
         ///     }
         ///         
         /// </remarks> 
@@ -199,14 +192,14 @@ namespace JewelrySalesSystem.API.Controllers
                 //Use Fluent Validation
                 var validator = new UpdateGemRequestValidator(_gemService);
                 var result = await validator.ValidateAsync(updateGemRequest);
-                if(!result.IsValid)
+                if (!result.IsValid)
                 {
                     //Add all error messages to an array
                     var errorMessages = new List<string>();
                     foreach (var error in result.Errors)
                     {
                         errorMessages.Add(error.ErrorMessage);
-                        
+
                     }
                     return BadRequest(errorMessages);
                 }
