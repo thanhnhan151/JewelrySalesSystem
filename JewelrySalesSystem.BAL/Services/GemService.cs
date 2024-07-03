@@ -2,8 +2,6 @@
 using FluentValidation;
 using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.Gems;
-using JewelrySalesSystem.BAL.Models.Roles;
-using JewelrySalesSystem.BAL.Validators.Gems;
 using JewelrySalesSystem.DAL.Common;
 using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
@@ -147,5 +145,19 @@ namespace JewelrySalesSystem.BAL.Services
         }
 
         public async Task<GetGemResponse?> GetGemById(int id) => _mapper.Map<GetGemResponse>(await _unitOfWork.Gems.GetEntityByIdAsync(id));
+
+        public async Task<float> GetGemPriceAsync(GemPriceRequest gemPriceRequest)
+        {
+            var gemPrice = new GemPriceList
+            {
+                CaratId = gemPriceRequest.CaratId,
+                ClarityId = gemPriceRequest.ClarityId,
+                ColorId = gemPriceRequest.ColorId,
+                CutId = gemPriceRequest.CutId,
+                OriginId = gemPriceRequest.OriginId
+            };
+
+            return await _unitOfWork.Gems.GetGemPriceAsync(gemPrice);
+        }
     }
 }
