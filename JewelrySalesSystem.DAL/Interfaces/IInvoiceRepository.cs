@@ -20,6 +20,8 @@ namespace JewelrySalesSystem.DAL.Interfaces
 
         Task UpdateInvoice(Invoice invoice);
 
+        //Task<Invoice> AddPurchaseInvoice(Invoice invoice);
+
         Task ChangeInvoiceStatus(int id);
 
         Task CancelInvoice(int id);

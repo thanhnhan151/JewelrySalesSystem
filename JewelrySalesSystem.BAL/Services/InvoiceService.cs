@@ -4,6 +4,7 @@ using JewelrySalesSystem.BAL.Models.Invoices;
 using JewelrySalesSystem.DAL.Common;
 using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
+using Microsoft.EntityFrameworkCore;
 
 namespace JewelrySalesSystem.BAL.Services
 {
@@ -153,7 +154,7 @@ namespace JewelrySalesSystem.BAL.Services
                                     invoiceDetails.Add(new InvoiceDetail
                                     {
                                         ProductId = item,
-                                        ProductPrice = existedProduct.ProductPrice
+                                        ProductPrice = existedProduct.ProductPrice * 70 / 100
                                     });
                                 }
 
@@ -258,5 +259,141 @@ namespace JewelrySalesSystem.BAL.Services
 
             await _unitOfWork.CompleteAsync();
         }
+
+        public async Task<CreatePurchaseInvoiceRequest> AddPurchaseInvoiceAsync(CreatePurchaseInvoiceRequest createPurchaseInvoiceRequest)
+        {
+            var invoiceDetails = new List<InvoiceDetail>();
+
+            float total = 0;
+
+            if (createPurchaseInvoiceRequest.InvoiceDetails.Count > 0)
+            {
+                
+                foreach (var item in createPurchaseInvoiceRequest.InvoiceDetails)
+                {
+                    var existedProduct = await _unitOfWork.Products.GetEntityByIdAsync(item);
+
+                    if (existedProduct != null)
+                    {
+                        switch (existedProduct.ProductTypeId)
+                        {
+                            case 2:
+                                var material = await _unitOfWork.Materials.GetByNameWithIncludeAsync(existedProduct.ProductName);
+
+                                if (material != null)
+                                {
+                                    var buyMaterialPrice = await _unitOfWork.MaterialPrices.GetNewestMaterialPriceByMaterialIdAsync(material.MaterialId);
+                                    invoiceDetails.Add(new InvoiceDetail
+                                    {
+                                        ProductId = item,
+                                        //ProductPrice = existedProduct.ProductPrice
+                                        ProductPrice = buyMaterialPrice.BuyPrice,
+                                    });
+                                }
+
+                                break;
+                            case 3:
+                                var materialInProduct = await _unitOfWork.ProductMaterials.GetProductMaterialByProductIdAsync(existedProduct.ProductId);
+                                var materialPrice = await _unitOfWork.MaterialPrices.GetNewestMaterialPriceByMaterialIdAsync(materialInProduct.MaterialId);
+                                invoiceDetails.Add(new InvoiceDetail
+                                {
+
+                                    ProductId = item,
+                                    //ProductPrice = existedProduct.ProductPrice,
+                                    ProductPrice = materialPrice.BuyPrice * materialInProduct.Weight,
+                                });
+
+                                break;
+                            default:
+                                var gem = await _unitOfWork.Gems.GetByNameWithIncludeAsync(existedProduct.ProductName);
+
+                                if (gem != null)
+                                {
+                                    invoiceDetails.Add(new InvoiceDetail
+                                    {
+                                        ProductId = item,
+                                        ProductPrice = existedProduct.ProductPrice * 70 / 100
+
+                                    });
+                                }
+
+                                break;
+                        }
+                    }
+                }
+                //if (createPurchaseInvoiceRequest.InvoiceType.Equals("in"))
+                //{
+                //    foreach(var item in createPurchaseInvoiceRequest.InvoiceDetails)
+                //    {
+                //        var existedProduct = await _unitOfWork.Products.GetEntityByIdAsync(item);
+                //        if (existedProduct != null)
+                //        {
+                //            var existingInvoiceDetails = await _unitOfWork.
+                //        }
+                //    }
+                //}
+            }
+
+            foreach (var item in invoiceDetails)
+            {
+                total += item.ProductPrice;
+            }
+
+            var invoice = new Invoice
+            {
+                OrderDate = DateTime.Now,
+                CustomerId = await _unitOfWork.Customers.GetCustomerByNameAsync(createPurchaseInvoiceRequest.CustomerName),
+                InvoiceType = createPurchaseInvoiceRequest.InvoiceType,
+                UserId = createPurchaseInvoiceRequest.UserId,
+                WarrantyId = 1,
+                Total = total,
+                PerDiscount = 0,
+                TotalWithDiscount = 0,
+                InvoiceDetails = invoiceDetails
+            };
+            var allAreGoldProduct = true;
+            var allAreExistingProduct = true;
+            if (invoice.InvoiceType.Equals("in"))
+            {
+                foreach (var item in invoice.InvoiceDetails)
+                {
+                    var existingProduct = await _unitOfWork.Products.GetEntityByIdAsync(item.ProductId);
+                    if (existingProduct == null)
+                    {
+                        allAreExistingProduct = false;
+                        break;
+                    }
+
+                }
+            }
+            else
+            {
+                //var allAreGoldProduct = true;
+                foreach (var item in invoice.InvoiceDetails)
+                {
+                    var existingProduct = await _unitOfWork.Products.GetEntityByIdAsync(item.ProductId);
+                    if (existingProduct != null)
+                    {
+                        if (existingProduct.ProductTypeId != 2)
+                        {
+                            allAreGoldProduct = false;
+                            break;
+                        }
+                    }
+                }
+               
+            }
+            if (allAreGoldProduct == true && allAreExistingProduct == true)
+            {
+                var result = _unitOfWork.Invoices.AddEntity(invoice);
+            }
+
+            await _unitOfWork.CompleteAsync();
+
+            return createPurchaseInvoiceRequest;
+        }
+
+
     }
 }
+

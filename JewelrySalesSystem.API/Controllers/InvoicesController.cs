@@ -131,6 +131,22 @@ namespace JewelrySalesSystem.API.Controllers
         }
         #endregion
 
+        #region Add Purchase Invoice
+        [HttpPost("CreatePurchaseInvoice")]
+        public async Task<IActionResult> AddPurchaseInvoiceAsync([FromBody] CreatePurchaseInvoiceRequest createPurchaseInvoiceRequest)
+        {
+            try
+            {
+                await _invoiceService.AddPurchaseInvoiceAsync(createPurchaseInvoiceRequest);
+                return Ok(createPurchaseInvoiceRequest);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        #endregion
+
         #region Get Invoice By Id
         /// <summary>
         /// Get an invoice in the system

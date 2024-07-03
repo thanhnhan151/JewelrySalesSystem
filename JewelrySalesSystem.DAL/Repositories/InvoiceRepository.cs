@@ -178,5 +178,76 @@ namespace JewelrySalesSystem.DAL.Repositories
                 _dbSet.Update(result);
             }
         }
+
+        
+
+        //public async Task<Invoice> AddPurchaseInvoice(Invoice invoice)
+        //{
+        //    //if (createPurchaseInvoiceRequest.InvoiceType.Equals("in"))
+        //    //{
+        //    //    foreach(var item in createPurchaseInvoiceRequest.InvoiceDetails)
+        //    //    {
+        //    //        var existedProduct = await _unitOfWork.Products.GetEntityByIdAsync(item);
+        //    //        if (existedProduct != null)
+        //    //        {
+        //    //            var existingInvoiceDetails = await _unitOfWork.
+        //    //        }
+        //    //    }
+        //    //}
+        //    if (invoice.InvoiceType.Equals("in"))
+        //    {
+        //        bool hasExistingSaleInvoice = false;
+        //        foreach (var item in invoice.InvoiceDetails)
+        //        {
+        //            //var existingInvoiceDetails = await _dbSet
+        //            //.Include(i => i.InvoiceDetails)
+        //            //.FirstOrDefaultAsync(i => i.CustomerId == invoice.CustomerId && i.InvoiceType == "Sale" && i.InvoiceStatus == "Delivered" && i.InvoiceDetails.Any(id => id.ProductId == item.ProductId));
+        //            //&& i.InvoiceStatus == "Delivered"
+        //            var existingInvoices = _dbSet
+        //                //.Where(i => i.CustomerId == invoice.CustomerId && i.InvoiceType == "Sale" && i.InvoiceStatus == "Delivered")
+        //                //.ToListAsync();
+        //                .Include(i => i.InvoiceDetails)
+        //                .FirstOrDefault();
+        //            var existingInvoiceDetails = await existingInvoices
+        //                .Where(i => i.InvoiceDetails.Any(id => id.ProductId == item.ProductId))
+        //                .FirstOrDefaultAsync();
+        //            if (existingInvoiceDetails != null)
+        //            {
+        //                hasExistingSaleInvoice = true;
+        //            }
+        //        } 
+        //        if (hasExistingSaleInvoice)
+        //        {
+        //            _context.Invoices.Add(invoice);
+        //            //_dbSet.Add(invoice);
+        //            //await _context.SaveChangesAsync();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        bool isGoldProduct = true;
+        //        foreach (var item in invoice.InvoiceDetails)
+        //        {
+        //            var existingProduct = await _context.Products.FindAsync(item.ProductId);
+        //            if(existingProduct!=null)
+        //            {
+        //                if(existingProduct.ProductTypeId != 2)
+        //                {
+        //                    isGoldProduct = false;
+        //                    break;
+        //                }
+
+        //            }
+        //        }
+        //        if(isGoldProduct)
+        //        {
+        //            _context.Invoices.Add(invoice);
+        //            //await _context.SaveChangesAsync();
+        //        }
+        //    }
+        //    await _context.SaveChangesAsync();
+
+        //    return invoice;
+        //}
     }
 }
