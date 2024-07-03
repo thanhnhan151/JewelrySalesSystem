@@ -10,7 +10,7 @@ namespace JewelrySalesSystem.DAL.Entities
         public int CustomerId { get; set; }
         public string FullName { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;
-        public int Point { get; set; }
+        public int Point { get; set; } = 0;
 
         // Invoices
         public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
