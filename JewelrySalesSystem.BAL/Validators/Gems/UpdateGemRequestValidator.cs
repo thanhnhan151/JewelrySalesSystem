@@ -6,86 +6,77 @@ using System.Threading.Tasks;
 using FluentValidation;
 using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.Gems;
+using JewelrySalesSystem.DAL.Infrastructures;
 using JewelrySalesSystem.DAL.Interfaces;
 
 namespace JewelrySalesSystem.BAL.Validators.Gems
 {
     public class UpdateGemRequestValidator : AbstractValidator<UpdateGemRequest>
     {
-        //Initialize for using to method for checking exist
-        private readonly IGemService _gemService;
-        public UpdateGemRequestValidator(IGemService gemService)
+        private readonly IUnitOfWork _unitOfWork;
+        public UpdateGemRequestValidator(IUnitOfWork unitOfWork)
         {
-            _gemService = gemService;
+            _unitOfWork = unitOfWork;
+            RuleFor(g => g.GemId)
+                .NotEmpty()
+                .WithMessage("GemName is required")
+                .MustAsync(async (GemId, cancellation) => await CheckId(GemId, "GemId"))
+                .WithMessage("Id not found");
+                
 
-            //Validate GemId: Not Empty, is integer, >0, is existed
-            RuleFor(g => g.GemId).NotEmpty().WithMessage("Gem Id is required")
-                .Must(MustBeAnId).WithMessage("Gem Id is an integer and greater than 0")
-                .MustAsync(async (gemId, cancellationToken) => await beValidGem(gemId, cancellationToken)).WithMessage("Gem Id is not exist");
+            RuleFor(g => g.GemName)
+                .NotEmpty()
+                .WithMessage("GemName is required")
+                .Matches("^[a-zA-Z0-9 ]+$")
+                .WithMessage("GemName cannot contain special characters.");
 
-            //Validate GemName: NotEmpty, MaximumLength
-            RuleFor(g => g.GemName).NotEmpty().WithMessage("GemName is required");
-                //.MaximumLength(20).WithMessage("GemName is at least 20 characters");
+            RuleFor(g => g.FeaturedImage)
+                .NotEmpty()
+                .WithMessage("FeatureImage is required");
 
-            //Validate FeaturedImage: Not Empty
-            RuleFor(g => g.FeaturedImage).NotEmpty().WithMessage("FeatureImage is required");
 
-            ////Validate Origin: Not Empty
-            //RuleFor(g => g.Origin).NotEmpty().WithMessage("Origin is required");
+            RuleFor(g => g.CaratId)
+                .NotEmpty()
+                .WithMessage("CaratId is required")
+                 .MustAsync(async (caratId, cancellation) => await CheckId(caratId, "CaratId"))
+                 .WithMessage("CaratId does not exist.");
 
-            ////Validate CaratWeight > 0
-            //RuleFor(g => g.CaratWeight).GreaterThan(0).WithMessage("CaraWeight must be greater than 0");
+            RuleFor(g => g.ClarityId)
+               .NotEmpty()
+               .WithMessage("ClarityId is required")
+                 .MustAsync(async (ClarityId, cancellation) => await CheckId(ClarityId, "ClarityId"))
+                 .WithMessage("ClarityId does not exist.");
 
-            ////Validate Colour: Not Empty
-            //RuleFor(g => g.Color).NotEmpty().WithMessage("Colour is required");
+            RuleFor(g => g.ColorId)
+               .NotEmpty()
+               .WithMessage("ColorId is required")
+                 .MustAsync(async (ColorId, cancellation) => await CheckId(ColorId, "ColorId"))
+                 .WithMessage("ColorId does not exist.");
 
-            ////Validate Clarity: Not Empty
-            //RuleFor(g => g.Clarity).NotEmpty().WithMessage("Clarity is required");
+            RuleFor(g => g.CutId)
+               .NotEmpty()
+               .WithMessage("CutId is required")
+               .MustAsync(async (CutId, cancellation) => await CheckId(CutId, "CutId"))
+               .WithMessage("CutId does not exist.");
 
-            ////Validate Cut: Not Empty
-            //RuleFor(g => g.Cut).NotEmpty().WithMessage("Cut is required");
+            RuleFor(g => g.OriginId)
+               .NotEmpty()
+               .WithMessage("OriginId is required")
+               .MustAsync(async (OriginId, cancellation) => await CheckId(OriginId, "OriginId"))
+               .WithMessage("OriginId does not exist.");
 
-            ////Validate CaratWeightPrice in GemPrice: NotEmpty and >0
-            //RuleFor(g => g.GemPrice.CaratWeightPrice).NotEmpty().WithMessage("CaratWeightPrice is required").
-            //    GreaterThan(0).WithMessage("CaraWeightPrice must be greater than 0");
-
-            ////Validate ColourPrice in GemPrice: NotEmpty and > 0
-            //RuleFor(g => g.GemPrice.ColourPrice).NotEmpty().WithMessage("ColourPrice is required").
-            //    GreaterThan(0).WithMessage("ColourPrice must be greater than 0");
-
-            ////Validate ClarityPrice in GemPrice: NotEmpty and >0
-            //RuleFor(g => g.GemPrice.ClarityPrice).NotEmpty().WithMessage("ClarityPrice is required").
-            //    GreaterThan(0).WithMessage("ClarityPrice must be greater than 0");
-
-            ////Validate CutPrice in GemPrice: NotEmpty and >0
-            //RuleFor(g => g.GemPrice.CutPrice).NotEmpty().WithMessage("CutPrice is required").
-            //    GreaterThan(0).WithMessage("CutPrice must be greater than 0");
+            RuleFor(g => g.ShapeId)
+               .NotEmpty()
+               .WithMessage("ShapeId is required")
+               .MustAsync(async (ShapeId, cancellation) => await CheckId(ShapeId, "ShapeId"))
+               .WithMessage("ShapeId does not exist.");
         }
 
-        //Check Gem is existed by id
-        private async Task<bool> beValidGem(int id, CancellationToken cancellationToken)
+        private async Task<bool> CheckId(int id, string type)
         {
-            var checkExist = await _gemService.GetGemById(id);
-            if(checkExist != null)
-            {
-                return true;
-            }
-            return false;
+            var result = await _unitOfWork.Gems.CheckId(id, type);
+            return result;
         }
 
-        //Condition for input id
-        private static bool MustBeAnId<T>(T value)
-        {
-            if (value == null)
-                return true; 
-
-            if (value is int intValue && intValue > 0)
-                return true;
-
-            //if (value is string stringValue)
-            //    return int.TryParse(stringValue, out _);
-
-            return false;
-        }
     }
 }

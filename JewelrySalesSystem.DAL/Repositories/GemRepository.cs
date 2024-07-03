@@ -161,5 +161,38 @@ namespace JewelrySalesSystem.DAL.Repositories
 
             return 1;
         }
+
+        public async Task<bool> CheckId(int id, string option)
+        {
+            switch (option)
+            {
+                case "CaratId":
+                    return await _context.Carats.AnyAsync(c => c.CaratId == id);
+                    break;
+
+                case "ClarityId":
+                    return await _context.Clarities.AnyAsync(c => c.ClarityId == id);
+                    break;
+                case "ColorId":
+                    return await _context.Colors.AnyAsync(c => c.ColorId == id);
+                    break;
+                case "CutId":
+                    return await _context.Cuts.AnyAsync(c => c.CutId == id);
+                    break;
+
+                case "OriginId":
+                    return await _context.Origins.AnyAsync(c => c.OriginId == id);
+                    break;
+
+                case "ShapeId":
+                    return await _context.Shapes.AnyAsync(c => c.ShapeId == id);
+                    break;
+
+                case "GemId":
+                    return await _context.Gems.AnyAsync(g => g.GemId == id);
+                default:
+                    throw new ArgumentException($"Unknown option: {option}");
+            }
+        }
     }
 }
