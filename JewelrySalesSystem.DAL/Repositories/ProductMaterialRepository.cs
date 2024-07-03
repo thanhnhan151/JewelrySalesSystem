@@ -13,6 +13,22 @@ namespace JewelrySalesSystem.DAL.Repositories
         {
         }
 
+        public async Task<ProductMaterial> GetProductMaterialByProductIdAsync(int productId)
+        {
+            var productMaterial = await _dbSet.FirstOrDefaultAsync(pm => pm.ProductId == productId);
+            if (productMaterial == null)
+            {
+                
+                return new ProductMaterial
+                {
+                    ProductId = productId,
+                    MaterialId = 0,
+                    
+                };
+            }
+            return productMaterial;
+        }
+
         public async Task<float> GetProductMaterialWeightAsync(int materialId)
         {
             var result = await _dbSet.FirstOrDefaultAsync(m => m.MaterialId == materialId);
@@ -22,5 +38,6 @@ namespace JewelrySalesSystem.DAL.Repositories
             }
             return result.Weight;
         }
+
     }
 }
