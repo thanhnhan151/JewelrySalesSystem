@@ -1,14 +1,19 @@
 using AutoMapper;
+using JewelrySalesSystem.BAL.Models.Carats;
 using JewelrySalesSystem.BAL.Models.Categories;
+using JewelrySalesSystem.BAL.Models.Clarities;
 using JewelrySalesSystem.BAL.Models.Colors;
 using JewelrySalesSystem.BAL.Models.Customers;
+using JewelrySalesSystem.BAL.Models.Cuts;
 using JewelrySalesSystem.BAL.Models.Gems;
 using JewelrySalesSystem.BAL.Models.Genders;
 using JewelrySalesSystem.BAL.Models.Invoices;
 using JewelrySalesSystem.BAL.Models.Materials;
+using JewelrySalesSystem.BAL.Models.Origins;
 using JewelrySalesSystem.BAL.Models.Products;
 using JewelrySalesSystem.BAL.Models.ProductTypes;
 using JewelrySalesSystem.BAL.Models.Roles;
+using JewelrySalesSystem.BAL.Models.Shapes;
 using JewelrySalesSystem.BAL.Models.Users;
 using JewelrySalesSystem.BAL.Models.Warranties;
 using JewelrySalesSystem.DAL.Common;
@@ -166,6 +171,27 @@ namespace JewelrySalesSystem.BAL.Mappings
 
             #region Customer
             CreateMap<Customer, GetCustomerResponse>();
+            #endregion
+
+            #region Carat
+            CreateMap<Carat, GetCaratWeightResponse>()
+                .ForMember(c => c.Weight, c => c.MapFrom(c => c.Weight / 100));
+            #endregion
+
+            #region Clarity
+            CreateMap<Clarity, GetClarityResponse>();
+            #endregion
+
+            #region Cut
+            CreateMap<Cut, GetCutResponse>();
+            #endregion
+
+            #region Origin
+            CreateMap<Origin, GetOriginResponse>();
+            #endregion
+
+            #region Shape
+            CreateMap<Shape, GetShapeResponse>();
             #endregion
         }
     }

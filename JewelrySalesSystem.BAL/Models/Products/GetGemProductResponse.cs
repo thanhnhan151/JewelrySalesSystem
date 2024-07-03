@@ -13,6 +13,7 @@
         public string Cut { get; set; } = string.Empty;
         public float ProductPrice { get; set; }
 
+        public bool IsActive { get; set; }
         // Product Type
         public string ProductType { get; set; } = string.Empty;
     }

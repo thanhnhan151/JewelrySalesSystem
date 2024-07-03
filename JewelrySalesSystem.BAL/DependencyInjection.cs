@@ -56,6 +56,16 @@ namespace JewelrySalesSystem.BAL
 
             services.AddScoped<ICustomerService, CustomerService>();
 
+            services.AddScoped<ICaratService, CaratService>();
+
+            services.AddScoped<IClarityService, ClarityService>();
+
+            services.AddScoped<ICutService, CutService>();
+
+            services.AddScoped<IOriginService, OriginService>();
+
+            services.AddScoped<IShapeService, ShapeService>();
+
             //Validate
 
             services.AddScoped<IValidator<CreateUserRequest>, CreateUserValidator>();
