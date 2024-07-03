@@ -3,7 +3,7 @@
     public class CreateInvoiceRequest
     {
         //public string InvoiceType { get; set; } = string.Empty;
-        //public float Total { get; set; }
+        public float Total { get; set; }
         public float PerDiscount { get; set; }
 
         // Customer
@@ -13,7 +13,7 @@
         public int UserId { get; set; }
 
         // Warranty
-        public int WarrantyId { get; set; }
+        //public int WarrantyId { get; set; }
 
         // Invoice Details
         public virtual ICollection<int> InvoiceDetails { get; set; } = new List<int>();
