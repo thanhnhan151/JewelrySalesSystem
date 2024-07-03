@@ -15,7 +15,7 @@ namespace JewelrySalesSystem.BAL.Validators.Product
 
             RuleFor(p => p.ProductName)
                 .NotEmpty().WithMessage("Product Name is required!")
-                .Matches(@"^[a-zA-Z0-9]+$").WithMessage("Product Name cannot contain special characters!")
+                .Matches(@"^[a-zA-Z0-9 ]+$").WithMessage("Product Name cannot contain special characters!")
                 .MustAsync(async (productName, cancellation) => !await CheckDuplicateAsync(productName)).WithMessage("Product Name already exits!");
 
             RuleFor(p => p.PercentPriceRate)
