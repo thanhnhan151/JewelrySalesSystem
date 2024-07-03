@@ -31,6 +31,8 @@ namespace JewelrySalesSystem.DAL.Infrastructures
             }
 
             return null;
-        }   
+        }
+
+        public virtual async Task<ICollection<TEntity>> GetAllEntitiesAsync() => await _dbSet.ToListAsync();
     }
 }

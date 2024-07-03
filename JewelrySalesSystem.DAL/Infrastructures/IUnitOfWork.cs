@@ -32,6 +32,16 @@ namespace JewelrySalesSystem.DAL.Infrastructures
 
         IProductMaterialRepository ProductMaterials { get; }
 
+        ICaratRepository Carats { get; }
+
+        IClarityRepository Clarities { get; }
+
+        ICutRepository Cuts { get; }
+
+        IOriginRepository Origins { get; }
+
+        IShapeRepository Shapes { get; }
+
         Task CompleteAsync();
     }
 }
