@@ -26,8 +26,7 @@ namespace JewelrySalesSystem.DAL.Repositories
             , int pageSize)
         {
             IQueryable<Product> productsQuery = _dbSet
-                                                .Where(p => p.ProductTypeId == productTypeId
-                                                         && p.IsActive)
+                                                .Where(p => p.ProductTypeId == productTypeId)
                                                 .Include(p => p.ProductGems)
                                                     .ThenInclude(g => g.Gem)
                                                 .Include(p => p.ProductMaterials)

@@ -194,5 +194,22 @@ namespace JewelrySalesSystem.DAL.Repositories
                     throw new ArgumentException($"Unknown option: {option}");
             }
         }
+
+        public async Task<float> GetGemPriceAsync(GemPriceList gemPriceList)
+        {
+            var price = await _context.GemPrices
+                .Where(g => g.CaratId == gemPriceList.CaratId
+                         && g.ClarityId == gemPriceList.ClarityId
+                         && g.ColorId == gemPriceList.ColorId
+                         && g.CutId == gemPriceList.CutId
+                         && g.OriginId == gemPriceList.OriginId)
+                .OrderByDescending(g => g.EffDate)
+                .Select(g => g.Price)
+                .FirstOrDefaultAsync(); ;
+
+            if (price > 0) return price;
+
+            return 0;
+        }
     }
 }
