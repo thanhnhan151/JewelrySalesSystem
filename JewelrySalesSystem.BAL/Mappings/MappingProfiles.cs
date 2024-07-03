@@ -1,6 +1,7 @@
 using AutoMapper;
 using JewelrySalesSystem.BAL.Models.Categories;
 using JewelrySalesSystem.BAL.Models.Colors;
+using JewelrySalesSystem.BAL.Models.Customers;
 using JewelrySalesSystem.BAL.Models.Gems;
 using JewelrySalesSystem.BAL.Models.Genders;
 using JewelrySalesSystem.BAL.Models.Invoices;
@@ -161,6 +162,10 @@ namespace JewelrySalesSystem.BAL.Mappings
 
             #region Color
             CreateMap<Color, GetColorResponse>();
+            #endregion
+
+            #region Customer
+            CreateMap<Customer, GetCustomerResponse>();
             #endregion
         }
     }
