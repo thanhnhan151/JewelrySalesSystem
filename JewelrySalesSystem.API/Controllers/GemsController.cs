@@ -94,22 +94,6 @@ namespace JewelrySalesSystem.API.Controllers
         {
             try
             {
-                //Use Fluent Validation
-                var validator = new CreateGemRequestValidator();
-                var result = validator.Validate(createGemRequest);
-
-                if (!result.IsValid)
-                {
-                    //Add all error messages to an array
-                    var errorMessages = new List<string>();
-                    foreach (var error in result.Errors)
-                    {
-                        errorMessages.Add(error.ErrorMessage);
-                    }
-                    return BadRequest(errorMessages);
-                }
-
-
                 await _gemService.AddAsync(createGemRequest);
 
                 return Ok(createGemRequest);
@@ -189,20 +173,6 @@ namespace JewelrySalesSystem.API.Controllers
         {
             try
             {
-                //Use Fluent Validation
-                var validator = new UpdateGemRequestValidator(_gemService);
-                var result = await validator.ValidateAsync(updateGemRequest);
-                if (!result.IsValid)
-                {
-                    //Add all error messages to an array
-                    var errorMessages = new List<string>();
-                    foreach (var error in result.Errors)
-                    {
-                        errorMessages.Add(error.ErrorMessage);
-
-                    }
-                    return BadRequest(errorMessages);
-                }
                 await _gemService.UpdateAsync(updateGemRequest);
 
                 return Ok();
