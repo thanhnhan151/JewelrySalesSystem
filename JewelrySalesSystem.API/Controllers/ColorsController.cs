@@ -51,40 +51,40 @@ namespace JewelrySalesSystem.API.Controllers
         }
         #endregion
 
-        #region Get Colour By Id
-        /// <summary>
-        /// Get a color based on Id in the system
-        /// </summary>
-        /// <param name="id">Id of the color you want to get</param>
-        /// <returns>A colour</returns>
-        /// <response code="200">Return a color in the system</response>
-        /// <response code="400">If the color is null</response>
-        /// <response code="401">Unauthorized</response>
-        /// <response code="403">Forbidden</response>
-        /// <response code="404">Not Found</response>
-        /// <response code="500">Internal Server</response>
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetByIdAsync(int id)
-        {
-            try
-            {
-                var result = await _colorService.GetByIdAsync(id);
+        //#region Get Colour By Id
+        ///// <summary>
+        ///// Get a color based on Id in the system
+        ///// </summary>
+        ///// <param name="id">Id of the color you want to get</param>
+        ///// <returns>A colour</returns>
+        ///// <response code="200">Return a color in the system</response>
+        ///// <response code="400">If the color is null</response>
+        ///// <response code="401">Unauthorized</response>
+        ///// <response code="403">Forbidden</response>
+        ///// <response code="404">Not Found</response>
+        ///// <response code="500">Internal Server</response>
+        //[HttpGet("{id}")]
+        //public async Task<IActionResult> GetByIdAsync(int id)
+        //{
+        //    try
+        //    {
+        //        var result = await _colorService.GetByIdAsync(id);
 
-                if (result is not null)
-                {
-                    return Ok(result);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+        //        if (result is not null)
+        //        {
+        //            return Ok(result);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception(ex.Message);
+        //    }
 
-            return NotFound(new
-            {
-                ErrorMessage = $"Color with {id} does not exist"
-            });
-        }
-        #endregion
+        //    return NotFound(new
+        //    {
+        //        ErrorMessage = $"Color with {id} does not exist"
+        //    });
+        //}
+        //#endregion
     }
 }

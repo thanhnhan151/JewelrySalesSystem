@@ -183,5 +183,40 @@ namespace JewelrySalesSystem.API.Controllers
             }
         }
         #endregion
+
+        #region Get Gem Price
+        /// <summary>
+        /// Get gem price in the system
+        /// </summary>
+        /// <returns>A product</returns>
+        /// <response code="200">Return a gem in the system</response>
+        /// <response code="400">If the gem is null</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server</response>
+        [HttpGet("price")]
+        public async Task<IActionResult> GetGemPriceAsync([FromBody] GemPriceRequest gemPriceRequest)
+        {
+            try
+            {
+                var result = await _gemService.GetGemPriceAsync(gemPriceRequest);
+
+                if (result > 0)
+                {
+                    return Ok(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return NotFound(new
+            {
+                ErrorMessage = "Gem Price does not exist"
+            });
+        }
+        #endregion
     }
 }
