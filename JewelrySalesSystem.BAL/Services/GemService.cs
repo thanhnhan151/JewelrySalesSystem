@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.Gems;
+using JewelrySalesSystem.BAL.Models.Roles;
+using JewelrySalesSystem.BAL.Validators.Gems;
 using JewelrySalesSystem.DAL.Common;
 using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
@@ -11,13 +14,17 @@ namespace JewelrySalesSystem.BAL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IValidator<CreateGemRequest> _createValidator;
+        private readonly IValidator<UpdateGemRequest> _updateValidator;
 
         public GemService(
             IUnitOfWork unitOfWork
-            , IMapper mapper)
+            , IMapper mapper, IValidator<CreateGemRequest> createValidator, IValidator<UpdateGemRequest> updateValidator)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _createValidator = createValidator;
+            _updateValidator = updateValidator;
         }
 
         public async Task<PaginatedList<GetGemResponse>> PaginationAsync(
@@ -53,6 +60,13 @@ namespace JewelrySalesSystem.BAL.Services
 
         public async Task<CreateGemRequest> AddAsync(CreateGemRequest createGemRequest)
         {
+
+            var validator = await _createValidator.ValidateAsync(createGemRequest);
+            if (!validator.IsValid)
+            {
+                throw new ValidationException(validator.Errors);
+            }
+
             var gem = new Gem
             {
                 GemName = createGemRequest.GemName,
@@ -74,7 +88,7 @@ namespace JewelrySalesSystem.BAL.Services
                 ProductName = createGemRequest.GemName,
                 FeaturedImage = createGemRequest.FeaturedImage,
                 ProductPrice = price * (1 + shapePriceRate / 100),
-                ProductTypeId = 4
+                ProductTypeId = 14
             };
 
             var produtResult = _unitOfWork.Products.AddEntity(product);
@@ -88,6 +102,12 @@ namespace JewelrySalesSystem.BAL.Services
 
         public async Task UpdateAsync(UpdateGemRequest updateGemRequest)
         {
+
+            var validator = await _updateValidator.ValidateAsync(updateGemRequest);
+            if (!validator.IsValid)
+            {
+                throw new ValidationException(validator.Errors);
+            }
             var gem = new Gem
             {
                 GemId = updateGemRequest.GemId,

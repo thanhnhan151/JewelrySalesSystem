@@ -22,5 +22,7 @@ namespace JewelrySalesSystem.DAL.Interfaces
         Task<float> GetShapePriceRateAsync(int shapeId);
 
         Task UpdateGem(Gem gem);
+
+        Task<bool> CheckId(int id,string option);
     }
 }
