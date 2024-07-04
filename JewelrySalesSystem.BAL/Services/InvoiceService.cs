@@ -266,6 +266,8 @@ namespace JewelrySalesSystem.BAL.Services
 
             float total = 0;
 
+            int countProductHasMaterial = 0;
+
             if (createPurchaseInvoiceRequest.InvoiceDetails.Count > 0)
             {
                 
@@ -283,12 +285,16 @@ namespace JewelrySalesSystem.BAL.Services
                                 if (material != null)
                                 {
                                     var buyMaterialPrice = await _unitOfWork.MaterialPrices.GetNewestMaterialPriceByMaterialIdAsync(material.MaterialId);
+
+                                    //if(createPurchaseInvoiceRequest.InvoiceType.Equals("in"))
+
                                     invoiceDetails.Add(new InvoiceDetail
                                     {
                                         ProductId = item,
                                         //ProductPrice = existedProduct.ProductPrice
-                                        ProductPrice = buyMaterialPrice.BuyPrice,
+                                        ProductPrice = buyMaterialPrice.BuyPrice * createPurchaseInvoiceRequest.Weights.ElementAt(countProductHasMaterial) * 375 / 100,
                                     });
+                                    countProductHasMaterial++;
                                 }
 
                                 break;
@@ -312,7 +318,7 @@ namespace JewelrySalesSystem.BAL.Services
                                     invoiceDetails.Add(new InvoiceDetail
                                     {
                                         ProductId = item,
-                                        ProductPrice = existedProduct.ProductPrice * 70 / 100
+                                        ProductPrice = existedProduct.ProductPrice * 70 / 100,
 
                                     });
                                 }
@@ -352,23 +358,41 @@ namespace JewelrySalesSystem.BAL.Services
                 InvoiceDetails = invoiceDetails
             };
             var allAreGoldProduct = true;
-            var allAreExistingProduct = true;
-            if (invoice.InvoiceType.Equals("in"))
-            {
-                foreach (var item in invoice.InvoiceDetails)
-                {
-                    var existingProduct = await _unitOfWork.Products.GetEntityByIdAsync(item.ProductId);
-                    if (existingProduct == null)
-                    {
-                        allAreExistingProduct = false;
-                        break;
-                    }
+            //var allAreExistingProduct = true;
 
-                }
-            }
-            else
+
+            //if (invoice.InvoiceType.Equals("in"))
+            //{
+            //    foreach (var item in invoice.InvoiceDetails)
+            //    {
+            //        var existingProduct = await _unitOfWork.Products.GetEntityByIdAsync(item.ProductId);
+            //        if (existingProduct == null)
+            //        {
+            //            allAreExistingProduct = false;
+            //            break;
+            //        }
+
+            //    }
+            //}
+            //else
+            //{
+            //    //var allAreGoldProduct = true;
+            //    foreach (var item in invoice.InvoiceDetails)
+            //    {
+            //        var existingProduct = await _unitOfWork.Products.GetEntityByIdAsync(item.ProductId);
+            //        if (existingProduct != null)
+            //        {
+            //            if (existingProduct.ProductTypeId != 2)
+            //            {
+            //                allAreGoldProduct = false;
+            //                break;
+            //            }
+            //        }
+            //    }
+               
+            //}
+            if (invoice.InvoiceType.Equals("out"))
             {
-                //var allAreGoldProduct = true;
                 foreach (var item in invoice.InvoiceDetails)
                 {
                     var existingProduct = await _unitOfWork.Products.GetEntityByIdAsync(item.ProductId);
@@ -381,14 +405,30 @@ namespace JewelrySalesSystem.BAL.Services
                         }
                     }
                 }
-               
-            }
-            if (allAreGoldProduct == true && allAreExistingProduct == true)
-            {
-                var result = _unitOfWork.Invoices.AddEntity(invoice);
             }
 
-            await _unitOfWork.CompleteAsync();
+            //if (allAreGoldProduct == true  && countProductHasMaterial==createPurchaseInvoiceRequest.Weights.Count)  //&& allAreExistingProduct == true
+            //{
+            //    var result = _unitOfWork.Invoices.AddEntity(invoice);
+            //}
+            try
+            {
+                if (allAreGoldProduct == true && countProductHasMaterial == createPurchaseInvoiceRequest.Weights.Count) 
+                {
+                    var result = _unitOfWork.Invoices.AddEntity(invoice);
+                    await _unitOfWork.CompleteAsync();
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Can not add new purchase invoice.", ex);
+            }
+            
+            
 
             return createPurchaseInvoiceRequest;
         }

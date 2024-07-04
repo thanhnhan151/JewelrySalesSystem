@@ -17,6 +17,9 @@ namespace JewelrySalesSystem.BAL.Models.Invoices
         // User
         public int UserId { get; set; }
 
+        //public float Weight { get; set; }
+
+        public virtual ICollection<float> Weights {  get; set; } = new List<float>();
         // Invoice Details
         public virtual ICollection<int> InvoiceDetails { get; set; } = new List<int>();
     }
