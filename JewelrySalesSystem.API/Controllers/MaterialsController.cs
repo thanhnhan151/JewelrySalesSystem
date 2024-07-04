@@ -1,7 +1,6 @@
 ﻿using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.MaterialPriceList;
 using JewelrySalesSystem.BAL.Models.Materials;
-using JewelrySalesSystem.DAL.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -234,7 +233,7 @@ namespace JewelrySalesSystem.API.Controllers
 
             return NotFound(new
             {
-                ErrorMessage = "Material does not exist"
+                ErrorMessage = $"Material with {id} does not exist"
             });
         }
         #endregion
@@ -247,14 +246,8 @@ namespace JewelrySalesSystem.API.Controllers
         /// Sample request:
         /// 
         ///     {
-        ///       "userId" : 2,
-        ///       "userName": "newtestaccount",
-        ///       "fullName": "Nguyen Van C",
-        ///       "phoneNumber": "0999123456",
-        ///       "email": "testemail@gmail.com",
-        ///       "password" : "test",
-        ///       "address" : "test",
-        ///       "roleId" : 2
+        ///       "materialId" : 5,
+        ///       "materialName": "Gold 10K"
         ///     }
         ///         
         /// </remarks> 
@@ -266,13 +259,63 @@ namespace JewelrySalesSystem.API.Controllers
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server</response>
         [HttpPut]
-        public async Task<IActionResult> UpdateAsync(Material material)
+        public async Task<IActionResult> UpdateAsync([FromBody] UpdateMaterialRequest updateMaterialRequest)
         {
             try
             {
-                await _materialService.UpdateAsync(material);
+                var result = await _materialService.GetByIdAsync(updateMaterialRequest.MaterialId);
 
-                return Ok();
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        ErrorMessage = $"Material with {updateMaterialRequest.MaterialId} does not exist"
+                    });
+                } else if (updateMaterialRequest.MaterialName.Trim().Equals(result.MaterialName.Trim()))
+                {
+                    return BadRequest(new
+                    {
+                        ErrorMessage = $"Material with {updateMaterialRequest.MaterialName} has already existed"
+                    });
+                }
+
+                await _materialService.UpdateAsync(updateMaterialRequest);
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        #endregion
+
+        #region Delete Material
+        /// <summary>
+        /// Change the material status in the system
+        /// </summary>
+        /// <param name="id">Id of the material you want to change</param>
+        /// <response code="204">No Content</response>
+        /// <response code="400">If the product is null</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server</response>
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            try
+            {
+                var result = await _materialService.GetByIdAsync(id);
+
+                if (result == null) return NotFound(new
+                {
+                    ErrorMessage = $"Material with {id} does not exist"
+                });
+
+                await _materialService.DeleteAsync(id);
+
+                return NoContent();
             }
             catch (Exception ex)
             {

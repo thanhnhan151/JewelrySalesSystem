@@ -41,10 +41,16 @@ namespace JewelrySalesSystem.BAL.Services
             return result;
         }
 
-        public async Task UpdateAsync(Material material)
+        public async Task UpdateAsync(UpdateMaterialRequest updateMaterialRequest)
         {
-            _unitOfWork.Materials.UpdateEntity(material);
-            await _unitOfWork.CompleteAsync();
+            var material = await _unitOfWork.Materials.GetEntityByIdAsync(updateMaterialRequest.MaterialId);
+
+            if (material != null)
+            {
+                material.MaterialName = updateMaterialRequest.MaterialName;
+                _unitOfWork.Materials.UpdateEntity(material);
+                await _unitOfWork.CompleteAsync();
+            }
         }
 
         public async Task<GetMaterialResponse?> GetByIdWithIncludeAsync(int id) => _mapper.Map<GetMaterialResponse>(await _unitOfWork.Materials.GetByIdWithIncludeAsync(id));
@@ -91,5 +97,17 @@ namespace JewelrySalesSystem.BAL.Services
         public async Task<GetMaterialResponse?> GetByIdAsync(int id) => _mapper.Map<GetMaterialResponse>(await _unitOfWork.Materials.GetEntityByIdAsync(id));
 
         public async Task<List<GetMaterialResponse>> GetAllGoldMaterials() => _mapper.Map<List<GetMaterialResponse>>(await _unitOfWork.Materials.GetAllGoldMaterials());
+
+        public async Task DeleteAsync(int id)
+        {
+            var result = await _unitOfWork.Materials.GetEntityByIdAsync(id);
+
+            if (result != null)
+            {
+                result.IsActive = false;
+                _unitOfWork.Materials.UpdateEntity(result);
+                await _unitOfWork.CompleteAsync();
+            }
+        }
     }
 }
