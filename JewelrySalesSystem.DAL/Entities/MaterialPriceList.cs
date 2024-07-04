@@ -10,7 +10,7 @@ namespace JewelrySalesSystem.DAL.Entities
         public int Id { get; set; }
         public float BuyPrice { get; set; } 
         public float SellPrice { get; set; }
-        public DateTime EffDate { get; set; }
+        public DateTime EffDate { get; set; } = DateTime.Now;
 
         // Material
         public int MaterialId { get; set; }

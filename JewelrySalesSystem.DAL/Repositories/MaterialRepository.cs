@@ -25,6 +25,7 @@ namespace JewelrySalesSystem.DAL.Repositories
             , int pageSize)
         {
             IQueryable<Material> materialsQuery = _dbSet
+                .Where(m => m.IsActive)
                 .Include(m => m.MaterialPrices
                 .OrderByDescending(m => m.EffDate)
                 .Take(1));
@@ -35,13 +36,13 @@ namespace JewelrySalesSystem.DAL.Repositories
                     c.MaterialName.Contains(searchTerm));
             }
 
-            if (sortOrder?.ToLower() == "desc")
+            if (sortOrder?.ToLower() == "asc")
             {
-                materialsQuery = materialsQuery.OrderByDescending(GetSortProperty(sortColumn));
+                materialsQuery = materialsQuery.OrderBy(GetSortProperty(sortColumn));
             }
             else
             {
-                materialsQuery = materialsQuery.OrderBy(GetSortProperty(sortColumn));
+                materialsQuery = materialsQuery.OrderByDescending(GetSortProperty(sortColumn));
             }
 
             var materials = await PaginatedList<Material>.CreateAsync(materialsQuery, page, pageSize);
