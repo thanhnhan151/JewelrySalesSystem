@@ -300,7 +300,7 @@ namespace JewelrySalesSystem.BAL.Services
 
                                     ProductId = item,
                                     //ProductPrice = existedProduct.ProductPrice,
-                                    ProductPrice = materialPrice.BuyPrice * materialInProduct.Weight,
+                                    ProductPrice = (materialPrice.BuyPrice * materialInProduct.Weight) * 375 / 100,
                                 });
 
                                 break;
@@ -341,7 +341,7 @@ namespace JewelrySalesSystem.BAL.Services
 
             var invoice = new Invoice
             {
-                OrderDate = DateTime.Now,
+                //OrderDate = DateTime.Now,
                 CustomerId = await _unitOfWork.Customers.GetCustomerByNameAsync(createPurchaseInvoiceRequest.CustomerName),
                 InvoiceType = createPurchaseInvoiceRequest.InvoiceType,
                 UserId = createPurchaseInvoiceRequest.UserId,
