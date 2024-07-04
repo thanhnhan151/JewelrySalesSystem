@@ -8,6 +8,7 @@ using JewelrySalesSystem.BAL.Models.Cuts;
 using JewelrySalesSystem.BAL.Models.Gems;
 using JewelrySalesSystem.BAL.Models.Genders;
 using JewelrySalesSystem.BAL.Models.Invoices;
+using JewelrySalesSystem.BAL.Models.MaterialPriceList;
 using JewelrySalesSystem.BAL.Models.Materials;
 using JewelrySalesSystem.BAL.Models.Origins;
 using JewelrySalesSystem.BAL.Models.Products;
@@ -112,6 +113,8 @@ namespace JewelrySalesSystem.BAL.Mappings
             CreateMap<PaginatedList<Material>, PaginatedList<GetMaterialResponse>>();
 
             CreateMap<MaterialPriceList, MaterialPrice>();
+
+            CreateMap<CreateMaterialPriceList, MaterialPriceList>();
             #endregion
 
             #region Invoice
