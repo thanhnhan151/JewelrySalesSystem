@@ -140,38 +140,61 @@ namespace JewelrySalesSystem.API.Controllers
 
         #region Add Material Price
         /// <summary>
-        /// Add new material price based on material Id in the system
+        /// Add new material prices in the system
         /// </summary>
         /// <remarks>
         /// Sample request:
         /// 
-        ///     {
-        ///       "buyPrice": 15,
-        ///       "sellPrice": 15
-        ///     }
+        ///     [
+        ///       {
+        ///         "buyPrice": 7600000,
+        ///         "sellPrice": 7800000,
+        ///         "materialId": 1
+        ///       },
+        ///       {
+        ///         "buyPrice": 7600000,
+        ///         "sellPrice": 7800000,
+        ///         "materialId": 2
+        ///       },
+        ///       {
+        ///         "buyPrice": 7600000,
+        ///         "sellPrice": 7800000,
+        ///         "materialId": 3
+        ///       },
+        ///       {
+        ///         "buyPrice": 7600000,
+        ///         "sellPrice": 7800000,
+        ///         "materialId": 4
+        ///       },
+        ///       {
+        ///         "buyPrice": 7600000,
+        ///         "sellPrice": 7800000,
+        ///         "materialId": 6
+        ///       }
+        ///     ]
         ///         
         /// </remarks> 
-        /// <returns>Material price that was created</returns>
+        /// <returns>Material prices that was created</returns>
         /// <response code="200">Material that was created</response>
         /// <response code="400">Failed validation</response>
         /// <response code="401">Unauthorized</response>
         /// <response code="403">Forbidden</response>
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server</response>
-        [HttpPost("{id}/materialprices")]
-        public async Task<IActionResult> AddAsync(int id, [FromBody] CreateMaterialPriceList createMaterialPriceList)
+        [HttpPost("price")]
+        public async Task<IActionResult> AddAsync([FromBody] List<CreateMaterialPriceList> prices)
         {
             try
             {
-                var material = await _materialService.GetByIdAsync(id);
+                //var material = await _materialService.GetByIdAsync(id);
 
-                if (material == null) return NotFound(new
-                {
-                    ErrorMessage = $"Material with {id} does not exist"
-                });
+                //if (material == null) return NotFound(new
+                //{
+                //    ErrorMessage = $"Material with {id} does not exist"
+                //});
 
-                var result = await _materialPriceListService.AddAsync(id, createMaterialPriceList);
-                return Ok(result);
+                var result = await _materialPriceListService.AddAsync(prices);
+                return Ok(prices);
             }
             catch (Exception ex)
             {
