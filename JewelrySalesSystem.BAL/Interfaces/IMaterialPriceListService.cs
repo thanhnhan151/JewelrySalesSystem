@@ -4,6 +4,6 @@ namespace JewelrySalesSystem.BAL.Interfaces
 {
     public interface IMaterialPriceListService
     {
-        Task<CreateMaterialPriceList> AddAsync (int id, CreateMaterialPriceList materialPriceList);
+        Task<List<CreateMaterialPriceList>> AddAsync (List<CreateMaterialPriceList> prices);
     }
 }
