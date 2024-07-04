@@ -9,5 +9,7 @@
         void UpdateEntity(TEntity entity);
 
         Task<ICollection<TEntity>> GetAllEntitiesAsync();
+
+        Task AddEntities(ICollection<TEntity> entities);
     }
 }
