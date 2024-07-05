@@ -5,6 +5,8 @@ using JewelrySalesSystem.DAL.Common;
 using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
 using Microsoft.EntityFrameworkCore;
+using PdfSharpCore.Drawing;
+using PdfSharpCore.Pdf;
 
 namespace JewelrySalesSystem.BAL.Services
 {
@@ -401,7 +403,122 @@ namespace JewelrySalesSystem.BAL.Services
             return createPurchaseInvoiceRequest;
         }
 
+        public async Task<byte[]> GenerateInvoicePdf(int invoiceId)
+        {
+            var invoice = await _unitOfWork.Invoices.GetByIdWithIncludeAsync(invoiceId);
+            if (invoice == null)
+            {
+                throw new Exception($"Invoice with id {invoiceId} not found.");
+            }
+
+            //tạo file pdf
+            PdfDocument pdf = new PdfDocument();
+
+            // thêm trang
+            PdfPage page = pdf.AddPage();
+
+            XGraphics gfx = XGraphics.FromPdfPage(page);
+
+
+            // Khai báo font chữ cho các phần riêng biệt
+            XFont boldFont = new XFont("Verdana", 15, XFontStyle.Bold);
+            XFont regularFont = new XFont("Verdana", 15, XFontStyle.Regular);
+            XFont largerFont = new XFont("Verdana", 20, XFontStyle.Bold);
+
+            void DrawLabelValue(XGraphics gfx, XFont boldFont, XFont regularFont, string label, string value, double x, double y)
+            {
+                // In ra label in đậm
+                gfx.DrawString($"{label}: ", boldFont, XBrushes.Black,
+                    new XRect(x, y, gfx.PageSize.Width, gfx.PageSize.Height), XStringFormats.TopLeft);
+
+                // Lấy chiều rộng của chuỗi label in đậm để tính toán vị trí tiếp theo
+                double boldTextWidth = gfx.MeasureString($"{label}: ", boldFont).Width;
+
+                // In ra giá trị value in nhạt, tính toán vị trí dựa trên chiều rộng của label in đậm
+                gfx.DrawString($"{value}", regularFont, XBrushes.Gray,
+                    new XRect(x + boldTextWidth, y, gfx.PageSize.Width, gfx.PageSize.Height), XStringFormats.TopLeft);
+
+            }
+
+            //title
+            gfx.DrawString("Jewelry Sales System", largerFont, XBrushes.Black,
+                new XRect(200, 20, page.Width.Point, page.Height.Point), XStringFormats.TopLeft);
+            // In ra InvoiceId
+            DrawLabelValue(gfx, boldFont, regularFont, "InvoiceId", invoice.InvoiceId.ToString(), 30, 70);
+
+            // In ra CustomerName
+            DrawLabelValue(gfx, boldFont, regularFont, "CustomerName", invoice.Customer.FullName, 30, 100);
+
+            // In ra PhoneNumber 
+
+            DrawLabelValue(gfx, boldFont, regularFont, "PhoneNumber", invoice.Customer.PhoneNumber, 30, 130);
+
+            // In ra OrderDate
+            DrawLabelValue(gfx, boldFont, regularFont, "OrderDate", invoice.OrderDate.ToString("yyyy-MM-dd "), 30, 160);
+
+
+
+            float tableTop = 190; // Điểm bắt đầu của bảng
+            float column1Left = 30; // Cột đầu tiên
+            float column2Left = 150; // Cột thứ hai
+            float column3Left = 300; // Cột thứ ba
+
+            // Tiêu đề của các cột
+            gfx.DrawString("Product ID", boldFont, XBrushes.Black,
+                new XRect(column1Left, tableTop, page.Width.Point, page.Height.Point), XStringFormats.TopLeft);
+            gfx.DrawString("Product Name", boldFont, XBrushes.Black,
+                new XRect(column2Left, tableTop, page.Width.Point, page.Height.Point), XStringFormats.TopLeft);
+            gfx.DrawString("Price", boldFont, XBrushes.Black,
+                new XRect(column3Left, tableTop, page.Width.Point, page.Height.Point), XStringFormats.TopLeft);
+
+            float dataTop = tableTop + 20;
+
+            // Lặp qua từng sản phẩm trong danh sách và in ra thông tin của từng sản phẩm
+            foreach (var item in invoice.InvoiceDetails)
+            {
+                // Dữ liệu của từng sản phẩm
+                string productId = $"{item.ProductId}";
+                string productName = $"{item.Product.ProductName}";
+                string productPrice = $" {item.ProductPrice}";
+
+                // In ra các dòng dữ liệu của từng sản phẩm
+                gfx.DrawString(productId, regularFont, XBrushes.Black,
+                    new XRect(column1Left, dataTop, page.Width.Point, page.Height.Point), XStringFormats.TopLeft);
+                gfx.DrawString(productName, regularFont, XBrushes.Black,
+                    new XRect(column2Left, dataTop, page.Width.Point, page.Height.Point), XStringFormats.TopLeft);
+                gfx.DrawString(productPrice, regularFont, XBrushes.Black,
+                    new XRect(column3Left, dataTop, page.Width.Point, page.Height.Point), XStringFormats.TopLeft);
+
+                // Di chuyển vị trí dòng dữ liệu xuống cho sản phẩm tiếp theo
+                dataTop += 30;
+            }
+
+
+            float additionalInfoTop = dataTop + 30; // Vị trí bắt đầu in các thông tin khác
+
+            // In ra các thông tin khác của hóa đơn trên từng dòng riêng biệt
+            gfx.DrawString($"Discount: {invoice.PerDiscount}", boldFont, XBrushes.Black,
+                new XRect(column3Left - 105, dataTop, page.Width.Point, page.Height.Point), XStringFormats.TopLeft);
+            //dataTop += 30;
+
+            //gfx.DrawString($"TotalWithDiscount: {invoice.TotalWithDiscount}", boldFont, XBrushes.Black,
+            //    new XRect(column3Left-160, dataTop, page.Width.Point, page.Height.Point), XStringFormats.TopLeft);
+            dataTop += 30;
+
+            gfx.DrawString($"Total: {invoice.Total}", boldFont, XBrushes.Black,
+                new XRect(column3Left - 45, dataTop, page.Width.Point, page.Height.Point), XStringFormats.TopLeft);
+
+
+            // Save the document to a byte array
+            using (MemoryStream stream = new MemoryStream())
+            {
+                pdf.Save(stream, false);
+                return stream.ToArray();
+            }
+
+        }
 
     }
+
 }
 
