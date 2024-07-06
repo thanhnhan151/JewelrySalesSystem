@@ -179,7 +179,22 @@ namespace JewelrySalesSystem.DAL.Repositories
             }
         }
 
-        
+        public async Task ChangePendingToDraft(int id)
+        {
+            var result = await _dbSet.FindAsync(id);
+
+            if (result != null)
+            {
+                if (result.InvoiceStatus.Equals("Pending"))
+                {
+                    result.InvoiceStatus = "Draft";
+                }
+                result.InvoiceStatus = "Pending";
+                _dbSet.Update(result);
+            }
+        }
+
+
 
         //public async Task<Invoice> AddPurchaseInvoice(Invoice invoice)
         //{
