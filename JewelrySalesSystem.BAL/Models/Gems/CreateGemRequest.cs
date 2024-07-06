@@ -10,5 +10,6 @@
         public int ColorId { get; set; }
         public int ClarityId { get; set; }
         public int CutId { get; set; }
+        public float Price { get; set; }
     }
 }

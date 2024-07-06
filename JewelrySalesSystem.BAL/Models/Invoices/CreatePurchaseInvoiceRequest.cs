@@ -8,6 +8,10 @@
         // User
         public int UserId { get; set; }
 
+        //public float Weight { get; set; }
+
+        public virtual ICollection<float> Weights {  get; set; } = new List<float>();
+
         public float Total { get; set; }
 
         // Invoice Details

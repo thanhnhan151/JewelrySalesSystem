@@ -26,5 +26,9 @@ namespace JewelrySalesSystem.DAL.Interfaces
         Task<bool> CheckId(int id,string option);
 
         Task<float> GetGemPriceAsync(GemPriceList gemPriceList);
+
+        Task<List<GemPriceList>> GetGemPricesAsync();
+
+        void AddGemPrice(GemPriceList gemPriceList);
     }
 }

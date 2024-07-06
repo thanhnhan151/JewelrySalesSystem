@@ -27,6 +27,8 @@ namespace JewelrySalesSystem.BAL.Interfaces
 
         Task ChangeInvoiceStatus(int id);
 
+        Task ChangePendingToDraft(int id);
+
         Task CancelInvoice(int id);
         Task<byte[]> GenerateInvoicePdf(int invoiceId);
     }

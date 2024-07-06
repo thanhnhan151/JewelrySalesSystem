@@ -1,6 +1,7 @@
 ﻿using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.Gems;
 using JewelrySalesSystem.BAL.Validators.Gems;
+using MailKit.Search;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,7 +31,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// <param name="searchTerm">Search query</param>
         /// <param name="sortColumn">Column you want to sort</param>
         /// <param name="sortOrder">Sort column by ascending or descening</param>
-        /// <returns>A list of all users</returns>
+        /// <returns>A list of all gems</returns>
         /// <response code="200">Return all gems in the system</response>
         /// <response code="400">If no gems are in the system</response>
         /// <response code="401">Unauthorized</response>
@@ -78,7 +79,8 @@ namespace JewelrySalesSystem.API.Controllers
         ///       "caratId": 1,
         ///       "colorId": 1,
         ///       "clarityId" : 1,
-        ///       "cutId": 1
+        ///       "cutId": 1,
+        ///       "price": 0
         ///     }
         ///         
         /// </remarks> 
@@ -216,6 +218,38 @@ namespace JewelrySalesSystem.API.Controllers
             {
                 ErrorMessage = "Gem Price does not exist"
             });
+        }
+        #endregion
+
+        #region Gem All Gem Prices
+        /// <summary>
+        /// Get all gem prices in the system
+        /// </summary>
+        /// <returns>A list of all gem prices</returns>
+        /// <response code="200">Return all gem prices in the system</response>
+        /// <response code="400">If no gem prices are in the system</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server</response>
+        [HttpGet("prices")]
+        public async Task<IActionResult> GetGemPricesAsync()
+        {
+            try
+            {
+                var result = await _gemService.GetGemPricesAsync();
+
+                if (result is not null)
+                {
+                    return Ok(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return BadRequest();
         }
         #endregion
     }

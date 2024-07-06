@@ -211,5 +211,9 @@ namespace JewelrySalesSystem.DAL.Repositories
 
             return 0;
         }
+
+        public async Task<List<GemPriceList>> GetGemPricesAsync() => await _context.GemPrices.OrderByDescending(g => g.Id).ToListAsync();
+
+        public void AddGemPrice(GemPriceList gemPriceList) => _context.GemPrices.Add(gemPriceList);
     }
 }
