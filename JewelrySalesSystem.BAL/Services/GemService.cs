@@ -77,21 +77,52 @@ namespace JewelrySalesSystem.BAL.Services
                 ShapeId = createGemRequest.ShapeId
             };
 
-            float price = await _unitOfWork.Gems.GetGemPriceAsync(gem);
-
-            float shapePriceRate = await _unitOfWork.Gems.GetShapePriceRateAsync(gem.ShapeId);
-
-            var product = new Product
+            if (createGemRequest.Price == 0)
             {
-                ProductName = createGemRequest.GemName,
-                FeaturedImage = createGemRequest.FeaturedImage,
-                ProductPrice = price * (1 + shapePriceRate / 100),
-                ProductTypeId = 14
-            };
+                float price = await _unitOfWork.Gems.GetGemPriceAsync(gem);
 
-            var produtResult = _unitOfWork.Products.AddEntity(product);
+                float shapePriceRate = await _unitOfWork.Gems.GetShapePriceRateAsync(gem.ShapeId);
 
-            var gemResult = _unitOfWork.Gems.AddEntity(gem);
+                var product = new Product
+                {
+                    ProductName = createGemRequest.GemName,
+                    FeaturedImage = createGemRequest.FeaturedImage,
+                    ProductPrice = price * (1 + shapePriceRate / 100),
+                    ProductTypeId = 4
+                };
+
+                var produtResult = _unitOfWork.Products.AddEntity(product);
+
+                var gemResult = _unitOfWork.Gems.AddEntity(gem);
+            }
+            else
+            {
+                var gemPrice = new GemPriceList
+                {
+                    OriginId = createGemRequest.OriginId,
+                    CaratId = createGemRequest.CaratId,
+                    ColorId = createGemRequest.ColorId,
+                    ClarityId = createGemRequest.ClarityId,
+                    CutId = createGemRequest.CutId,
+                    Price = createGemRequest.Price
+                };
+
+                float shapePriceRate = await _unitOfWork.Gems.GetShapePriceRateAsync(gem.ShapeId);
+
+                var product = new Product
+                {
+                    ProductName = createGemRequest.GemName,
+                    FeaturedImage = createGemRequest.FeaturedImage,
+                    ProductPrice = createGemRequest.Price * (1 + shapePriceRate / 100),
+                    ProductTypeId = 4
+                };
+
+                var produtResult = _unitOfWork.Products.AddEntity(product);
+
+                var gemResult = _unitOfWork.Gems.AddEntity(gem);
+
+                _unitOfWork.Gems.AddGemPrice(gemPrice);
+            }
 
             await _unitOfWork.CompleteAsync();
 
@@ -159,5 +190,7 @@ namespace JewelrySalesSystem.BAL.Services
 
             return await _unitOfWork.Gems.GetGemPriceAsync(gemPrice);
         }
+
+        public async Task<List<GetGemPriceResponse>> GetGemPricesAsync() => _mapper.Map<List<GetGemPriceResponse>>(await _unitOfWork.Gems.GetGemPricesAsync());
     }
 }

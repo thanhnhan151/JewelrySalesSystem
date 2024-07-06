@@ -401,7 +401,7 @@ namespace JewelrySalesSystem.BAL.Services
             return createPurchaseInvoiceRequest;
         }
 
-
+        public async Task ChangePendingToDraft(int id) => await _unitOfWork.Invoices.ChangePendingToDraft(id);
     }
 }
 
