@@ -100,6 +100,8 @@ namespace JewelrySalesSystem.BAL.Mappings
 
             CreateMap<PaginatedList<Gem>, PaginatedList<GetGemResponse>>();
 
+            CreateMap<GemPriceList, GetGemPriceResponse>();
+
             CreateMap<UpdateGemRequest, Gem>().ReverseMap();
             #endregion
 
