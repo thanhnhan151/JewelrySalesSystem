@@ -565,7 +565,12 @@ namespace JewelrySalesSystem.BAL.Services
 
         }
 
-        public async Task ChangePendingToDraft(int id) => await _unitOfWork.Invoices.ChangePendingToDraft(id);
+        public async Task ChangePendingToDraft(int id)
+        {
+            await _unitOfWork.Invoices.ChangePendingToDraft(id);
+
+            await _unitOfWork.CompleteAsync();
+        }
     }
 
 }
