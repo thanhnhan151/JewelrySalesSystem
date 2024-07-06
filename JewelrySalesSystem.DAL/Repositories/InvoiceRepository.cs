@@ -194,8 +194,6 @@ namespace JewelrySalesSystem.DAL.Repositories
             }
         }
 
-
-
         //public async Task<Invoice> AddPurchaseInvoice(Invoice invoice)
         //{
         //    //if (createPurchaseInvoiceRequest.InvoiceType.Equals("in"))

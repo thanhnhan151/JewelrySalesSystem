@@ -408,5 +408,17 @@ namespace JewelrySalesSystem.API.Controllers
             });
         }
         #endregion
+
+
+        #region
+        [HttpGet("{invoiceId}/pdf")]
+        public async Task<IActionResult> GetInvoicePdf(int invoiceId)
+        {
+            var pdfBytes = await _invoiceService.GenerateInvoicePdf(invoiceId);
+
+            // Return PDF as File Content
+            return File(pdfBytes, "application/pdf", "invoice.pdf");
+        }
+        #endregion
     }
 }
