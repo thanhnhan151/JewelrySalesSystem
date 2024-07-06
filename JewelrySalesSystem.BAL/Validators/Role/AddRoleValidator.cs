@@ -21,7 +21,7 @@ namespace JewelrySalesSystem.BAL.Validators.Role
                 .Matches("^[a-zA-Z ]+$")
                 .WithMessage("Role cannot contain special characters.")
                 .MustAsync(async (name, cancellation) => !await CheckDuplicate(name))
-                .WithMessage("Role already exists ."); ;
+                .WithMessage("Role already exists ."); 
 
         }
 

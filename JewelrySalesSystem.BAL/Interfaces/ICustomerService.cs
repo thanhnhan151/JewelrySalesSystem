@@ -4,9 +4,6 @@ namespace JewelrySalesSystem.BAL.Interfaces
 {
     public interface ICustomerService
     {
-        Task<GetCustomerPointResponse?> GetCustomerPointByNameAsync(string customerName);
-
-        Task<int> GetCustomerByNameAsync(string customerName);
-
+        Task<GetCustomerResponse?> GetCustomerByNameAsync(string customerName);
     }
 }

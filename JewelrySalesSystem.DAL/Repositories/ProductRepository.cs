@@ -26,18 +26,17 @@ namespace JewelrySalesSystem.DAL.Repositories
             , int pageSize)
         {
             IQueryable<Product> productsQuery = _dbSet
-                                                .Where(p => p.ProductTypeId == productTypeId
-                                                         && p.IsActive)
-                                                .Include(p => p.ProductGems)
-                                                    .ThenInclude(g => g.Gem)
-                                                .Include(p => p.ProductMaterials)
-                                                    .ThenInclude(m => m.Material)
-                                                        .ThenInclude(g => g.MaterialPrices
-                                                        .OrderByDescending(g => g.EffDate)
-                                                        .Take(1))
-                                                .Include(p => p.Category)
+                                                .Where(p => p.ProductTypeId == productTypeId)
+                                                //.Include(p => p.ProductGems)
+                                                //    .ThenInclude(g => g.Gem)
+                                                //.Include(p => p.ProductMaterials)
+                                                //    .ThenInclude(m => m.Material)
+                                                //        .ThenInclude(g => g.MaterialPrices
+                                                //        .OrderByDescending(g => g.EffDate)
+                                                //        .Take(1))
+                                                //.Include(p => p.Category)
                                                 .Include(p => p.ProductType)
-                                                .Include(p => p.Gender);
+                                                /*.Include(p => p.Gender)*/;
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {

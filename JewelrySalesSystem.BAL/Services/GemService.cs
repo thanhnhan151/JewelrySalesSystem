@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.Gems;
 using JewelrySalesSystem.DAL.Common;
@@ -11,13 +12,17 @@ namespace JewelrySalesSystem.BAL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IValidator<CreateGemRequest> _createValidator;
+        private readonly IValidator<UpdateGemRequest> _updateValidator;
 
         public GemService(
             IUnitOfWork unitOfWork
-            , IMapper mapper)
+            , IMapper mapper, IValidator<CreateGemRequest> createValidator, IValidator<UpdateGemRequest> updateValidator)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _createValidator = createValidator;
+            _updateValidator = updateValidator;
         }
 
         public async Task<PaginatedList<GetGemResponse>> PaginationAsync(
@@ -53,6 +58,13 @@ namespace JewelrySalesSystem.BAL.Services
 
         public async Task<CreateGemRequest> AddAsync(CreateGemRequest createGemRequest)
         {
+
+            var validator = await _createValidator.ValidateAsync(createGemRequest);
+            if (!validator.IsValid)
+            {
+                throw new ValidationException(validator.Errors);
+            }
+
             var gem = new Gem
             {
                 GemName = createGemRequest.GemName,
@@ -65,21 +77,52 @@ namespace JewelrySalesSystem.BAL.Services
                 ShapeId = createGemRequest.ShapeId
             };
 
-            float price = await _unitOfWork.Gems.GetGemPriceAsync(gem);
-
-            float shapePriceRate = await _unitOfWork.Gems.GetShapePriceRateAsync(gem.ShapeId);
-
-            var product = new Product
+            if (createGemRequest.Price == 0)
             {
-                ProductName = createGemRequest.GemName,
-                FeaturedImage = createGemRequest.FeaturedImage,
-                ProductPrice = price * (1 + shapePriceRate / 100),
-                ProductTypeId = 4
-            };
+                float price = await _unitOfWork.Gems.GetGemPriceAsync(gem);
 
-            var produtResult = _unitOfWork.Products.AddEntity(product);
+                float shapePriceRate = await _unitOfWork.Gems.GetShapePriceRateAsync(gem.ShapeId);
 
-            var gemResult = _unitOfWork.Gems.AddEntity(gem);
+                var product = new Product
+                {
+                    ProductName = createGemRequest.GemName,
+                    FeaturedImage = createGemRequest.FeaturedImage,
+                    ProductPrice = price * (1 + shapePriceRate / 100),
+                    ProductTypeId = 4
+                };
+
+                var produtResult = _unitOfWork.Products.AddEntity(product);
+
+                var gemResult = _unitOfWork.Gems.AddEntity(gem);
+            }
+            else
+            {
+                var gemPrice = new GemPriceList
+                {
+                    OriginId = createGemRequest.OriginId,
+                    CaratId = createGemRequest.CaratId,
+                    ColorId = createGemRequest.ColorId,
+                    ClarityId = createGemRequest.ClarityId,
+                    CutId = createGemRequest.CutId,
+                    Price = createGemRequest.Price
+                };
+
+                float shapePriceRate = await _unitOfWork.Gems.GetShapePriceRateAsync(gem.ShapeId);
+
+                var product = new Product
+                {
+                    ProductName = createGemRequest.GemName,
+                    FeaturedImage = createGemRequest.FeaturedImage,
+                    ProductPrice = createGemRequest.Price * (1 + shapePriceRate / 100),
+                    ProductTypeId = 4
+                };
+
+                var produtResult = _unitOfWork.Products.AddEntity(product);
+
+                var gemResult = _unitOfWork.Gems.AddEntity(gem);
+
+                _unitOfWork.Gems.AddGemPrice(gemPrice);
+            }
 
             await _unitOfWork.CompleteAsync();
 
@@ -88,6 +131,12 @@ namespace JewelrySalesSystem.BAL.Services
 
         public async Task UpdateAsync(UpdateGemRequest updateGemRequest)
         {
+
+            var validator = await _updateValidator.ValidateAsync(updateGemRequest);
+            if (!validator.IsValid)
+            {
+                throw new ValidationException(validator.Errors);
+            }
             var gem = new Gem
             {
                 GemId = updateGemRequest.GemId,
@@ -127,5 +176,21 @@ namespace JewelrySalesSystem.BAL.Services
         }
 
         public async Task<GetGemResponse?> GetGemById(int id) => _mapper.Map<GetGemResponse>(await _unitOfWork.Gems.GetEntityByIdAsync(id));
+
+        public async Task<float> GetGemPriceAsync(GemPriceRequest gemPriceRequest)
+        {
+            var gemPrice = new GemPriceList
+            {
+                CaratId = gemPriceRequest.CaratId,
+                ClarityId = gemPriceRequest.ClarityId,
+                ColorId = gemPriceRequest.ColorId,
+                CutId = gemPriceRequest.CutId,
+                OriginId = gemPriceRequest.OriginId
+            };
+
+            return await _unitOfWork.Gems.GetGemPriceAsync(gemPrice);
+        }
+
+        public async Task<List<GetGemPriceResponse>> GetGemPricesAsync() => _mapper.Map<List<GetGemPriceResponse>>(await _unitOfWork.Gems.GetGemPricesAsync());
     }
 }

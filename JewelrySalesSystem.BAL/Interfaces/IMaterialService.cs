@@ -19,7 +19,9 @@ namespace JewelrySalesSystem.BAL.Interfaces
 
         Task<GetMaterialResponse?> GetByIdAsync(int id);
 
-        Task UpdateAsync(Material material);
+        Task DeleteAsync(int id);
+
+        Task UpdateAsync(UpdateMaterialRequest updateMaterialRequest);
 
         Task<GetMaterialResponse?> GetByIdWithIncludeAsync(int id);
     }

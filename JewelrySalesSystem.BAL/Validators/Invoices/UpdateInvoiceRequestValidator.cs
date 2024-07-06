@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentValidation;
+﻿using FluentValidation;
 using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.Invoices;
 
@@ -40,9 +35,9 @@ namespace JewelrySalesSystem.BAL.Validators.Invoices
                 .MustAsync(async (userId, cancellationToken) => await beValidUser(userId, cancellationToken)).WithMessage("User Id is not existed");
 
             //Validate WarrantyId: Not Empty, is integer, >0, is existed
-            RuleFor(i => i.WarrantyId).NotEmpty().WithMessage("Warranty Id is required")
-                .GreaterThan(0).WithMessage("Warranty Id must greater than 0")
-                .MustAsync(async (warrantyId, cancellationToken) => await beValidWarranty(warrantyId, cancellationToken)).WithMessage("Warranty Id is not existed");
+            //RuleFor(i => i.WarrantyId).NotEmpty().WithMessage("Warranty Id is required")
+            //    .GreaterThan(0).WithMessage("Warranty Id must greater than 0")
+            //    .MustAsync(async (warrantyId, cancellationToken) => await beValidWarranty(warrantyId, cancellationToken)).WithMessage("Warranty Id is not existed");
 
             //Validate ProductId in InvoiceDetails: Not Empty, is integer, >0, is existed
             RuleForEach(i => i.InvoiceDetails).NotEmpty().WithMessage("Values in InvoiceDetails is not null")
@@ -89,7 +84,7 @@ namespace JewelrySalesSystem.BAL.Validators.Invoices
         private async Task<bool> beValidCustomer(string customerName, CancellationToken cancellationToken)
         {
             var checkExist = await _customerService.GetCustomerByNameAsync(customerName);
-            if (checkExist != 0)
+            if (checkExist != null)
             {
                 return true;
             }

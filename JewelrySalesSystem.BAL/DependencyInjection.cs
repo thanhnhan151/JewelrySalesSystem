@@ -2,6 +2,7 @@ using FluentValidation;
 using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Mappings;
 using JewelrySalesSystem.BAL.Models.Categories;
+using JewelrySalesSystem.BAL.Models.Gems;
 using JewelrySalesSystem.BAL.Models.MaterialPriceList;
 using JewelrySalesSystem.BAL.Models.Materials;
 using JewelrySalesSystem.BAL.Models.Products;
@@ -10,6 +11,7 @@ using JewelrySalesSystem.BAL.Models.Roles;
 using JewelrySalesSystem.BAL.Models.Users;
 using JewelrySalesSystem.BAL.Services;
 using JewelrySalesSystem.BAL.Validators.Category;
+using JewelrySalesSystem.BAL.Validators.Gems;
 using JewelrySalesSystem.BAL.Validators.Materials;
 using JewelrySalesSystem.BAL.Validators.Product;
 using JewelrySalesSystem.BAL.Validators.ProductType;
@@ -54,6 +56,16 @@ namespace JewelrySalesSystem.BAL
 
             services.AddScoped<ICustomerService, CustomerService>();
 
+            services.AddScoped<ICaratService, CaratService>();
+
+            services.AddScoped<IClarityService, ClarityService>();
+
+            services.AddScoped<ICutService, CutService>();
+
+            services.AddScoped<IOriginService, OriginService>();
+
+            services.AddScoped<IShapeService, ShapeService>();
+
             //Validate
 
             services.AddScoped<IValidator<CreateUserRequest>, CreateUserValidator>();
@@ -78,6 +90,10 @@ namespace JewelrySalesSystem.BAL
             services.AddScoped<IValidator<CreateProductRequest>, AddProductValidation>();
 
             services.AddScoped<IValidator<UpdateProductRequest>, UpdateProductValidation>();
+
+            services.AddScoped<IValidator<CreateGemRequest>, CreateGemRequestValidator>();
+
+            services.AddScoped<IValidator<UpdateGemRequest>, UpdateGemRequestValidator>();
 
             return services;
         }

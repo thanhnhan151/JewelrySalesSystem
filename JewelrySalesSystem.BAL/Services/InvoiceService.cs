@@ -34,8 +34,6 @@ namespace JewelrySalesSystem.BAL.Services
         {
             var invoiceDetails = new List<InvoiceDetail>();
 
-            float total = 0;
-
             if (createInvoiceRequest.InvoiceDetails.Count > 0)
             {
                 foreach (var item in createInvoiceRequest.InvoiceDetails)
@@ -85,22 +83,31 @@ namespace JewelrySalesSystem.BAL.Services
                 }
             }
 
-            foreach (var item in invoiceDetails)
-            {
-                total += item.ProductPrice;
-            }
-
             var invoice = new Invoice
             {
                 OrderDate = DateTime.Now,
-                CustomerId = await _unitOfWork.Customers.GetCustomerByNameAsync(createInvoiceRequest.CustomerName),
                 UserId = createInvoiceRequest.UserId,
-                WarrantyId = createInvoiceRequest.WarrantyId,
-                Total = total,
+                Total = createInvoiceRequest.Total,
+                WarrantyId = 1,
                 PerDiscount = createInvoiceRequest.PerDiscount,
-                TotalWithDiscount = total - (total * createInvoiceRequest.PerDiscount) / 100,
+                TotalWithDiscount = createInvoiceRequest.Total - (createInvoiceRequest.Total * createInvoiceRequest.PerDiscount) / 100,
                 InvoiceDetails = invoiceDetails
             };
+
+            var customer = await _unitOfWork.Customers.GetCustomerByNameAsync(createInvoiceRequest.CustomerName);
+
+            if (customer != null)
+            {
+                invoice.CustomerId = customer.CustomerId;
+            }
+            else
+            {
+                var newestCustomer = new Customer { FullName = createInvoiceRequest.CustomerName };
+
+                var addedCustomer = _unitOfWork.Customers.AddEntity(newestCustomer);
+
+                invoice.Customer = addedCustomer;
+            }
 
             var result = _unitOfWork.Invoices.AddEntity(invoice);
 
@@ -112,8 +119,6 @@ namespace JewelrySalesSystem.BAL.Services
         public async Task<UpdateInvoiceRequest> UpdateAsync(UpdateInvoiceRequest updateInvoiceRequest)
         {
             var invoiceDetails = new List<InvoiceDetail>();
-
-            float total = 0;
 
             if (updateInvoiceRequest.InvoiceDetails.Count > 0)
             {
@@ -164,24 +169,25 @@ namespace JewelrySalesSystem.BAL.Services
                 }
             }
 
-            foreach (var item in invoiceDetails)
-            {
-                total += item.ProductPrice;
-            }
-
             var invoice = new Invoice
             {
                 InvoiceId = updateInvoiceRequest.InvoiceId,
                 OrderDate = DateTime.Now,
-                CustomerId = await _unitOfWork.Customers.GetCustomerByNameAsync(updateInvoiceRequest.CustomerName),
                 UserId = updateInvoiceRequest.UserId,
-                WarrantyId = updateInvoiceRequest.WarrantyId,
+                WarrantyId = 1,
                 InvoiceDetails = invoiceDetails,
                 InvoiceStatus = updateInvoiceRequest.InvoiceStatus,
-                Total = total,
+                Total = updateInvoiceRequest.Total,
                 PerDiscount = updateInvoiceRequest.PerDiscount,
-                TotalWithDiscount = total - (total * updateInvoiceRequest.PerDiscount) / 100
+                TotalWithDiscount = updateInvoiceRequest.Total - (updateInvoiceRequest.Total * updateInvoiceRequest.PerDiscount) / 100
             };
+
+            var customer = await _unitOfWork.Customers.GetCustomerByNameAsync(updateInvoiceRequest.CustomerName);
+
+            if (customer != null)
+            {
+                invoice.CustomerId = customer.CustomerId;
+            }
 
             await _unitOfWork.Invoices.UpdateInvoice(invoice);
 
@@ -270,7 +276,7 @@ namespace JewelrySalesSystem.BAL.Services
 
             if (createPurchaseInvoiceRequest.InvoiceDetails.Count > 0)
             {
-                
+
                 foreach (var item in createPurchaseInvoiceRequest.InvoiceDetails)
                 {
                     var existedProduct = await _unitOfWork.Products.GetEntityByIdAsync(item);
@@ -340,10 +346,7 @@ namespace JewelrySalesSystem.BAL.Services
                 //}
             }
 
-            foreach (var item in invoiceDetails)
-            {
-                total += item.ProductPrice;
-            }
+            var customer = await _unitOfWork.Customers.GetCustomerByNameAsync(createPurchaseInvoiceRequest.CustomerName);
 
             var invoice = new Invoice
             {
@@ -352,14 +355,20 @@ namespace JewelrySalesSystem.BAL.Services
                 InvoiceType = createPurchaseInvoiceRequest.InvoiceType,
                 UserId = createPurchaseInvoiceRequest.UserId,
                 WarrantyId = 1,
-                Total = total,
+                Total = createPurchaseInvoiceRequest.Total,
                 PerDiscount = 0,
-                TotalWithDiscount = 0,
+                TotalWithDiscount = createPurchaseInvoiceRequest.Total,
                 InvoiceDetails = invoiceDetails
             };
-            var allAreGoldProduct = true;
-            //var allAreExistingProduct = true;
 
+            if (customer != null)
+            {
+                invoice.CustomerId = customer.CustomerId;
+            }
+
+            var allAreGoldProduct = true;
+            
+            //var allAreExistingProduct = true;
 
             //if (invoice.InvoiceType.Equals("in"))
             //{
@@ -433,7 +442,7 @@ namespace JewelrySalesSystem.BAL.Services
             return createPurchaseInvoiceRequest;
         }
 
-
+        public async Task ChangePendingToDraft(int id) => await _unitOfWork.Invoices.ChangePendingToDraft(id);
     }
 }
 

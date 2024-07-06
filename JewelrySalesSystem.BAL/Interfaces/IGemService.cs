@@ -21,5 +21,9 @@ namespace JewelrySalesSystem.BAL.Interfaces
         Task<GetGemResponse?> GetByIdWithIncludeAsync(int id);
 
         Task<GetGemResponse?> GetGemById(int id);
+
+        Task<float> GetGemPriceAsync(GemPriceRequest gemPriceRequest);
+
+        Task<List<GetGemPriceResponse>> GetGemPricesAsync();
     }
 }

@@ -21,8 +21,8 @@ namespace JewelrySalesSystem.BAL.Validators.Invoices
             _warrantyService = warrantyService;
 
             //Validate CustomerName: Not Empty, is existed
-            RuleFor(i => i.CustomerName).NotEmpty().WithMessage("CustomerName is required")
-                .MustAsync(async (customerName, cancelationToken) => await beValidCustomer(customerName, cancelationToken)).WithMessage("Customer is not existed");
+            //RuleFor(i => i.CustomerName).NotEmpty().WithMessage("CustomerName is required")
+            //    .MustAsync(async (customerName, cancelationToken) => await beValidCustomer(customerName, cancelationToken)).WithMessage("Customer is not existed");
 
             //Validate UserId: Not Empty, is integer, >0, is existed
             RuleFor(i => i.UserId).NotEmpty().WithMessage("User Id is required")
@@ -40,9 +40,9 @@ namespace JewelrySalesSystem.BAL.Validators.Invoices
 
 
             //Validate WarrantyId: Not Empty, is integer, >0, is existed
-            RuleFor(i => i.WarrantyId).NotEmpty().WithMessage("Warranty Id is required")
-                .Must(MustBeAnId).WithMessage("Warranty Id is an integer and greater than 0")
-                .MustAsync(async (warrantyId, cancellationToken) => await beValidWarranty(warrantyId, cancellationToken)).WithMessage("Warranty Id is not existed");
+            //RuleFor(i => i.WarrantyId).NotEmpty().WithMessage("Warranty Id is required")
+            //    .Must(MustBeAnId).WithMessage("Warranty Id is an integer and greater than 0")
+            //    .MustAsync(async (warrantyId, cancellationToken) => await beValidWarranty(warrantyId, cancellationToken)).WithMessage("Warranty Id is not existed");
 
 
             //Validate ProductId in InvoiceDetails: Not Empty, is integer, >0, is existed
@@ -80,15 +80,15 @@ namespace JewelrySalesSystem.BAL.Validators.Invoices
         }
 
         //Check Customer is existed by name
-        private async Task<bool> beValidCustomer(string customerName, CancellationToken cancellationToken)
-        {
-            var checkExist = await _customerService.GetCustomerByNameAsync(customerName);
-            if (checkExist != 0)
-            {
-                return true;
-            }
-            return false;
-        }
+        //private async Task<bool> beValidCustomer(string customerName, CancellationToken cancellationToken)
+        //{
+        //    var checkExist = await _customerService.GetCustomerByNameAsync(customerName);
+        //    if (checkExist != 0)
+        //    {
+        //        return true;
+        //    }
+        //    return false;
+        //}
 
         //Check Product is existed by id
         private async Task<bool> beValidProduct(int id, CancellationToken cancellationToken)

@@ -4,5 +4,6 @@
     {
         public float BuyPrice { get; set; }
         public float SellPrice { get; set; }
+        public int MaterialId { get; set; }
     }
 }

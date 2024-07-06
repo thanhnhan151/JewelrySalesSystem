@@ -1,59 +1,67 @@
 ﻿using FluentValidation;
 using JewelrySalesSystem.BAL.Models.Gems;
+using JewelrySalesSystem.DAL.Infrastructures;
 
 namespace JewelrySalesSystem.BAL.Validators.Gems
 {
     public class CreateGemRequestValidator : AbstractValidator<CreateGemRequest>
     {
-        public CreateGemRequestValidator()
+        private readonly IUnitOfWork _unitOfWork;
+        public CreateGemRequestValidator(IUnitOfWork unitOfWork)
         {
+            _unitOfWork = unitOfWork;
+            RuleFor(g => g.GemName)
+                .NotEmpty()
+                .WithMessage("GemName is required")
+                .Matches("^[a-zA-Z0-9 ]+$")
+                .WithMessage("GemName cannot contain special characters.");
 
-            //Validate GemName: NotEmpty, MaximumLength
-            RuleFor(g => g.GemName).NotEmpty().WithMessage("GemName is required");
-                //.MaximumLength(20).WithMessage("GemName is at least 20 characters");
+            RuleFor(g => g.FeaturedImage)
+                .NotEmpty()
+                .WithMessage("FeatureImage is required");
 
-            //Validate FeaturedImage: Not Empty
-            RuleFor(g => g.FeaturedImage).NotEmpty().WithMessage("FeatureImage is required");
 
-            ////Validate Origin: Not Empty
-            //RuleFor(g => g.Origin).NotEmpty().WithMessage("Origin is required");
+            RuleFor(g => g.CaratId)
+                .NotEmpty()
+                .WithMessage("CaratId is required")
+                 .MustAsync(async (caratId, cancellation) => await CheckId(caratId, "CaratId"))
+                 .WithMessage("CaratId does not exist.");
 
-            ////Validate CaratWeight > 0
-            //RuleFor(g => g.CaratWeight).GreaterThan(0).WithMessage("CaraWeight must be greater than 0");
+            RuleFor(g => g.ClarityId)
+               .NotEmpty()
+               .WithMessage("ClarityId is required")
+                 .MustAsync(async (ClarityId, cancellation) => await CheckId(ClarityId, "ClarityId"))
+                 .WithMessage("ClarityId does not exist.");
 
-            ////Validate Colour: Not Empty
-            //RuleFor(g => g.Color).NotEmpty().WithMessage("Colour is required");
-            ////.Must(BeAValidColor)
-            ////.WithMessage("'{PropertyValue}' is not a valid colour");
+            RuleFor(g => g.ColorId)
+               .NotEmpty()
+               .WithMessage("ColorId is required")
+                 .MustAsync(async (ColorId, cancellation) => await CheckId(ColorId, "ColorId"))
+                 .WithMessage("ColorId does not exist.");
 
-            ////Validate Clarity: Not Empty
-            //RuleFor(g => g.Clarity).NotEmpty().WithMessage("Clarity is required");
+            RuleFor(g => g.CutId)
+               .NotEmpty()
+               .WithMessage("CutId is required")
+               .MustAsync(async (CutId, cancellation) => await CheckId(CutId, "CutId"))
+               .WithMessage("CutId does not exist.");
 
-            ////Validate Cut: Not Empty
-            //RuleFor(g => g.Cut).NotEmpty().WithMessage("Cut is required");
+            RuleFor(g => g.OriginId)
+               .NotEmpty()
+               .WithMessage("OriginId is required")
+               .MustAsync(async (OriginId, cancellation) => await CheckId(OriginId, "OriginId"))
+               .WithMessage("OriginId does not exist.");
 
-            ////Validate CaratWeightPrice in GemPrice: NotEmpty and >0
-            //RuleFor(g => g.GemPrice.CaratWeightPrice).NotEmpty().WithMessage("CaratWeightPrice is required").
-            //    GreaterThan(0).WithMessage("CaraWeightPrice must be greater than 0");
-
-            ////Validate ColourPrice in GemPrice: NotEmpty and >0
-            //RuleFor(g => g.GemPrice.ColourPrice).NotEmpty().WithMessage("ColourPrice is required").
-            //    GreaterThan(0).WithMessage("ColourPrice must be greater than 0");
-
-            ////Validate ClarityPrice in GemPrice: NotEmpty and >0
-            //RuleFor(g => g.GemPrice.ClarityPrice).NotEmpty().WithMessage("ClarityPrice is required").
-            //    GreaterThan(0).WithMessage("ClarityPrice must be greater than 0");
-
-            ////Validate CutPrice in GemPrice: NotEmpty and >0
-            //RuleFor(g => g.GemPrice.CutPrice).NotEmpty().WithMessage("CutPrice is required").
-            //    GreaterThan(0).WithMessage("CutPrice must be greater than 0");
-
+            RuleFor(g => g.ShapeId)
+               .NotEmpty()
+               .WithMessage("ShapeId is required")
+               .MustAsync(async (ShapeId, cancellation) => await CheckId(ShapeId, "ShapeId"))
+               .WithMessage("ShapeId does not exist.");
         }
 
-        //private bool BeAValidColor(string color)
-        //{
-        //    return Regex.IsMatch(color, @"^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$");
-        //}
-
+        private async Task<bool> CheckId(int id, string type)
+        {
+            var result = await _unitOfWork.Gems.CheckId(id, type);
+            return result;
+        }
     }
 }

@@ -39,6 +39,16 @@ namespace JewelrySalesSystem.DAL.Infrastructures
 
         public IProductMaterialRepository ProductMaterials { get; set; }
 
+        public ICaratRepository Carats { get; set; }
+
+        public IClarityRepository Clarities { get; set; }
+
+        public ICutRepository Cuts { get; set; }
+
+        public IOriginRepository Origins { get; set; }
+
+        public IShapeRepository Shapes { get; set; }
+
         public UnitOfWork(
             JewelryDbContext context,
             ILoggerFactory loggerFactory)
@@ -74,6 +84,16 @@ namespace JewelrySalesSystem.DAL.Infrastructures
             Customers = new CustomerRepository(_context, _logger);
 
             ProductMaterials = new ProductMaterialRepository(_context, _logger);
+
+            Carats = new CaratRepository(_context, _logger);
+
+            Clarities = new ClarityRepository(_context, _logger);
+
+            Cuts = new CutRepository(_context, _logger);
+
+            Origins = new OriginRepository(_context, _logger);
+
+            Shapes = new ShapeRepository(_context, _logger);
         }
 
         public async Task CompleteAsync() => await _context.SaveChangesAsync();

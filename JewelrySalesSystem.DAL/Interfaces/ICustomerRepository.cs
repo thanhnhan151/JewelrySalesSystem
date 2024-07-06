@@ -5,7 +5,6 @@ namespace JewelrySalesSystem.DAL.Interfaces
 {
     public interface ICustomerRepository : IGenericRepository<Customer>
     {
-        Task<Customer?> GetCustomerPointByNameAsync(string customerName);
-        Task<int> GetCustomerByNameAsync(string customerName);
+        Task<Customer?> GetCustomerByNameAsync(string customerName);
     }
 }

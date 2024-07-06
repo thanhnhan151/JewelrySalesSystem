@@ -82,9 +82,9 @@ namespace JewelrySalesSystem.API.Controllers
         /// Sample request:
         /// 
         ///     {
-        ///       "customerName": "Tran Van A",
+        ///       "customerName": "Tran Thi A",
         ///       "userId": 1,
-        ///       "warrantyId": 1,
+        ///       "total": 15000000,
         ///       "perDiscount": 10,
         ///       "invoiceDetails": [
         ///         1,
@@ -132,6 +132,31 @@ namespace JewelrySalesSystem.API.Controllers
         #endregion
 
         #region Add Purchase Invoice
+        /// <summary>
+        /// Add an purchase invoice in the system
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     {
+        ///       "customerName": "Tran Thi A",
+        ///       "userId": 1,
+        ///       "total": 15000000,
+        ///       "perDiscount": 10,
+        ///       "invoiceDetails": [
+        ///         1,
+        ///         2
+        ///       ]
+        ///     }
+        ///         
+        /// </remarks> 
+        /// <returns>Invoice that was created</returns>
+        /// <response code="200">Invoice that was created</response>
+        /// <response code="400">Failed validation</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server</response>
         [HttpPost("CreatePurchaseInvoice")]
         public async Task<IActionResult> AddPurchaseInvoiceAsync([FromBody] CreatePurchaseInvoiceRequest createPurchaseInvoiceRequest)
         {
@@ -193,7 +218,7 @@ namespace JewelrySalesSystem.API.Controllers
         ///     {
         ///       "invoiceId": 1,
         ///       "invoiceStatus": "Processing",
-        ///       "customerName": "Tran Van A",
+        ///       "customerName": "Tran Thi A",
         ///       "userId": 0,
         ///       "warrantyId": 0,
         ///       "perDiscount": 10,
@@ -295,6 +320,43 @@ namespace JewelrySalesSystem.API.Controllers
                 if (result is not null)
                 {
                     await _invoiceService.ChangeInvoiceStatus(id);
+                    return NoContent();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return NotFound(new
+            {
+                ErrorMessage = $"Invoice with {id} does not exist"
+            });
+        }
+        #endregion
+
+        #region Change Pending To Draft
+        /// <summary>
+        /// Change an invoice status from pending to draft
+        /// </summary>
+        /// <param name="id">Id of the invoice you want to change</param>
+        /// <returns>An user</returns>
+        /// <response code="204">No content</response>
+        /// <response code="400">If the invoice is null</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server</response>
+        [HttpPut("{id}/draft")]
+        public async Task<IActionResult> ChangePendingToDraft(int id)
+        {
+            try
+            {
+                var result = await _invoiceService.GetByIdAsync(id);
+
+                if (result is not null)
+                {
+                    await _invoiceService.ChangePendingToDraft(id);
                     return NoContent();
                 }
             }
