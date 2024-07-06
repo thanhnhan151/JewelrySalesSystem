@@ -20,5 +20,8 @@ namespace JewelrySalesSystem.BAL.Services
 
         public async Task<GetCustomerResponse?> GetCustomerByNameAsync(string customerName)
         => _mapper.Map<GetCustomerResponse>(await _unitOfWork.Customers.GetCustomerByNameAsync(customerName));
+
+        public async Task<GetCustomerResponse?> GetCustomerByPhoneAsync(string phoneNumber)
+        => _mapper.Map<GetCustomerResponse>(await _unitOfWork.Customers.GetCustomerByNameAsync(phoneNumber));
     }
 }

@@ -17,5 +17,10 @@ namespace JewelrySalesSystem.DAL.Repositories
             => await _dbSet
             .Where(c => c.FullName.Equals(customerName))
             .FirstOrDefaultAsync();
+
+        public async Task<Customer?> GetCustomerByPhoneAsync(string phoneNumber)
+        => await _dbSet
+            .Where(c => c.PhoneNumber.Equals(phoneNumber))
+            .FirstOrDefaultAsync();
     }
 }

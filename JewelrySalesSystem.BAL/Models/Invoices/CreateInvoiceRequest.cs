@@ -9,6 +9,8 @@
         // Customer
         public string CustomerName { get; set; } = string.Empty;
 
+        public string PhoneNumber { get; set; } = string.Empty;
+
         // User
         public int UserId { get; set; }
 

@@ -2,8 +2,12 @@
 {
     public class CreatePurchaseInvoiceRequest
     {
+        public string InvoiceType { get; set; } = string.Empty;
+
         // Customer
         public string CustomerName { get; set; } = string.Empty;
+
+        public string PhoneNumber { get; set; } = string.Empty;
 
         // User
         public int UserId { get; set; }

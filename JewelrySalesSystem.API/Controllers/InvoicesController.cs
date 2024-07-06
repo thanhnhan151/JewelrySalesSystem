@@ -83,6 +83,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// 
         ///     {
         ///       "customerName": "Tran Thi A",
+        ///       "phoneNumber": 0912345789,
         ///       "userId": 1,
         ///       "total": 15000000,
         ///       "perDiscount": 10,
@@ -140,9 +141,11 @@ namespace JewelrySalesSystem.API.Controllers
         /// 
         ///     {
         ///       "customerName": "Tran Thi A",
+        ///       "phoneNumber": 0912345789,
+        ///       "invoiceType": "out",
         ///       "userId": 1,
         ///       "total": 15000000,
-        ///       "perDiscount": 10,
+        ///       "perDiscount": 0,
         ///       "invoiceDetails": [
         ///         1,
         ///         2
@@ -409,9 +412,8 @@ namespace JewelrySalesSystem.API.Controllers
         }
         #endregion
 
-
-        #region
-        [HttpGet("{invoiceId}/pdf")]
+        #region Generate Invoice to Pdf
+        [HttpPost("{invoiceId}/pdf")]
         public async Task<IActionResult> GetInvoicePdf(int invoiceId)
         {
             var pdfBytes = await _invoiceService.GenerateInvoicePdf(invoiceId);

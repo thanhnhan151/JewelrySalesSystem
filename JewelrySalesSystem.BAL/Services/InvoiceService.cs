@@ -104,7 +104,7 @@ namespace JewelrySalesSystem.BAL.Services
             }
             else
             {
-                var newestCustomer = new Customer { FullName = createInvoiceRequest.CustomerName };
+                var newestCustomer = new Customer { FullName = createInvoiceRequest.CustomerName, PhoneNumber = createInvoiceRequest.PhoneNumber };
 
                 var addedCustomer = _unitOfWork.Customers.AddEntity(newestCustomer);
 
@@ -353,7 +353,7 @@ namespace JewelrySalesSystem.BAL.Services
             var invoice = new Invoice
             {
                 //OrderDate = DateTime.Now,
-                CustomerId = await _unitOfWork.Customers.GetCustomerByNameAsync(createPurchaseInvoiceRequest.CustomerName),
+                //CustomerId = await _unitOfWork.Customers.GetCustomerByNameAsync(createPurchaseInvoiceRequest.CustomerName),
                 InvoiceType = createPurchaseInvoiceRequest.InvoiceType,
                 UserId = createPurchaseInvoiceRequest.UserId,
                 WarrantyId = 1,
@@ -366,6 +366,14 @@ namespace JewelrySalesSystem.BAL.Services
             if (customer != null)
             {
                 invoice.CustomerId = customer.CustomerId;
+            }
+            else
+            {
+                var newestCustomer = new Customer { FullName = createPurchaseInvoiceRequest.CustomerName, PhoneNumber = createPurchaseInvoiceRequest.PhoneNumber };
+
+                var addedCustomer = _unitOfWork.Customers.AddEntity(newestCustomer);
+
+                invoice.Customer = addedCustomer;
             }
 
             var allAreGoldProduct = true;

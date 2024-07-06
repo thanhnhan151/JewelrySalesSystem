@@ -19,10 +19,11 @@ namespace JewelrySalesSystem.API.Controllers
             _logger = logger;
         }
 
-        #region Get Customer Point By Name
+        #region Get Customer Point By Phone Number
         /// <summary>
         /// Get customer discount based on name in the system
         /// </summary>
+        /// <param name="phoneNumber">Customer phone number</param>
         /// <returns>Customer point</returns>
         /// <response code="200">Return Customer point</response>
         /// <response code="400">If the customer is null</response>
@@ -30,12 +31,12 @@ namespace JewelrySalesSystem.API.Controllers
         /// <response code="403">Forbidden</response>
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server</response>
-        [HttpGet("{customerName}/discount")]
-        public async Task<IActionResult> GetCustomerPointByNameAsync(string customerName)
+        [HttpGet("{phoneNumber}/discount")]
+        public async Task<IActionResult> GetCustomerPointByNameAsync(string phoneNumber)
         {
             try
             {
-                var result = await _customerService.GetCustomerByNameAsync(customerName);
+                var result = await _customerService.GetCustomerByPhoneAsync(phoneNumber);
 
                 if (result != null)
                 {
@@ -49,7 +50,7 @@ namespace JewelrySalesSystem.API.Controllers
 
             return NotFound(new
             {
-                ErrorMessage = $"Customer with  name: {customerName} does not exist"
+                ErrorMessage = $"Customer with  phone number: {phoneNumber} does not exist"
             });
         }
         #endregion
