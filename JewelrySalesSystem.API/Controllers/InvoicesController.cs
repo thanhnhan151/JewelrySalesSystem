@@ -38,6 +38,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// <param name="invoiceType">Invoice Type</param>
         /// <param name="page">Current page the user is on</param>
         /// <param name="pageSize">Number of entities you want to show</param>
+        /// <param name="isActive">Invoice active or not</param>
         /// <param name="searchTerm">Search query</param>
         /// <param name="sortColumn">Column you want to sort</param>
         /// <param name="sortOrder">Sort column by ascending or descening</param>
@@ -55,12 +56,13 @@ namespace JewelrySalesSystem.API.Controllers
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
+            bool isActive,
             int page = 1,
             int pageSize = 5)
         {
             try
             {
-                var result = await _invoiceService.PaginationAsync(invoiceStatus, invoiceType, searchTerm, sortColumn, sortOrder, page, pageSize);
+                var result = await _invoiceService.PaginationAsync(invoiceStatus, invoiceType, searchTerm, sortColumn, sortOrder, isActive, page, pageSize);
 
                 if (result != null)
                 {
@@ -85,7 +87,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// 
         ///     {
         ///       "customerName": "Tran Thi A",
-        ///       "phoneNumber": 0912345789,
+        ///       "phoneNumber": "0912345789",
         ///       "userId": 1,
         ///       "total": 15000000,
         ///       "perDiscount": 10,
@@ -143,7 +145,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// 
         ///     {
         ///       "customerName": "Tran Thi A",
-        ///       "phoneNumber": 0912345789,
+        ///       "phoneNumber": "0912345789",
         ///       "invoiceType": "out",
         ///       "userId": 1,
         ///       "total": 15000000,

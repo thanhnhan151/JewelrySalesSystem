@@ -28,6 +28,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// </summary>
         /// <param name="page">Current page the user is on</param>
         /// <param name="pageSize">Number of entities you want to show</param>
+        /// <param name="isActive">Gem active or not</param>
         /// <param name="searchTerm">Search query</param>
         /// <param name="sortColumn">Column you want to sort</param>
         /// <param name="sortOrder">Sort column by ascending or descening</param>
@@ -43,12 +44,13 @@ namespace JewelrySalesSystem.API.Controllers
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
+            bool isActive,
             int page = 1,
             int pageSize = 5)
         {
             try
             {
-                var result = await _gemService.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize);
+                var result = await _gemService.PaginationAsync(searchTerm, sortColumn, sortOrder, isActive, page, pageSize);
 
                 if (result is not null)
                 {

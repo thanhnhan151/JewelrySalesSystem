@@ -24,10 +24,10 @@ namespace JewelrySalesSystem.API.Controllers
         /// <summary>
         /// Get all jewelry products in the system
         /// </summary>
-        /// <param name="productTypeId">Id of the product type</param>
         /// <param name="categoryId">Product category</param>
         /// <param name="page">Current page the user is on</param>
         /// <param name="pageSize">Number of entities you want to show</param>
+        /// <param name="isActive">Product active or not</param>
         /// <param name="searchTerm">Search query</param>
         /// <param name="sortColumn">Column you want to sort</param>
         /// <param name="sortOrder">Sort column by ascending or descening</param>
@@ -44,13 +44,13 @@ namespace JewelrySalesSystem.API.Controllers
             string? sortColumn,
             string? sortOrder,
             int? categoryId,
-            int productTypeId = 3,
+            bool isActive,
             int page = 1,
             int pageSize = 5)
         {
             try
             {
-                var result = await _productService.ProductPaginationAsync(productTypeId, categoryId, searchTerm, sortColumn, sortOrder, page, pageSize);
+                var result = await _productService.ProductPaginationAsync(3, categoryId, searchTerm, sortColumn, sortOrder, isActive, page, pageSize);
 
                 if (result is not null)
                 {
@@ -70,9 +70,9 @@ namespace JewelrySalesSystem.API.Controllers
         /// <summary>
         /// Get all gem products in the system
         /// </summary>
-        /// <param name="productTypeId">Id of the product type</param>
         /// <param name="page">Current page the user is on</param>
         /// <param name="pageSize">Number of entities you want to show</param>
+        /// <param name="isActive">Gem product active or not</param>
         /// <param name="searchTerm">Search query</param>
         /// <param name="sortColumn">Column you want to sort</param>
         /// <param name="sortOrder">Sort column by ascending or descening</param>
@@ -88,13 +88,13 @@ namespace JewelrySalesSystem.API.Controllers
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
-            int productTypeId = 4,
+            bool isActive,
             int page = 1,
             int pageSize = 5)
         {
             try
             {
-                var result = await _productService.GemPaginationAsync(productTypeId, searchTerm, sortColumn, sortOrder, page, pageSize);
+                var result = await _productService.GemPaginationAsync(4, searchTerm, sortColumn, sortOrder, isActive, page, pageSize);
 
                 if (result is not null)
                 {
@@ -114,9 +114,9 @@ namespace JewelrySalesSystem.API.Controllers
         /// <summary>
         /// Get all material products in the system
         /// </summary>
-        /// <param name="productTypeId">Id of the product type</param>
         /// <param name="page">Current page the user is on</param>
         /// <param name="pageSize">Number of entities you want to show</param>
+        /// <param name="isActive">Material product active or not</param>
         /// <param name="searchTerm">Search query</param>
         /// <param name="sortColumn">Column you want to sort</param>
         /// <param name="sortOrder">Sort column by ascending or descening</param>
@@ -132,13 +132,13 @@ namespace JewelrySalesSystem.API.Controllers
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
-            int productTypeId = 2,
+            bool isActive,
             int page = 1,
             int pageSize = 5)
         {
             try
             {
-                var result = await _productService.MaterialPaginationAsync(productTypeId, searchTerm, sortColumn, sortOrder, page, pageSize);
+                var result = await _productService.MaterialPaginationAsync(2, searchTerm, sortColumn, sortOrder, isActive, page, pageSize);
 
                 if (result is not null)
                 {
@@ -167,7 +167,6 @@ namespace JewelrySalesSystem.API.Controllers
         ///       "productionCost": 100,
         ///       "featuredImage": "testurl",
         ///       "categoryId": 2,
-        ///       "productTypeId": 3,
         ///       "genderId": 3,
         ///       "colourId": 4,
         ///       "gems": [
@@ -175,8 +174,14 @@ namespace JewelrySalesSystem.API.Controllers
         ///         7
         ///       ],
         ///       "materials": [
-        ///         2,
-        ///         5
+        ///         {
+        ///           "materialId": 1,
+        ///           "weight": 1.5
+        ///         },
+        ///         {
+        ///           "materialId": 2,
+        ///           "weight": 1.5
+        ///         }
         ///       ]
         ///     }
         ///         
@@ -254,7 +259,6 @@ namespace JewelrySalesSystem.API.Controllers
         ///       "productionCost": 100,
         ///       "featuredImage": "testurl",
         ///       "categoryId": 2,
-        ///       "productTypeId": 2,
         ///       "genderId": 3,
         ///       "colourId": 4,
         ///       "gems": [
@@ -262,8 +266,14 @@ namespace JewelrySalesSystem.API.Controllers
         ///         3
         ///       ],
         ///       "materials": [
-        ///         3,
-        ///         4
+        ///         {
+        ///           "materialId": 3,
+        ///           "weight": 1.5
+        ///         },
+        ///         {
+        ///           "materialId": 4,
+        ///           "weight": 1.5
+        ///         }
         ///       ]
         ///     }
         ///         

@@ -24,6 +24,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// <summary>
         /// Get all users in the system
         /// </summary>
+        /// <param name="isActive">User active or not</param>
         /// <param name="page">Current page the user is on</param>
         /// <param name="pageSize">Number of entities you want to show</param>
         /// <param name="searchTerm">Search query</param>
@@ -41,12 +42,13 @@ namespace JewelrySalesSystem.API.Controllers
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
+            bool isActive,
             int page = 1,
             int pageSize = 5)
         {
             try
             {
-                var result = await _userService.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize);
+                var result = await _userService.PaginationAsync(searchTerm, sortColumn, sortOrder, isActive, page, pageSize);
 
                 if (result is not null)
                 {

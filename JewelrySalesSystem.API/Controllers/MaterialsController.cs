@@ -30,6 +30,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// </summary>
         /// <param name="page">Current page the user is on</param>
         /// <param name="pageSize">Number of entities you want to show</param>
+        /// <param name="isActive">Material active or not</param>
         /// <param name="searchTerm">Search query</param>
         /// <param name="sortColumn">Column you want to sort</param>
         /// <param name="sortOrder">Sort column by ascending or descening</param>
@@ -45,12 +46,13 @@ namespace JewelrySalesSystem.API.Controllers
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
+            bool isActive,
             int page = 1,
             int pageSize = 5)
         {
             try
             {
-                var result = await _materialService.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize);
+                var result = await _materialService.PaginationAsync(searchTerm, sortColumn, sortOrder, isActive, page, pageSize);
 
                 if (result is not null)
                 {
@@ -271,7 +273,8 @@ namespace JewelrySalesSystem.API.Controllers
                     {
                         ErrorMessage = $"Material with {updateMaterialRequest.MaterialId} does not exist"
                     });
-                } else if (updateMaterialRequest.MaterialName.Trim().Equals(result.MaterialName.Trim()))
+                }
+                else if (updateMaterialRequest.MaterialName.Trim().Equals(result.MaterialName.Trim()))
                 {
                     return BadRequest(new
                     {
