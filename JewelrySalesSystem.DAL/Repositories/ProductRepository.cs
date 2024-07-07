@@ -204,5 +204,10 @@ namespace JewelrySalesSystem.DAL.Repositories
         public async Task<bool> ProductTypeExit(int productTypeId) => await _dbSet.AnyAsync(p => p.ProductTypeId == productTypeId);
 
         public async Task<bool> GenderExit(int genderId) => await _dbSet.AnyAsync(p => p.GenderId == genderId);
+
+        public async Task<float> GetWeightAsync(int productId, int materialId) => await _context.ProductMaterials.Where(p => p.ProductId == productId
+                                            && p.MaterialId == materialId)
+                                            .Select(p => p.Weight)
+                                            .FirstOrDefaultAsync();
     }
 }

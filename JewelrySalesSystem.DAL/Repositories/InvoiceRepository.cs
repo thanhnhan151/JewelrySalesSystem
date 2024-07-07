@@ -18,8 +18,9 @@ namespace JewelrySalesSystem.DAL.Repositories
         }
 
         public async Task<PaginatedList<Invoice>> PaginationAsync(
-            string? invoiceStatus,
-            string? searchTerm
+            string? invoiceStatus
+            , string? invoiceType
+            , string? searchTerm
             , string? sortColumn
             , string? sortOrder
             , int page
@@ -49,6 +50,18 @@ namespace JewelrySalesSystem.DAL.Repositories
                 else if (invoiceStatus.Equals("Cancelled"))
                 {
                     invoicesQuery = invoicesQuery.Where(i => i.InvoiceStatus.Equals(invoiceStatus));
+                }
+            }
+
+            if (invoiceType != null)
+            {
+                if (invoiceType.Equals("in"))
+                {
+                    invoicesQuery = invoicesQuery.Where(i => i.InvoiceType.Equals(invoiceType));
+                } 
+                else if (invoiceType.Equals("out"))
+                {
+                    invoicesQuery = invoicesQuery.Where(i => i.InvoiceType.Equals(invoiceType));
                 }
             }
 
