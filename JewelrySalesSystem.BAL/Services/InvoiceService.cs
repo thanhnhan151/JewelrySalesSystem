@@ -4,7 +4,6 @@ using JewelrySalesSystem.BAL.Models.Invoices;
 using JewelrySalesSystem.DAL.Common;
 using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
-using Microsoft.EntityFrameworkCore;
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf;
 
@@ -25,12 +24,13 @@ namespace JewelrySalesSystem.BAL.Services
 
         public async Task<PaginatedList<GetInvoiceResponse>> PaginationAsync(
             string? invoiceStatus,
+            string? invoiceType,
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
             int page,
             int pageSize)
-        => _mapper.Map<PaginatedList<GetInvoiceResponse>>(await _unitOfWork.Invoices.PaginationAsync(invoiceStatus, searchTerm, sortColumn, sortOrder, page, pageSize));
+        => _mapper.Map<PaginatedList<GetInvoiceResponse>>(await _unitOfWork.Invoices.PaginationAsync(invoiceStatus, invoiceType, searchTerm, sortColumn, sortOrder, page, pageSize));
 
         public async Task<CreateInvoiceRequest> AddAsync(CreateInvoiceRequest createInvoiceRequest)
         {
@@ -377,7 +377,7 @@ namespace JewelrySalesSystem.BAL.Services
             }
 
             var allAreGoldProduct = true;
-            
+
             //var allAreExistingProduct = true;
 
             //if (invoice.InvoiceType.Equals("in"))
@@ -408,7 +408,7 @@ namespace JewelrySalesSystem.BAL.Services
             //            }
             //        }
             //    }
-               
+
             //}
             if (invoice.InvoiceType.Equals("out"))
             {
@@ -432,7 +432,7 @@ namespace JewelrySalesSystem.BAL.Services
             //}
             try
             {
-                if (allAreGoldProduct == true && countProductHasMaterial == createPurchaseInvoiceRequest.Weights.Count) 
+                if (allAreGoldProduct == true && countProductHasMaterial == createPurchaseInvoiceRequest.Weights.Count)
                 {
                     var result = _unitOfWork.Invoices.AddEntity(invoice);
                     await _unitOfWork.CompleteAsync();
@@ -446,7 +446,7 @@ namespace JewelrySalesSystem.BAL.Services
             {
                 throw new Exception("Can not add new purchase invoice.", ex);
             }
-                   
+
             return createPurchaseInvoiceRequest;
         }
 

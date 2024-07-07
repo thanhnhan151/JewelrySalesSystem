@@ -70,6 +70,11 @@ namespace JewelrySalesSystem.BAL.Services
 
                     gem.Price = price;
                 }
+
+                foreach(var material in item.Materials)
+                {
+                    material.Weight = await _unitOfWork.Products.GetWeightAsync(item.ProductId, material.MaterialId) / 100;
+                }
             }
 
             return result;
