@@ -35,6 +35,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// Get all invoices in the system
         /// </summary>
         /// <param name="invoiceStatus">Invoice Status</param>
+        /// <param name="invoiceType">Invoice Type</param>
         /// <param name="page">Current page the user is on</param>
         /// <param name="pageSize">Number of entities you want to show</param>
         /// <param name="searchTerm">Search query</param>
@@ -50,6 +51,7 @@ namespace JewelrySalesSystem.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllAsync(
             string? invoiceStatus,
+            string? invoiceType,
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
@@ -58,7 +60,7 @@ namespace JewelrySalesSystem.API.Controllers
         {
             try
             {
-                var result = await _invoiceService.PaginationAsync(invoiceStatus, searchTerm, sortColumn, sortOrder, page, pageSize);
+                var result = await _invoiceService.PaginationAsync(invoiceStatus, invoiceType, searchTerm, sortColumn, sortOrder, page, pageSize);
 
                 if (result != null)
                 {

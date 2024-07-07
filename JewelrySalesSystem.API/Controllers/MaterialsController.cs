@@ -66,37 +66,37 @@ namespace JewelrySalesSystem.API.Controllers
         }
         #endregion
 
-        #region Get All Gold Materials
-        /// <summary>
-        /// Get all gold materials in the system
-        /// </summary>
-        /// <returns>A list of gold materials</returns>
-        /// <response code="200">Return a list of gold materials in the system</response>
-        /// <response code="400">If the list is null</response>
-        /// <response code="401">Unauthorized</response>
-        /// <response code="403">Forbidden</response>
-        /// <response code="404">Not Found</response>
-        /// <response code="500">Internal Server</response>
-        [HttpGet("golds")]
-        public async Task<IActionResult> GetAllGoldMaterials()
-        {
-            try
-            {
-                var result = await _materialService.GetAllGoldMaterials();
+        //#region Get All Gold Materials
+        ///// <summary>
+        ///// Get all gold materials in the system
+        ///// </summary>
+        ///// <returns>A list of gold materials</returns>
+        ///// <response code="200">Return a list of gold materials in the system</response>
+        ///// <response code="400">If the list is null</response>
+        ///// <response code="401">Unauthorized</response>
+        ///// <response code="403">Forbidden</response>
+        ///// <response code="404">Not Found</response>
+        ///// <response code="500">Internal Server</response>
+        //[HttpGet("golds")]
+        //public async Task<IActionResult> GetAllGoldMaterials()
+        //{
+        //    try
+        //    {
+        //        var result = await _materialService.GetAllGoldMaterials();
 
-                if (result is not null)
-                {
-                    return Ok(result);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+        //        if (result is not null)
+        //        {
+        //            return Ok(result);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception(ex.Message);
+        //    }
 
-            return NotFound();
-        }
-        #endregion
+        //    return NotFound();
+        //}
+        //#endregion
 
         #region Add Material
         /// <summary>
