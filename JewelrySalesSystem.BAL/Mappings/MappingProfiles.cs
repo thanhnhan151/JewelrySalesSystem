@@ -175,6 +175,8 @@ namespace JewelrySalesSystem.BAL.Mappings
             #endregion
 
             #region Customer
+            CreateMap<PaginatedList<Customer>, PaginatedList<GetCustomerResponse>>();
+
             CreateMap<Customer, GetCustomerResponse>();
             #endregion
 
@@ -196,7 +198,8 @@ namespace JewelrySalesSystem.BAL.Mappings
             #endregion
 
             #region Shape
-            CreateMap<Shape, GetShapeResponse>();
+            CreateMap<Shape, GetShapeResponse>()
+                .ForMember(g => g.PriceRate, g => g.MapFrom(g => g.PriceRate / 100));
             #endregion
         }
     }
