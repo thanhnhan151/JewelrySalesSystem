@@ -6,5 +6,6 @@
         public string FullName { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;
         public int Point { get; set; }
+        public int Discount { get; set; } = 0;
     }
 }
