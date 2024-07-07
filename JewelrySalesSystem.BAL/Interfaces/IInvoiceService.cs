@@ -7,6 +7,7 @@ namespace JewelrySalesSystem.BAL.Interfaces
     {
         Task<PaginatedList<GetInvoiceResponse>> PaginationAsync
             (string? invoiceStatus
+            , string? invoiceType
             , string? searchTerm
             , string? sortColumn
             , string? sortOrder
