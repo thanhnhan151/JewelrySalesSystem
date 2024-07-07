@@ -23,6 +23,7 @@ namespace JewelrySalesSystem.DAL.Repositories
             , string? searchTerm
             , string? sortColumn
             , string? sortOrder
+            , bool isActive
             , int page
             , int pageSize)
         {
@@ -32,6 +33,8 @@ namespace JewelrySalesSystem.DAL.Repositories
                                                       .Include(i => i.Customer)
                                                       .Include(i => i.User)
                                                       .Include(i => i.Warranty);
+
+            if (isActive) invoicesQuery = invoicesQuery.Where(i => i.IsActive);
 
             if (invoiceStatus != null)
             {
@@ -58,7 +61,7 @@ namespace JewelrySalesSystem.DAL.Repositories
                 if (invoiceType.Equals("in"))
                 {
                     invoicesQuery = invoicesQuery.Where(i => i.InvoiceType.Equals(invoiceType));
-                } 
+                }
                 else if (invoiceType.Equals("out"))
                 {
                     invoicesQuery = invoicesQuery.Where(i => i.InvoiceType.Equals(invoiceType));

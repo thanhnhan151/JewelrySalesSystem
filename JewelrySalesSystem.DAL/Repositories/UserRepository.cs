@@ -43,12 +43,14 @@ namespace JewelrySalesSystem.DAL.Repositories
             string? searchTerm
             , string? sortColumn
             , string? sortOrder
+            , bool isActive
             , int page
             , int pageSize)
         {
             IQueryable<User> usersQuery = _dbSet
-                .OrderByDescending(u => u.UserId)
                 .Include(u => u.Role);
+
+            if (isActive) usersQuery = usersQuery.Where(u => u.IsActive);
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
@@ -58,13 +60,13 @@ namespace JewelrySalesSystem.DAL.Repositories
                     c.Email.Contains(searchTerm));
             }
 
-            if (sortOrder?.ToLower() == "desc")
+            if (sortOrder?.ToLower() == "asc")
             {
-                usersQuery = usersQuery.OrderByDescending(GetSortProperty(sortColumn));
+                usersQuery = usersQuery.OrderBy(GetSortProperty(sortColumn));
             }
             else
             {
-                usersQuery = usersQuery.OrderBy(GetSortProperty(sortColumn));
+                usersQuery = usersQuery.OrderByDescending(GetSortProperty(sortColumn));
             }
 
             var users = await PaginatedList<User>.CreateAsync(usersQuery, page, pageSize);

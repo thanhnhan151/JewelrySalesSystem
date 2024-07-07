@@ -22,21 +22,15 @@ namespace JewelrySalesSystem.DAL.Repositories
             , string? searchTerm
             , string? sortColumn
             , string? sortOrder
+            , bool isActive
             , int page
             , int pageSize)
         {
             IQueryable<Product> productsQuery = _dbSet
-                                                .Where(p => p.ProductTypeId == productTypeId)
-                                                //.Include(p => p.ProductGems)
-                                                //    .ThenInclude(g => g.Gem)
-                                                //.Include(p => p.ProductMaterials)
-                                                //    .ThenInclude(m => m.Material)
-                                                //        .ThenInclude(g => g.MaterialPrices
-                                                //        .OrderByDescending(g => g.EffDate)
-                                                //        .Take(1))
-                                                //.Include(p => p.Category)
-                                                .Include(p => p.ProductType)
-                                                /*.Include(p => p.Gender)*/;
+                                       .Where(p => p.ProductTypeId == productTypeId)                            
+                                       .Include(p => p.ProductType);
+
+            if (isActive) productsQuery = productsQuery.Where(p => p.IsActive);
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
@@ -64,10 +58,13 @@ namespace JewelrySalesSystem.DAL.Repositories
             , string? searchTerm
             , string? sortColumn
             , string? sortOrder
+            , bool isActive
             , int page
             , int pageSize)
         {
-            IQueryable<Product> productsQuery = _dbSet.Include(p => p.ProductGems)
+            IQueryable<Product> productsQuery = _dbSet
+                                                .Where(p => p.ProductTypeId == productTypeId)
+                                                .Include(p => p.ProductGems)
                                                     .ThenInclude(g => g.Gem)
                                                 .Include(p => p.ProductMaterials)
                                                     .ThenInclude(m => m.Material)
@@ -78,7 +75,7 @@ namespace JewelrySalesSystem.DAL.Repositories
                                                 .Include(p => p.ProductType)
                                                 .Include(p => p.Gender);
 
-            productsQuery = productsQuery.Where(p => p.ProductTypeId == productTypeId && p.IsActive);
+            if (isActive) productsQuery = productsQuery.Where(p => p.IsActive);
 
             if (categoryId != null) productsQuery = productsQuery.Where(p => p.CategoryId == categoryId);
 

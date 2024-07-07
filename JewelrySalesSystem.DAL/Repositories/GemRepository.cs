@@ -21,17 +21,19 @@ namespace JewelrySalesSystem.DAL.Repositories
             string? searchTerm
             , string? sortColumn
             , string? sortOrder
+            , bool isActive
             , int page
             , int pageSize)
         {
             IQueryable<Gem> gemsQuery = _dbSet
-                .Where(g => g.IsActive)
                 .Include(g => g.Origin)
                 .Include(g => g.Carat)
                 .Include(g => g.Cut)
                 .Include(g => g.Clarity)
                 .Include(g => g.Color)
                 .Include(g => g.Shape);
+
+            if (isActive) gemsQuery = gemsQuery.Where(g => g.IsActive);
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {

@@ -21,14 +21,16 @@ namespace JewelrySalesSystem.DAL.Repositories
             string? searchTerm
             , string? sortColumn
             , string? sortOrder
+            , bool isActive
             , int page
             , int pageSize)
         {
             IQueryable<Material> materialsQuery = _dbSet
-                .Where(m => m.IsActive)
                 .Include(m => m.MaterialPrices
                 .OrderByDescending(m => m.EffDate)
                 .Take(1));
+
+            if (isActive) materialsQuery = materialsQuery.Where(m => m.IsActive);
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
@@ -82,6 +84,6 @@ namespace JewelrySalesSystem.DAL.Repositories
         }
 
         //changes here
-        public async Task<Material> CheckDuplicate(string materialName) => await _dbSet.FirstOrDefaultAsync(m => m.MaterialName == materialName);      
+        public async Task<Material> CheckDuplicate(string materialName) => await _dbSet.FirstOrDefaultAsync(m => m.MaterialName == materialName);
     }
 }
