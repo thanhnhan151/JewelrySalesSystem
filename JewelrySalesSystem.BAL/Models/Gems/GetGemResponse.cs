@@ -12,5 +12,6 @@
         public string Clarity { get; set; } = string.Empty;
         public string Cut { get; set; } = string.Empty;
         public float Price { get; set; }
+        public bool IsActive { get; set; }
     }
 }

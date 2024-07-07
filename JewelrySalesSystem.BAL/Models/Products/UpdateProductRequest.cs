@@ -1,4 +1,6 @@
-﻿namespace JewelrySalesSystem.BAL.Models.Products
+﻿using JewelrySalesSystem.BAL.Models.Materials;
+
+namespace JewelrySalesSystem.BAL.Models.Products
 {
     public class UpdateProductRequest
     {
@@ -11,17 +13,14 @@
         // Category
         public int CategoryId { get; set; }
 
-        // Product Type
-        public int ProductTypeId { get; set; }
-
         // Gender
         public int GenderId { get; set; }
 
 
         // Product Gems
-        public virtual ICollection<int> Gems { get; set; } = new List<int>();
+        public virtual ICollection<int> Gems { get; set; } = [];
 
         // Product Materials
-        public virtual ICollection<int> Materials { get; set; } = new List<int>();
+        public virtual ICollection<CreateMaterialItemRequest> Materials { get; set; } = [];
     }
 }

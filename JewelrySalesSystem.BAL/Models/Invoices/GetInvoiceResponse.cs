@@ -9,6 +9,7 @@
         public float Total { get; set; }
         public float PerDiscount { get; set; }
         public float TotalWithDiscount { get; set; }
+        public bool IsActive { get; set; }
 
         // Customer
         public string CustomerName { get; set; } = string.Empty;
