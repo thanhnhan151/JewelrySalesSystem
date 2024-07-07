@@ -28,6 +28,9 @@ namespace JewelrySalesSystem.DAL.Interfaces
         Task UpdateProduct(Product product);
 
         Task DeleteProduct(int id);
+
+        Task<float> GetWeightAsync(int productId, int materialId);
+
         //changes here
         Task<Product> CheckDuplicate(string productName);
 

@@ -8,6 +8,7 @@ namespace JewelrySalesSystem.DAL.Interfaces
     {
         Task<PaginatedList<Invoice>> PaginationAsync
             (string? invoiceStatus
+            , string? invoiceType
             , string? searchTerm
             , string? sortColumn
             , string? sortOrder
