@@ -11,6 +11,7 @@ namespace JewelrySalesSystem.BAL.Interfaces
             , string? searchTerm
             , string? sortColumn
             , string? sortOrder
+            , bool isActive
             , int page
             , int pageSize);
 
@@ -19,6 +20,7 @@ namespace JewelrySalesSystem.BAL.Interfaces
             , string? searchTerm
             , string? sortColumn
             , string? sortOrder
+            , bool isActive
             , int page
             , int pageSize);
 
@@ -27,6 +29,7 @@ namespace JewelrySalesSystem.BAL.Interfaces
             , string? searchTerm
             , string? sortColumn
             , string? sortOrder
+            , bool isActive
             , int page
             , int pageSize);
 
