@@ -28,9 +28,10 @@ namespace JewelrySalesSystem.BAL.Services
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
+            bool isActive,
             int page,
             int pageSize)
-        => _mapper.Map<PaginatedList<GetInvoiceResponse>>(await _unitOfWork.Invoices.PaginationAsync(invoiceStatus, invoiceType, searchTerm, sortColumn, sortOrder, page, pageSize));
+        => _mapper.Map<PaginatedList<GetInvoiceResponse>>(await _unitOfWork.Invoices.PaginationAsync(invoiceStatus, invoiceType, searchTerm, sortColumn, sortOrder, isActive, page, pageSize));
 
         public async Task<CreateInvoiceRequest> AddAsync(CreateInvoiceRequest createInvoiceRequest)
         {
@@ -106,9 +107,7 @@ namespace JewelrySalesSystem.BAL.Services
             {
                 var newestCustomer = new Customer { FullName = createInvoiceRequest.CustomerName, PhoneNumber = createInvoiceRequest.PhoneNumber };
 
-                var addedCustomer = _unitOfWork.Customers.AddEntity(newestCustomer);
-
-                invoice.Customer = addedCustomer;
+                invoice.Customer = newestCustomer;
             }
 
             var result = _unitOfWork.Invoices.AddEntity(invoice);
@@ -371,9 +370,7 @@ namespace JewelrySalesSystem.BAL.Services
             {
                 var newestCustomer = new Customer { FullName = createPurchaseInvoiceRequest.CustomerName, PhoneNumber = createPurchaseInvoiceRequest.PhoneNumber };
 
-                var addedCustomer = _unitOfWork.Customers.AddEntity(newestCustomer);
-
-                invoice.Customer = addedCustomer;
+                invoice.Customer = newestCustomer;
             }
 
             var allAreGoldProduct = true;

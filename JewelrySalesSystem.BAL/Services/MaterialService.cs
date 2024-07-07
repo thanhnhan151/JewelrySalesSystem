@@ -28,9 +28,10 @@ namespace JewelrySalesSystem.BAL.Services
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
+            bool isActive,
             int page,
             int pageSize)
-        => _mapper.Map<PaginatedList<GetMaterialResponse>>(await _unitOfWork.Materials.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize));
+        => _mapper.Map<PaginatedList<GetMaterialResponse>>(await _unitOfWork.Materials.PaginationAsync(searchTerm, sortColumn, sortOrder, isActive, page, pageSize));
 
         public async Task<Material> AddAsync(Material material)
         {

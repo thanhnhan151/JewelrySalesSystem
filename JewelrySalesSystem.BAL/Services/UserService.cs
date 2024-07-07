@@ -32,9 +32,10 @@ namespace JewelrySalesSystem.BAL.Services
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
+            bool isActive,
             int page,
             int pageSize)
-        => _mapper.Map<PaginatedList<GetUserResponse>>(await _unitOfWork.Users.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize));
+        => _mapper.Map<PaginatedList<GetUserResponse>>(await _unitOfWork.Users.PaginationAsync(searchTerm, sortColumn, sortOrder, isActive, page, pageSize));
 
         public async Task<CreateUserRequest> AddAsync(CreateUserRequest createUserRequest)
         {

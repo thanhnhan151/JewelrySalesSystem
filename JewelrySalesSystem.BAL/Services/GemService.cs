@@ -29,10 +29,11 @@ namespace JewelrySalesSystem.BAL.Services
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
+            bool isActive,
             int page,
             int pageSize)
         {
-            var result = _mapper.Map<PaginatedList<GetGemResponse>>(await _unitOfWork.Gems.PaginationAsync(searchTerm, sortColumn, sortOrder, page, pageSize));
+            var result = _mapper.Map<PaginatedList<GetGemResponse>>(await _unitOfWork.Gems.PaginationAsync(searchTerm, sortColumn, sortOrder, isActive, page, pageSize));
 
             foreach (var item in result.Items)
             {
