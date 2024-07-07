@@ -34,10 +34,10 @@ namespace JewelrySalesSystem.BAL.Validators.Product
                 .MustAsync(async (categoryId, cancellation) => await AlreadyExitId(categoryId, "CategoryId"))
                 .WithMessage("Category ID does not exit!");
 
-            RuleFor(p => p.ProductTypeId)
-                .NotEmpty().WithMessage("Product Type ID is required!")
-                .MustAsync(async (productTypeId, cancellation) => await AlreadyExitId(productTypeId, "ProductTypeId"))
-                .WithMessage("Product Type ID does not exit!");
+            //RuleFor(p => p.ProductTypeId)
+            //    .NotEmpty().WithMessage("Product Type ID is required!")
+            //    .MustAsync(async (productTypeId, cancellation) => await AlreadyExitId(productTypeId, "ProductTypeId"))
+            //    .WithMessage("Product Type ID does not exit!");
 
             RuleFor(p => p.GenderId)
                 .NotEmpty().WithMessage("Gender ID is required!")
