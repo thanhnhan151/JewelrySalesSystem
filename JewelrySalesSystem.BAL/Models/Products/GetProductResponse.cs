@@ -11,6 +11,7 @@ namespace JewelrySalesSystem.BAL.Models.Products
         public float ProductionCost { get; set; }
         public string FeaturedImage { get; set; } = string.Empty;
         public bool IsActive { get; set; }
+        public int Quantity { get; set; }
         public float ProductPrice { get; set; }
 
         // Category
@@ -23,7 +24,7 @@ namespace JewelrySalesSystem.BAL.Models.Products
         public string Gender { get; set; } = string.Empty;
 
         // Counter 
-        public string CounterName { get; set; } = string.Empty;
+        public string Counter { get; set; } = string.Empty;
 
         // Unit
         public string Unit { get; set; } = string.Empty;

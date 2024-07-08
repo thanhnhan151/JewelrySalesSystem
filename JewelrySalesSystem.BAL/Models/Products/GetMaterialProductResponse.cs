@@ -6,10 +6,11 @@ namespace JewelrySalesSystem.BAL.Models.Products
     {
         public int ProductId { get; set; }
         public string ProductName { get; set; } = string.Empty;
+        public int Quantity { get; set; }
         public MaterialPrice MaterialPrice { get; set; } = null!;
 
         // Counter 
-        public string CounterName { get; set; } = string.Empty;
+        public string Counter { get; set; } = string.Empty;
 
         public bool IsActive { get; set; }
 

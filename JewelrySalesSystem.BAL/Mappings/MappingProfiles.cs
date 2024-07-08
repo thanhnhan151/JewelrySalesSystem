@@ -62,18 +62,18 @@ namespace JewelrySalesSystem.BAL.Mappings
 
                 .ForMember(p => p.Gender, p => p.MapFrom(p => p.Gender.GenderName))
 
-                .ForMember(p => p.CounterName, p => p.MapFrom(p => p.Counter.CounterName))
+                .ForMember(p => p.Counter, p => p.MapFrom(p => p.Counter.CounterName))
 
                 .ForMember(p => p.Unit, p => p.MapFrom(p => p.Unit.Name));
 
             CreateMap<Product, GetGemProductResponse>()
                 .ForMember(p => p.ProductType, p => p.MapFrom(p => p.ProductType.Name))
-                .ForMember(p => p.CounterName, p => p.MapFrom(p => p.Counter.CounterName))
+                .ForMember(p => p.Counter, p => p.MapFrom(p => p.Counter.CounterName))
                 .ForMember(p => p.Unit, p => p.MapFrom(p => p.Unit.Name));
 
             CreateMap<Product, GetMaterialProductResponse>()
                 .ForMember(p => p.ProductType, p => p.MapFrom(p => p.ProductType.Name))
-                .ForMember(p => p.CounterName, p => p.MapFrom(p => p.Counter.CounterName))
+                .ForMember(p => p.Counter, p => p.MapFrom(p => p.Counter.CounterName))
                 .ForMember(p => p.Unit, p => p.MapFrom(p => p.Unit.Name));
 
             CreateMap<Product, ProductCategoryResponse>()
