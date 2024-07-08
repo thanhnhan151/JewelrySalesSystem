@@ -41,7 +41,7 @@ namespace JewelrySalesSystem.BAL.Validators.Invoices
 
             //Validate ProductId in InvoiceDetails: Not Empty, is integer, >0, is existed
             RuleForEach(i => i.InvoiceDetails).NotEmpty().WithMessage("Values in InvoiceDetails is not null")
-                .GreaterThan(0).WithMessage("Values in InvoiceDetails must greater than 0")
+                //.GreaterThan(0).WithMessage("Values in InvoiceDetails must greater than 0")
                 .MustAsync(async (productId, cancellationToken) => await beValidProduct(productId, cancellationToken)).WithMessage($"Product Id is not existed");
 
         }
@@ -92,9 +92,9 @@ namespace JewelrySalesSystem.BAL.Validators.Invoices
         }
 
         //Check Product is existed by id
-        private async Task<bool> beValidProduct(int id, CancellationToken cancellationToken)
+        private async Task<bool> beValidProduct(CreateInvoiceItemRequest item, CancellationToken cancellationToken)
         {
-            var checkExist = await _productService.GetByIdAsync(id);
+            var checkExist = await _productService.GetByIdAsync(item.ProductId);
             if (checkExist != null)
             {
                 return true;
