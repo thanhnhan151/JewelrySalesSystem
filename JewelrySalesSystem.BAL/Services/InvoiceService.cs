@@ -41,7 +41,7 @@ namespace JewelrySalesSystem.BAL.Services
             {
                 foreach (var item in createInvoiceRequest.InvoiceDetails)
                 {
-                    var existedProduct = await _unitOfWork.Products.GetEntityByIdAsync(item);
+                    var existedProduct = await _unitOfWork.Products.GetEntityByIdAsync(item.ProductId);
 
                     if (existedProduct != null)
                     {
@@ -54,8 +54,9 @@ namespace JewelrySalesSystem.BAL.Services
                                 {
                                     invoiceDetails.Add(new InvoiceDetail
                                     {
-                                        ProductId = item,
-                                        ProductPrice = existedProduct.ProductPrice
+                                        ProductId = item.ProductId,
+                                        ProductPrice = existedProduct.ProductPrice * item.Quantity,
+                                        Quantity = item.Quantity
                                     });
                                 }
 
@@ -63,8 +64,9 @@ namespace JewelrySalesSystem.BAL.Services
                             case 3:
                                 invoiceDetails.Add(new InvoiceDetail
                                 {
-                                    ProductId = item,
-                                    ProductPrice = existedProduct.ProductPrice
+                                    ProductId = item.ProductId,
+                                    ProductPrice = existedProduct.ProductPrice * item.Quantity,
+                                    Quantity = item.Quantity
                                 });
 
                                 break;
@@ -75,8 +77,9 @@ namespace JewelrySalesSystem.BAL.Services
                                 {
                                     invoiceDetails.Add(new InvoiceDetail
                                     {
-                                        ProductId = item,
-                                        ProductPrice = existedProduct.ProductPrice
+                                        ProductId = item.ProductId,
+                                        ProductPrice = existedProduct.ProductPrice * item.Quantity,
+                                        Quantity = item.Quantity
                                     });
                                 }
 
@@ -125,7 +128,7 @@ namespace JewelrySalesSystem.BAL.Services
             {
                 foreach (var item in updateInvoiceRequest.InvoiceDetails)
                 {
-                    var existedProduct = await _unitOfWork.Products.GetEntityByIdAsync(item);
+                    var existedProduct = await _unitOfWork.Products.GetEntityByIdAsync(item.ProductId);
 
                     if (existedProduct != null)
                     {
@@ -138,8 +141,9 @@ namespace JewelrySalesSystem.BAL.Services
                                 {
                                     invoiceDetails.Add(new InvoiceDetail
                                     {
-                                        ProductId = item,
-                                        ProductPrice = existedProduct.ProductPrice
+                                        ProductId = item.ProductId,
+                                        ProductPrice = existedProduct.ProductPrice * item.Quantity,
+                                        Quantity = item.Quantity
                                     });
                                 }
 
@@ -147,8 +151,9 @@ namespace JewelrySalesSystem.BAL.Services
                             case 3:
                                 invoiceDetails.Add(new InvoiceDetail
                                 {
-                                    ProductId = item,
-                                    ProductPrice = existedProduct.ProductPrice
+                                    ProductId = item.ProductId,
+                                    ProductPrice = existedProduct.ProductPrice * item.Quantity,
+                                    Quantity = item.Quantity
                                 });
 
                                 break;
@@ -159,8 +164,9 @@ namespace JewelrySalesSystem.BAL.Services
                                 {
                                     invoiceDetails.Add(new InvoiceDetail
                                     {
-                                        ProductId = item,
-                                        ProductPrice = existedProduct.ProductPrice * 70 / 100
+                                        ProductId = item.ProductId,
+                                        ProductPrice = existedProduct.ProductPrice * item.Quantity,
+                                        Quantity = item.Quantity
                                     });
                                 }
 

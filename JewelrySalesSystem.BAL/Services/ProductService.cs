@@ -30,6 +30,7 @@ namespace JewelrySalesSystem.BAL.Services
 
         public async Task<PaginatedList<GetProductResponse>> ProductPaginationAsync(
             int productTypeId,
+            int? counterId,
             int? categoryId,
             string? searchTerm,
             string? sortColumn,
@@ -38,7 +39,7 @@ namespace JewelrySalesSystem.BAL.Services
             int page,
             int pageSize)
         {
-            var result = _mapper.Map<PaginatedList<GetProductResponse>>(await _unitOfWork.Products.JewelryPaginationAsync(productTypeId, categoryId, searchTerm, sortColumn, sortOrder, isActive, page, pageSize));
+            var result = _mapper.Map<PaginatedList<GetProductResponse>>(await _unitOfWork.Products.JewelryPaginationAsync(productTypeId, counterId, categoryId, searchTerm, sortColumn, sortOrder, isActive, page, pageSize));
 
             foreach (var item in result.Items)
             {
@@ -83,6 +84,7 @@ namespace JewelrySalesSystem.BAL.Services
 
         public async Task<PaginatedList<GetGemProductResponse>> GemPaginationAsync(
             int productTypeId,
+            int? counterId,
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
@@ -90,7 +92,7 @@ namespace JewelrySalesSystem.BAL.Services
             int page,
             int pageSize)
         {
-            var result = _mapper.Map<PaginatedList<GetGemProductResponse>>(await _unitOfWork.Products.PaginationAsync(productTypeId, searchTerm, sortColumn, sortOrder, isActive, page, pageSize));
+            var result = _mapper.Map<PaginatedList<GetGemProductResponse>>(await _unitOfWork.Products.PaginationAsync(productTypeId, counterId, searchTerm, sortColumn, sortOrder, isActive, page, pageSize));
 
             foreach (var item in result.Items)
             {
@@ -111,6 +113,7 @@ namespace JewelrySalesSystem.BAL.Services
 
         public async Task<PaginatedList<GetMaterialProductResponse>> MaterialPaginationAsync(
             int productTypeId,
+            int? counterId,
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
@@ -118,7 +121,7 @@ namespace JewelrySalesSystem.BAL.Services
             int page,
             int pageSize)
         {
-            var result = _mapper.Map<PaginatedList<GetMaterialProductResponse>>(await _unitOfWork.Products.PaginationAsync(productTypeId, searchTerm, sortColumn, sortOrder, isActive, page, pageSize));
+            var result = _mapper.Map<PaginatedList<GetMaterialProductResponse>>(await _unitOfWork.Products.PaginationAsync(productTypeId, counterId, searchTerm, sortColumn, sortOrder, isActive, page, pageSize));
 
             foreach (var item in result.Items)
             {
@@ -175,6 +178,7 @@ namespace JewelrySalesSystem.BAL.Services
                 ProductionCost = createProductRequest.ProductionCost,
                 FeaturedImage = createProductRequest.FeaturedImage,
                 CategoryId = createProductRequest.CategoryId,
+                CounterId = createProductRequest.CounterId,
                 ProductTypeId = 3,
                 GenderId = createProductRequest.GenderId,
                 ProductPrice = await CalculateProductPrice(createProductRequest),
@@ -230,6 +234,7 @@ namespace JewelrySalesSystem.BAL.Services
                 PercentPriceRate = updateProductRequest.PercentPriceRate,
                 ProductionCost = updateProductRequest.ProductionCost,
                 FeaturedImage = updateProductRequest.FeaturedImage,
+                CounterId = updateProductRequest.CounterId,
                 CategoryId = updateProductRequest.CategoryId,
                 ProductTypeId = 3,
                 GenderId = updateProductRequest.GenderId,
@@ -285,7 +290,7 @@ namespace JewelrySalesSystem.BAL.Services
             {
                 foreach (var item in productResponse.Gems)
                 {
-                    var gem = await _unitOfWork.Gems.GetByIdWithIncludeAsync(item);
+                    var gem = await _unitOfWork.Gems.GetEntityByIdAsync(item);
 
                     if (gem != null)
                     {
@@ -304,13 +309,11 @@ namespace JewelrySalesSystem.BAL.Services
                 {
                     var temp = await _unitOfWork.Materials.GetByIdWithIncludeAsync(item.MaterialId);
 
-                    var weight = await _unitOfWork.ProductMaterials.GetProductMaterialWeightAsync(item.MaterialId);
-
                     if (temp != null)
                     {
                         var materialPrice = temp.MaterialPrices.SingleOrDefault();
 
-                        if (materialPrice != null) productPrice += ((weight / 100) * materialPrice.SellPrice) * 375 / 100;
+                        if (materialPrice != null) productPrice += ((item.Weight / 100) * materialPrice.SellPrice) * 375 / 100;
                     }
                 }
             }

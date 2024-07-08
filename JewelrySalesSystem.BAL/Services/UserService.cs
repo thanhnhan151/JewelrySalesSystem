@@ -75,5 +75,11 @@ namespace JewelrySalesSystem.BAL.Services
         }
 
         public async Task<GetUserResponse?> GetByIdAsync(int id) => _mapper.Map<GetUserResponse>(await _unitOfWork.Users.GetEntityByIdAsync(id));
+
+        public async Task AssignUserToCounter(int userId, int counterId)
+        {
+            await _unitOfWork.Users.AssignUserToCounter(userId, counterId);
+            await _unitOfWork.CompleteAsync();
+        }
     }
 }
