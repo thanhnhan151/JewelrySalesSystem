@@ -34,5 +34,7 @@ namespace JewelrySalesSystem.BAL.Interfaces
         Task CancelInvoice(int id);
 
         Task<byte[]> GenerateInvoicePdf(int invoiceId);
+
+        Task<byte[]> GenerateInvoiceExcel(int month, int year);
     }
 }

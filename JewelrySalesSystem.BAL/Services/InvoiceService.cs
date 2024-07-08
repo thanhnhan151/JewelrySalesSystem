@@ -6,6 +6,7 @@ using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf;
+using System.Text;
 
 namespace JewelrySalesSystem.BAL.Services
 {
@@ -568,7 +569,42 @@ namespace JewelrySalesSystem.BAL.Services
 
             await _unitOfWork.CompleteAsync();
         }
-    }
 
+        public async Task<byte[]> GenerateInvoiceExcel(int month, int year)
+        {
+            var isValidYear = await _unitOfWork.Invoices.CheckValidYear(year);
+             if (!IsValidMonth(month) || !isValidYear)
+            {
+                return null;
+            }
+            var invoices = await _unitOfWork.Invoices.GetInvoicesForMonthAsync(month, year);
+
+            var csvBuilder = new StringBuilder();
+
+            csvBuilder.AppendLine($"Invoice ID\tOrder Date\tCustomer ID\tUser ID\tInvoice Type\tPer Discount\tTotal");
+
+            foreach (var invoice in invoices)
+            {
+                csvBuilder.AppendLine($"{invoice.InvoiceId}\t{invoice.OrderDate}\t{invoice.CustomerId}\t{invoice.UserId}\t{invoice.InvoiceType}\t{invoice.PerDiscount}\t{invoice.Total}");
+            }
+
+            var totalInvoices = invoices.Count;
+
+            var totalSum = invoices.Sum(i => i.Total);
+
+            csvBuilder.AppendLine($"Total Invoices: {totalInvoices}");
+            csvBuilder.AppendLine($"Total: {totalSum}");
+
+            var byteArray = Encoding.UTF8.GetBytes(csvBuilder.ToString());
+
+            return byteArray;
+
+                        bool IsValidMonth(int month)
+            {
+                return month >= 1 && month <= 12;
+            }
+        }
+    }
 }
+
 

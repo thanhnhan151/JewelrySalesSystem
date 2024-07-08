@@ -29,5 +29,9 @@ namespace JewelrySalesSystem.DAL.Interfaces
         Task ChangePendingToDraft(int id);
 
         Task CancelInvoice(int id);
+
+        Task<List<Invoice>> GetInvoicesForMonthAsync(int month, int year);
+
+        Task<bool> CheckValidYear(int year);
     }
 }

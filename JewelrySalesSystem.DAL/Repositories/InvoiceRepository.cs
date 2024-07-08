@@ -210,6 +210,18 @@ namespace JewelrySalesSystem.DAL.Repositories
             }
         }
 
+        public async Task<List<Invoice>> GetInvoicesForMonthAsync(int month, int year)
+        {
+            return await _context.Invoices
+                         .Where(i => i.OrderDate.Month == month && i.OrderDate.Year == year)
+                         .ToListAsync();
+        }
+
+        public async Task<bool> CheckValidYear(int year)
+        {
+            return await _context.Invoices.AnyAsync(i => i.OrderDate.Year == year);
+        }
+
         //public async Task<Invoice> AddPurchaseInvoice(Invoice invoice)
         //{
         //    //if (createPurchaseInvoiceRequest.InvoiceType.Equals("in"))
