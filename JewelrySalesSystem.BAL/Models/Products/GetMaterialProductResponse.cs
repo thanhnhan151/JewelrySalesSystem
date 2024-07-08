@@ -12,7 +12,11 @@ namespace JewelrySalesSystem.BAL.Models.Products
         public string CounterName { get; set; } = string.Empty;
 
         public bool IsActive { get; set; }
+
         // Product Type
         public string ProductType { get; set; } = string.Empty;
+
+        // Unit
+        public string Unit { get; set; } = string.Empty;
     }
 }

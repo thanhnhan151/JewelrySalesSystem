@@ -57,7 +57,7 @@ namespace JewelrySalesSystem.BAL.Services
                                         ProductId = item.ProductId,
                                         ProductPrice = existedProduct.ProductPrice * item.Quantity,
                                         Quantity = item.Quantity
-                                    });
+                                    });                                  
                                 }
 
                                 break;
@@ -85,6 +85,8 @@ namespace JewelrySalesSystem.BAL.Services
 
                                 break;
                         }
+                        existedProduct.Quantity -= item.Quantity;
+                        _unitOfWork.Products.UpdateEntity(existedProduct);
                     }
                 }
             }

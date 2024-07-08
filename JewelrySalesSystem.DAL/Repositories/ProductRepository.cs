@@ -30,7 +30,8 @@ namespace JewelrySalesSystem.DAL.Repositories
             IQueryable<Product> productsQuery = _dbSet
                                        .Where(p => p.ProductTypeId == productTypeId)
                                        .Include(p => p.ProductType)
-                                       .Include(p => p.Counter);
+                                       .Include(p => p.Counter)
+                                       .Include(p => p.Unit);
 
             if (isActive) productsQuery = productsQuery.Where(p => p.IsActive);
 
@@ -79,7 +80,8 @@ namespace JewelrySalesSystem.DAL.Repositories
                                                 .Include(p => p.Category)
                                                 .Include(p => p.ProductType)
                                                 .Include(p => p.Gender)
-                                                .Include(p => p.Counter);
+                                                .Include(p => p.Counter)
+                                                .Include(p => p.Unit);
 
             if (isActive) productsQuery = productsQuery.Where(p => p.IsActive);
 
@@ -127,6 +129,8 @@ namespace JewelrySalesSystem.DAL.Repositories
                                .Include(p => p.Category)
                                .Include(p => p.ProductType)
                                .Include(p => p.Gender)
+                               .Include(p => p.Counter)
+                               .Include(p => p.Unit)
                                .FirstOrDefaultAsync(p => p.ProductId == id);
 
             if (result == null) return null;

@@ -3,6 +3,7 @@ using JewelrySalesSystem.BAL.Models.Carats;
 using JewelrySalesSystem.BAL.Models.Categories;
 using JewelrySalesSystem.BAL.Models.Clarities;
 using JewelrySalesSystem.BAL.Models.Colors;
+using JewelrySalesSystem.BAL.Models.Counters;
 using JewelrySalesSystem.BAL.Models.Customers;
 using JewelrySalesSystem.BAL.Models.Cuts;
 using JewelrySalesSystem.BAL.Models.Gems;
@@ -61,15 +62,19 @@ namespace JewelrySalesSystem.BAL.Mappings
 
                 .ForMember(p => p.Gender, p => p.MapFrom(p => p.Gender.GenderName))
 
-                .ForMember(p => p.CounterName, p => p.MapFrom(p => p.Counter.CounterName));
+                .ForMember(p => p.CounterName, p => p.MapFrom(p => p.Counter.CounterName))
+
+                .ForMember(p => p.Unit, p => p.MapFrom(p => p.Unit.Name));
 
             CreateMap<Product, GetGemProductResponse>()
                 .ForMember(p => p.ProductType, p => p.MapFrom(p => p.ProductType.Name))
-                .ForMember(p => p.CounterName, p => p.MapFrom(p => p.Counter.CounterName));
+                .ForMember(p => p.CounterName, p => p.MapFrom(p => p.Counter.CounterName))
+                .ForMember(p => p.Unit, p => p.MapFrom(p => p.Unit.Name));
 
             CreateMap<Product, GetMaterialProductResponse>()
                 .ForMember(p => p.ProductType, p => p.MapFrom(p => p.ProductType.Name))
-                .ForMember(p => p.CounterName, p => p.MapFrom(p => p.Counter.CounterName));
+                .ForMember(p => p.CounterName, p => p.MapFrom(p => p.Counter.CounterName))
+                .ForMember(p => p.Unit, p => p.MapFrom(p => p.Unit.Name));
 
             CreateMap<Product, ProductCategoryResponse>()
                 .ForMember(p => p.ProductType, p => p.MapFrom(p => p.ProductType.Name))
@@ -204,6 +209,10 @@ namespace JewelrySalesSystem.BAL.Mappings
             #region Shape
             CreateMap<Shape, GetShapeResponse>()
                 .ForMember(g => g.PriceRate, g => g.MapFrom(g => g.PriceRate / 100));
+            #endregion
+
+            #region Counter
+            CreateMap<Counter, GetCounterResponse>();
             #endregion
         }
     }

@@ -20,5 +20,8 @@
 
         // Product Type
         public string ProductType { get; set; } = string.Empty;
+
+        // Unit
+        public string Unit { get; set; } = string.Empty;
     }
 }

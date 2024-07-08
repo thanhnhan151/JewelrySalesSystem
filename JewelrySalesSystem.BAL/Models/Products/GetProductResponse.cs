@@ -25,6 +25,9 @@ namespace JewelrySalesSystem.BAL.Models.Products
         // Counter 
         public string CounterName { get; set; } = string.Empty;
 
+        // Unit
+        public string Unit { get; set; } = string.Empty;
+
         // Product Gems
         public ICollection<GetGemResponse> Gems { get; set; } = [];
 

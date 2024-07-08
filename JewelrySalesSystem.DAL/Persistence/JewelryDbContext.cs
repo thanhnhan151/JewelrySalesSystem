@@ -106,5 +106,6 @@ namespace JewelrySalesSystem.DAL.Persistence
         public DbSet<Gem> Gems { get; set; }
         public DbSet<GemPriceList> GemPrices { get; set; }
         public DbSet<Counter> Counters { get; set; }
+        public DbSet<Unit> Units { get; set; }
     }
 }
