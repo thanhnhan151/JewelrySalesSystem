@@ -20,6 +20,9 @@ namespace JewelrySalesSystem.DAL.Entities
         public int RoleId { get; set; }
         public virtual Role Role { get; set; } = null!;
 
+        public int? CounterId { get; set; }
+        public virtual Counter Counter { get; set; } = null!;
+
         // Invoices
         public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
 

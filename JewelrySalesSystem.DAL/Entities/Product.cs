@@ -25,7 +25,11 @@ namespace JewelrySalesSystem.DAL.Entities
 
         // Gender
         public int? GenderId { get; set; }
-        public virtual Gender Gender { get; set; } = null!;        
+        public virtual Gender Gender { get; set; } = null!;
+
+        // Counter
+        public int? CounterId { get; set; }
+        public virtual Counter Counter { get; set; } = null!;
 
         // Invoice Details
         public virtual ICollection<InvoiceDetail> InvoiceDetails { get; set; } = new List<InvoiceDetail>();
