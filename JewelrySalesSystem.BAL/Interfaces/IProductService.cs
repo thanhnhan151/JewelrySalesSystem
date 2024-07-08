@@ -7,6 +7,7 @@ namespace JewelrySalesSystem.BAL.Interfaces
     {
         Task<PaginatedList<GetProductResponse>> ProductPaginationAsync
             (int productTypeId
+            , int? counterId
             , int? categoryId
             , string? searchTerm
             , string? sortColumn
@@ -17,6 +18,7 @@ namespace JewelrySalesSystem.BAL.Interfaces
 
         Task<PaginatedList<GetGemProductResponse>> GemPaginationAsync
             (int productTypeId
+            , int? counterId
             , string? searchTerm
             , string? sortColumn
             , string? sortOrder
@@ -26,6 +28,7 @@ namespace JewelrySalesSystem.BAL.Interfaces
 
         Task<PaginatedList<GetMaterialProductResponse>> MaterialPaginationAsync
             (int productTypeId
+            , int? counterId
             , string? searchTerm
             , string? sortColumn
             , string? sortOrder

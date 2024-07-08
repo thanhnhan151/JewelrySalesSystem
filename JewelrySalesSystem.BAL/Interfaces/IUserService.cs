@@ -25,5 +25,7 @@ namespace JewelrySalesSystem.BAL.Interfaces
         Task<GetUserResponse?> GetByIdWithIncludeAsync(int id);
 
         Task DeleteAsync(int id);
+
+        Task AssignUserToCounter(int userId, int counterId);
     }
 }
