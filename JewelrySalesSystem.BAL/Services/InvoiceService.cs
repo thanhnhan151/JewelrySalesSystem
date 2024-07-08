@@ -113,6 +113,8 @@ namespace JewelrySalesSystem.BAL.Services
             {
                 var newestCustomer = new Customer { FullName = createInvoiceRequest.CustomerName, PhoneNumber = createInvoiceRequest.PhoneNumber };
 
+                invoice.PerDiscount = 0;
+
                 invoice.Customer = newestCustomer;
             }
 

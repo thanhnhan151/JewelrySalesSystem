@@ -12,6 +12,8 @@ namespace JewelrySalesSystem.BAL.Interfaces
             , int page
             , int pageSize);
 
+        Task AddAsync(CreateCustomerRequest createCustomerRequest);
+
         Task<GetCustomerResponse?> GetCustomerByNameAsync(string customerName);
 
         Task<GetCustomerResponse?> GetCustomerByPhoneAsync(string phoneNumber);

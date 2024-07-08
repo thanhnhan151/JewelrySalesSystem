@@ -444,7 +444,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// <summary>
         /// Generate Invoice to Excel
         /// </summary>
-        /// <param name=" month">Month you want to export to excel file</param>
+        /// <param name="month">Month you want to export to excel file</param>
         /// <param name="year">Year you want to export to excel file</param>
         /// <returns>Excel file has all sales invoices for a month</returns>
         [HttpGet("report")]
