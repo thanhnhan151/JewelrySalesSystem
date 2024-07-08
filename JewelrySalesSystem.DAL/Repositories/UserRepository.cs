@@ -125,5 +125,27 @@ namespace JewelrySalesSystem.DAL.Repositories
         {
             return await _dbSet.AnyAsync(u => u.RoleId == roleId);
         }
+
+        public async Task AssignUserToCounter(int userId, int counterId)
+        {
+            var result = await _dbSet.FindAsync(userId) ?? throw new Exception($"User with {userId} does not exist");
+
+            var counter = await _context.Counters.FindAsync(counterId) ?? throw new Exception($"Counter with {counterId} does not exist");
+
+            if (result.CounterId == null)
+            {
+                result.CounterId = counterId;
+                _dbSet.Update(result);
+            }
+            else if (result.CounterId == counterId)
+            {
+                throw new Exception($"User: {userId} has already been assigned to counter: {counterId}");
+            }
+            else
+            {
+                result.CounterId = counterId;
+                _dbSet.Update(result);
+            }
+        }
     }
 }

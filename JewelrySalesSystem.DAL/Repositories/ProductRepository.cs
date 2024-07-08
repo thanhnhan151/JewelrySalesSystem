@@ -19,6 +19,7 @@ namespace JewelrySalesSystem.DAL.Repositories
 
         public async Task<PaginatedList<Product>> PaginationAsync
             (int productTypeId
+            , int? counterId
             , string? searchTerm
             , string? sortColumn
             , string? sortOrder
@@ -27,10 +28,13 @@ namespace JewelrySalesSystem.DAL.Repositories
             , int pageSize)
         {
             IQueryable<Product> productsQuery = _dbSet
-                                       .Where(p => p.ProductTypeId == productTypeId)                            
-                                       .Include(p => p.ProductType);
+                                       .Where(p => p.ProductTypeId == productTypeId)
+                                       .Include(p => p.ProductType)
+                                       .Include(p => p.Counter);
 
             if (isActive) productsQuery = productsQuery.Where(p => p.IsActive);
+
+            if (counterId != null) productsQuery = productsQuery.Where(p => p.CounterId == counterId);
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
@@ -54,6 +58,7 @@ namespace JewelrySalesSystem.DAL.Repositories
 
         public async Task<PaginatedList<Product>> JewelryPaginationAsync
             (int productTypeId
+            , int? counterId
             , int? categoryId
             , string? searchTerm
             , string? sortColumn
@@ -73,9 +78,12 @@ namespace JewelrySalesSystem.DAL.Repositories
                                                         .Take(1))
                                                 .Include(p => p.Category)
                                                 .Include(p => p.ProductType)
-                                                .Include(p => p.Gender);
+                                                .Include(p => p.Gender)
+                                                .Include(p => p.Counter);
 
             if (isActive) productsQuery = productsQuery.Where(p => p.IsActive);
+
+            if (counterId != null) productsQuery = productsQuery.Where(p => p.CounterId == counterId);
 
             if (categoryId != null) productsQuery = productsQuery.Where(p => p.CategoryId == categoryId);
 
@@ -206,5 +214,13 @@ namespace JewelrySalesSystem.DAL.Repositories
                                             && p.MaterialId == materialId)
                                             .Select(p => p.Weight)
                                             .FirstOrDefaultAsync();
+
+        public async Task<List<Product>> GetJewelryAndMaterialProducts()
+            => await _dbSet.Where(p => p.ProductTypeId != 4 && p.IsActive)
+                           .Include(p => p.ProductGems)
+                           .Include(p => p.ProductMaterials)
+                           .ToListAsync();
+
+        public void UpdateAllProducts(List<Product> products) => _dbSet.UpdateRange(products);
     }
 }
