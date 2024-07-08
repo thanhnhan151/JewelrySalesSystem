@@ -8,6 +8,7 @@ namespace JewelrySalesSystem.DAL.Interfaces
     {
         Task<PaginatedList<Product>> JewelryPaginationAsync
             (int productTypeId
+            , int? counterId
             , int? categoryId
             , string? searchTerm
             , string? sortColumn
@@ -18,6 +19,7 @@ namespace JewelrySalesSystem.DAL.Interfaces
 
         Task<PaginatedList<Product>> PaginationAsync
             (int productTypeId
+            , int? counterId
             , string? searchTerm
             , string? sortColumn
             , string? sortOrder
@@ -26,6 +28,10 @@ namespace JewelrySalesSystem.DAL.Interfaces
             , int pageSize);
 
         Task<Product?> GetByIdWithIncludeAsync(int id);
+
+        Task<List<Product>> GetJewelryAndMaterialProducts();
+
+        void UpdateAllProducts(List<Product> products);
 
         Task UpdateProduct(Product product);
 

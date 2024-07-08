@@ -1,10 +1,5 @@
 ﻿using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JewelrySalesSystem.DAL.Interfaces
 {
@@ -12,6 +7,6 @@ namespace JewelrySalesSystem.DAL.Interfaces
     {
         Task<MaterialPriceList> CreateMaterialPrice(MaterialPriceList materialPrice);
 
-        Task<MaterialPriceList> GetNewestMaterialPriceByMaterialIdAsync(int  materialId);
+        Task<MaterialPriceList> GetNewestMaterialPriceByMaterialIdAsync(int materialId);
     }
 }

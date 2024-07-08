@@ -23,5 +23,7 @@ namespace JewelrySalesSystem.DAL.Interfaces
         Task<User> CheckDuplicate(string userName , string option);
 
         Task<bool> CheckRoleIdExists(int roleId);
+
+        Task AssignUserToCounter(int userId, int counterId);
     }
 }
