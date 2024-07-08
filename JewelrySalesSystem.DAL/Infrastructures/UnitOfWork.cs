@@ -49,6 +49,8 @@ namespace JewelrySalesSystem.DAL.Infrastructures
 
         public IShapeRepository Shapes { get; set; }
 
+        public ICounterRepository Counters { get; set; }
+
         public UnitOfWork(
             JewelryDbContext context,
             ILoggerFactory loggerFactory)
@@ -94,6 +96,8 @@ namespace JewelrySalesSystem.DAL.Infrastructures
             Origins = new OriginRepository(_context, _logger);
 
             Shapes = new ShapeRepository(_context, _logger);
+
+            Counters = new CounterRepository(_context, _logger);
         }
 
         public async Task CompleteAsync() => await _context.SaveChangesAsync();
