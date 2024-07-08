@@ -132,6 +132,11 @@ namespace JewelrySalesSystem.DAL.Repositories
 
             var counter = await _context.Counters.FindAsync(counterId) ?? throw new Exception($"Counter with {counterId} does not exist");
 
+            if (result.RoleId == 1 || result.RoleId == 2)
+            {
+                throw new Exception($"Can not assign administator or manager to a counter");
+            } 
+
             if (result.CounterId == null)
             {
                 result.CounterId = counterId;
@@ -140,7 +145,7 @@ namespace JewelrySalesSystem.DAL.Repositories
             else if (result.CounterId == counterId)
             {
                 throw new Exception($"User: {userId} has already been assigned to counter: {counterId}");
-            }
+            }          
             else
             {
                 result.CounterId = counterId;
