@@ -25,6 +25,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// Get all jewelry products in the system
         /// </summary>
         /// <param name="categoryId">Product category</param>
+        /// <param name="counterId">Counter Id</param>
         /// <param name="page">Current page the user is on</param>
         /// <param name="pageSize">Number of entities you want to show</param>
         /// <param name="isActive">Product active or not</param>
@@ -44,13 +45,14 @@ namespace JewelrySalesSystem.API.Controllers
             string? sortColumn,
             string? sortOrder,
             int? categoryId,
+            int? counterId,
             bool isActive,
             int page = 1,
             int pageSize = 5)
         {
             try
             {
-                var result = await _productService.ProductPaginationAsync(3, categoryId, searchTerm, sortColumn, sortOrder, isActive, page, pageSize);
+                var result = await _productService.ProductPaginationAsync(3, counterId, categoryId, searchTerm, sortColumn, sortOrder, isActive, page, pageSize);
 
                 if (result is not null)
                 {
@@ -72,6 +74,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// </summary>
         /// <param name="page">Current page the user is on</param>
         /// <param name="pageSize">Number of entities you want to show</param>
+        /// <param name="counterId">Counter Id</param>
         /// <param name="isActive">Gem product active or not</param>
         /// <param name="searchTerm">Search query</param>
         /// <param name="sortColumn">Column you want to sort</param>
@@ -88,13 +91,14 @@ namespace JewelrySalesSystem.API.Controllers
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
+            int? counterId,
             bool isActive,
             int page = 1,
             int pageSize = 5)
         {
             try
             {
-                var result = await _productService.GemPaginationAsync(4, searchTerm, sortColumn, sortOrder, isActive, page, pageSize);
+                var result = await _productService.GemPaginationAsync(4, counterId, searchTerm, sortColumn, sortOrder, isActive, page, pageSize);
 
                 if (result is not null)
                 {
@@ -116,6 +120,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// </summary>
         /// <param name="page">Current page the user is on</param>
         /// <param name="pageSize">Number of entities you want to show</param>
+        /// <param name="counterId">Counter Id</param>
         /// <param name="isActive">Material product active or not</param>
         /// <param name="searchTerm">Search query</param>
         /// <param name="sortColumn">Column you want to sort</param>
@@ -132,13 +137,14 @@ namespace JewelrySalesSystem.API.Controllers
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
+            int? counterId,
             bool isActive,
             int page = 1,
             int pageSize = 5)
         {
             try
             {
-                var result = await _productService.MaterialPaginationAsync(2, searchTerm, sortColumn, sortOrder, isActive, page, pageSize);
+                var result = await _productService.MaterialPaginationAsync(2, counterId, searchTerm, sortColumn, sortOrder, isActive, page, pageSize);
 
                 if (result is not null)
                 {
@@ -166,6 +172,7 @@ namespace JewelrySalesSystem.API.Controllers
         ///       "percentPriceRate": 10,
         ///       "productionCost": 100,
         ///       "featuredImage": "testurl",
+        ///       "counterId": 1,
         ///       "categoryId": 2,
         ///       "genderId": 3,
         ///       "colourId": 4,
@@ -258,6 +265,7 @@ namespace JewelrySalesSystem.API.Controllers
         ///       "percentPriceRate": 10,
         ///       "productionCost": 100,
         ///       "featuredImage": "testurl",
+        ///       "counterId": 1,     
         ///       "categoryId": 2,
         ///       "genderId": 3,
         ///       "colourId": 4,

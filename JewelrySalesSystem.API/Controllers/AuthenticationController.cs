@@ -45,7 +45,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// <response code="200">Return home screen if the access is successful</response>
         /// <response code="400">If the account is null</response>
         /// <response code="500">Internal Server</response>
-        [HttpPost("sigin")]
+        [HttpPost("sign-in")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Boolean), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> LoginAsync([FromBody] UserSignInRequest userSignInRequest)

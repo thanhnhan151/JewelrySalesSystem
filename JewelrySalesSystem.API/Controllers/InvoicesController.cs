@@ -92,8 +92,14 @@ namespace JewelrySalesSystem.API.Controllers
         ///       "total": 15000000,
         ///       "perDiscount": 10,
         ///       "invoiceDetails": [
-        ///         1,
-        ///         2
+        ///         {
+        ///           "productId": 1,
+        ///           "quantity": 1
+        ///         },
+        ///         {
+        ///           "productId": 2,
+        ///           "quantity": 2
+        ///         }
         ///       ]
         ///     }
         ///         
@@ -226,11 +232,18 @@ namespace JewelrySalesSystem.API.Controllers
         ///       "invoiceId": 1,
         ///       "invoiceStatus": "Processing",
         ///       "customerName": "Tran Thi A",
-        ///       "userId": 0,
-        ///       "warrantyId": 0,
+        ///       "userId": 1,
+        ///       "total": 15000000,
         ///       "perDiscount": 10,
         ///       "invoiceDetails": [
-        ///         productId: 0
+        ///         {
+        ///           "productId": 4,
+        ///           "quantity": 1
+        ///         },
+        ///         {
+        ///           "productId": 6,
+        ///           "quantity": 2
+        ///         }
         ///       ]
         ///     }
         ///         

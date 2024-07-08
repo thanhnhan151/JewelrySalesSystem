@@ -222,5 +222,34 @@ namespace JewelrySalesSystem.API.Controllers
             }
         }
         #endregion
+
+        #region Assign User to Counter
+        /// <summary>
+        /// Assign an user to a counter in the system
+        /// </summary>
+        /// <param name="userId">User Id</param>
+        /// <param name="counterId">Counter Id</param>
+        /// <returns>No content</returns>
+        /// <response code="204">No content</response>
+        /// <response code="400">User does not exist</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server</response>
+        [HttpPut("{userId}/assign-to-counter")]
+        public async Task<IActionResult> AssignToCounter(int userId, int counterId)
+        {
+            try
+            {
+                await _userService.AssignUserToCounter(userId, counterId);
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        #endregion
     }
 }
