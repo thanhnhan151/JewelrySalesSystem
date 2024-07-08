@@ -16,6 +16,8 @@ namespace JewelrySalesSystem.BAL.Models.Products
         // Gender
         public int GenderId { get; set; }
 
+        // Counter
+        public int CounterId { get; set; }
 
         // Product Gems
         public virtual ICollection<int> Gems { get; set; } = [];

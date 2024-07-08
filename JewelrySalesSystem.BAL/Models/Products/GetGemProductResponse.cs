@@ -14,6 +14,10 @@
         public float ProductPrice { get; set; }
 
         public bool IsActive { get; set; }
+
+        // Counter 
+        public string CounterName { get; set; } = string.Empty;
+
         // Product Type
         public string ProductType { get; set; } = string.Empty;
     }

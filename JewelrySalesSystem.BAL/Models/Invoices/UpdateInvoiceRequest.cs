@@ -19,7 +19,7 @@
         //public int WarrantyId { get; set; }
 
         // Invoice Details
-        public virtual ICollection<int> InvoiceDetails { get; set; } = new List<int>();
+        public virtual ICollection<CreateInvoiceItemRequest> InvoiceDetails { get; set; } = [];
         //public virtual ICollection<int> Products { get; set; } = new List<int>();
 
 
