@@ -78,7 +78,7 @@ namespace JewelrySalesSystem.API.Controllers
         ///       "email": "testemail@gmail.com",
         ///       "password": "test",
         ///       "address": "test",
-        ///       "roleId": 3
+        ///       "roleId": 4
         ///     }
         ///         
         /// </remarks> 
