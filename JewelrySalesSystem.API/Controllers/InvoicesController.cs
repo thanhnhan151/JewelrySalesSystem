@@ -430,6 +430,11 @@ namespace JewelrySalesSystem.API.Controllers
         #endregion
 
         #region Generate Invoice to Pdf
+        /// <summary>
+        /// Generate Invoice to Pdf
+        /// </summary>
+        /// <param name="invoiceId">InvoiceId you want to export to PDF file</param>
+        /// <returns>Invoice PDF file</returns>
         [HttpPost("{invoiceId}/pdf")]
         public async Task<IActionResult> GetInvoicePdf(int invoiceId)
         {
@@ -462,15 +467,21 @@ namespace JewelrySalesSystem.API.Controllers
         #endregion
 
         #region Monthly Revenue
-        [HttpGet("Monthly Revenue")]
-        public async Task<IActionResult> GetMonthlyRevenue(int id) {
-
+        /// <summary>
+        ///Get Monthly Revenue
+        /// </summary>
+        /// <param name="userId">UserId </param>
+        /// <returns>Monthly Revenue</returns>
+        [HttpGet("monthlyRevenue/{userId}")]
+        public async Task<IActionResult> GetMonthlyRevenue(int userId)
+        {
             try
             {
                 var currentDate = DateTime.Now;
                 var month = currentDate.Month;
+                var year = currentDate.Year;
 
-                var revenue = await _invoiceService.GetMonthlyRevenueAsync(id, month);
+                var revenue = await _invoiceService.GetMonthlyRevenueAsync(userId, month,year);
                 return Ok(revenue);
             }
             catch (Exception ex)
@@ -478,8 +489,31 @@ namespace JewelrySalesSystem.API.Controllers
                 throw new Exception(ex.Message);
             }
         }
+        #endregion
 
+        #region Number Of Transactions
+        /// <summary>
+        ///Get Number of Transactions
+        /// </summary>
+        /// <param name="userId">UserId </param>
+        /// <returns>MNumber of transactions</returns>
+        [HttpGet("transaction/{userId}")]
+        public async Task<IActionResult> GetTransactionCount(int userId)
+        {
+            try
+            {
+                var currentDate = DateTime.Now;
+                var month = currentDate.Month;
+                var year = currentDate.Year;
 
+                var transactionCount = await _invoiceService.GetTransactionCountAsync(userId, month, year);
+                return Ok(transactionCount);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
         #endregion
     }
 

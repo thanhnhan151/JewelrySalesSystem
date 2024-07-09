@@ -615,11 +615,18 @@ namespace JewelrySalesSystem.BAL.Services
             }
         }
 
-        public async Task<float> GetMonthlyRevenueAsync(int id, int month)
+        public async Task<float> GetMonthlyRevenueAsync(int id, int month , int year)
         {
-            var invoices = await _unitOfWork.Invoices.GetInvoicesByEmployeeAndMonthAsync(id, month);
+            var invoices = await _unitOfWork.Invoices.GetInvoicesByEmployeeAndMonthAsync(id, month, year);
             return invoices.Sum(invoice => invoice.Total);
         }
+
+        public async Task<int> GetTransactionCountAsync(int id, int month, int year)
+        {
+            var invoices = await _unitOfWork.Invoices.GetInvoicesByEmployeeAndMonthAsync(id, month, year);
+            return invoices.Count();
+        }
+
     }
 }
 
