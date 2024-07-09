@@ -856,18 +856,45 @@ namespace JewelrySalesSystem.BAL.Services
             }
         }
 
-        public async Task<float> GetMonthlyRevenueAsync(int id, int month , int year)
+        public async Task<float> GetMonthlyRevenueAsync( int month , int year)
         {
-            var invoices = await _unitOfWork.Invoices.GetInvoicesByEmployeeAndMonthAsync(id, month, year);
-            return invoices.Sum(invoice => invoice.Total);
+            var invoices = await _unitOfWork.Invoices.GetMonthlyRevenue(month, year);
+           var total = invoices.Sum(invoice => invoice.Total);
+            return total;
         }
 
-        public async Task<int> GetTransactionCountAsync(int id, int month, int year)
+        public async Task<int> GetTransactionCountAsync( int month, int year)
         {
-            var invoices = await _unitOfWork.Invoices.GetInvoicesByEmployeeAndMonthAsync(id, month, year);
+            var invoices = await _unitOfWork.Invoices.GetMonthlyRevenue(month, year);
             return invoices.Count();
         }
 
+        public async Task<float> GetDailyRevenueAsync(int day, int month, int year)
+        {
+            var invoices = await _unitOfWork.Invoices.GetDailyRevenue(day,month, year);
+            var total = invoices.Sum(invoice => invoice.Total);
+            return total;
+        }
+
+        public async Task<float> GetMonthlyProfitChangeAsync()
+        {
+            var currentDate = DateTime.Now;
+            var month = currentDate.Month;
+            var year = currentDate.Year;
+
+            var currentMonthProfit = await GetMonthlyRevenueAsync(month, year);
+            
+            var previousMonthProfit = await GetMonthlyRevenueAsync(month-1, year);
+;
+
+            if (previousMonthProfit == 0)
+            {
+                return currentMonthProfit > 0 ? 100 : -100;
+            }
+
+            float profitChange = (float)((currentMonthProfit - previousMonthProfit) /(previousMonthProfit * 0.01));
+            return profitChange;
+        }
     }
 }
 

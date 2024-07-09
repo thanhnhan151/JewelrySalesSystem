@@ -236,14 +236,39 @@ namespace JewelrySalesSystem.DAL.Repositories
             return await _context.Invoices.AnyAsync(i => i.OrderDate.Year == year);
         }
 
-        public async Task<List<Invoice>> GetInvoicesByEmployeeAndMonthAsync(int employeeId, int month , int year)
+        public async Task<List<Invoice>> GetMonthlyRevenue(int month, int year)
         {
-            return await _context.Invoices
-            .Where(invoice => invoice.UserId == employeeId &&
-                              invoice.OrderDate.Month == month &&
-                              invoice.OrderDate.Year == year)
-            .ToListAsync();
+            try
+            {
+                return await _context.Invoices
+                    .Where(invoice => invoice.OrderDate.Month == month &&
+                                      invoice.OrderDate.Year == year)
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+   
+                throw new Exception($"Error retrieving invoices: {ex.Message}");
+            }
         }
+
+        public async Task<List<Invoice>> GetDailyRevenue(int day, int month, int year)
+        {
+            try
+            {
+                return await _context.Invoices
+                    .Where(invoice => invoice.OrderDate.Day == day &&
+                    invoice.OrderDate.Month == month &&
+                                      invoice.OrderDate.Year == year)
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception($"Error retrieving invoices: {ex.Message}");
+            }
+        }
+
 
         //public async Task<Invoice> AddPurchaseInvoice(Invoice invoice)
         //{
