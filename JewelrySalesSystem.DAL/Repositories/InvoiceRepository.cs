@@ -20,6 +20,7 @@ namespace JewelrySalesSystem.DAL.Repositories
         public async Task<PaginatedList<Invoice>> PaginationAsync(
             string? invoiceStatus
             , string? invoiceType
+            , string? inOrOut
             , string? searchTerm
             , string? sortColumn
             , string? sortOrder
@@ -62,13 +63,21 @@ namespace JewelrySalesSystem.DAL.Repositories
                 {
                     invoicesQuery = invoicesQuery.Where(i => i.InvoiceType.Equals(invoiceType));
                 }
-                else if (invoiceType.Equals("in"))
+                else if (invoiceType.Equals("Purchase"))
                 {
                     invoicesQuery = invoicesQuery.Where(i => i.InvoiceType.Equals(invoiceType));
                 }
-                else if (invoiceType.Equals("out"))
+            }
+
+            if (inOrOut != null)
+            {
+                if (inOrOut.Equals("In"))
                 {
-                    invoicesQuery = invoicesQuery.Where(i => i.InvoiceType.Equals(invoiceType));
+                    invoicesQuery = invoicesQuery.Where(i => i.InOrOut.Equals(inOrOut));
+                }
+                else if (inOrOut.Equals("Out"))
+                {
+                    invoicesQuery = invoicesQuery.Where(i => i.InOrOut.Equals(inOrOut));
                 }
             }
 
