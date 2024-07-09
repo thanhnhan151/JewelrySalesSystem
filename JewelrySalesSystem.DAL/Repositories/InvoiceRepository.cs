@@ -116,6 +116,7 @@ namespace JewelrySalesSystem.DAL.Repositories
             var result = await _dbSet
                                 .Include(i => i.InvoiceDetails)
                                     .ThenInclude(i => i.Product)
+                                .ThenInclude(i => i.Unit)
                                 .Include(i => i.Customer)
                                 .Include(i => i.User)
                                 .Include(i => i.Warranty)

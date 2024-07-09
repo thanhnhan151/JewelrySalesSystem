@@ -17,6 +17,8 @@ using JewelrySalesSystem.BAL.Validators.Product;
 using JewelrySalesSystem.BAL.Validators.ProductType;
 using JewelrySalesSystem.BAL.Validators.Role;
 using JewelrySalesSystem.BAL.Validators.User;
+using JewelrySalesSystem.DAL.Interfaces;
+using JewelrySalesSystem.DAL.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JewelrySalesSystem.BAL
