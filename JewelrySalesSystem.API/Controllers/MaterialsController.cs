@@ -284,7 +284,7 @@ namespace JewelrySalesSystem.API.Controllers
 
                 await _materialService.UpdateAsync(updateMaterialRequest);
 
-                return NoContent();
+                return Ok(updateMaterialRequest);
             }
             catch (Exception ex)
             {

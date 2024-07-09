@@ -243,7 +243,10 @@ namespace JewelrySalesSystem.API.Controllers
             {
                 await _userService.AssignUserToCounter(userId, counterId);
 
-                return NoContent();
+                return Ok(new
+                {
+                    Message = "Assign successfully."
+                });
             }
             catch (Exception ex)
             {
