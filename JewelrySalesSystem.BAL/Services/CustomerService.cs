@@ -21,16 +21,23 @@ namespace JewelrySalesSystem.BAL.Services
 
         public async Task AddAsync(CreateCustomerRequest createCustomerRequest)
         {
-            var customer = await _unitOfWork.Customers.GetCustomerByPhoneAsync(createCustomerRequest.PhoneNumber) ?? throw new Exception($"Customer with {createCustomerRequest.PhoneNumber} has already existed");
+            var customer = await _unitOfWork.Customers.GetCustomerByPhoneAsync(createCustomerRequest.PhoneNumber);
 
-            var result = _unitOfWork.Customers.AddEntity(new DAL.Entities.Customer
+            if (customer == null)
             {
-                FullName = createCustomerRequest.CustomerName,
-                PhoneNumber = createCustomerRequest.PhoneNumber,
-                Point = createCustomerRequest.Point
-            });
+                var result = _unitOfWork.Customers.AddEntity(new DAL.Entities.Customer
+                {
+                    FullName = createCustomerRequest.CustomerName,
+                    PhoneNumber = createCustomerRequest.PhoneNumber,
+                    Point = createCustomerRequest.Point
+                });
 
-            await _unitOfWork.CompleteAsync();
+                await _unitOfWork.CompleteAsync();
+            }
+            else
+            {
+                throw new Exception($"Customer with {createCustomerRequest.PhoneNumber} has already existed");
+            }
         }
 
         public async Task<GetCustomerResponse?> GetCustomerByNameAsync(string customerName)
