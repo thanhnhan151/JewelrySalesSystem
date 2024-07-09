@@ -107,6 +107,7 @@ namespace JewelrySalesSystem.BAL.Services
             var invoice = new Invoice
             {
                 OrderDate = DateTime.Now,
+                InvoiceStatus = createInvoiceRequest.InvoiceStatus,
                 UserId = createInvoiceRequest.UserId,
                 Total = createInvoiceRequest.Total,
                 WarrantyId = 1,
@@ -196,11 +197,11 @@ namespace JewelrySalesSystem.BAL.Services
             var invoice = new Invoice
             {
                 InvoiceId = updateInvoiceRequest.InvoiceId,
+                InvoiceStatus = updateInvoiceRequest.InvoiceStatus,
                 OrderDate = DateTime.Now,
                 UserId = updateInvoiceRequest.UserId,
                 WarrantyId = 1,
                 InvoiceDetails = invoiceDetails,
-                InvoiceStatus = updateInvoiceRequest.InvoiceStatus,
                 Total = updateInvoiceRequest.Total,
                 PerDiscount = updateInvoiceRequest.PerDiscount,
                 TotalWithDiscount = updateInvoiceRequest.Total - (updateInvoiceRequest.Total * updateInvoiceRequest.PerDiscount) / 100

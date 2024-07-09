@@ -214,11 +214,11 @@ namespace JewelrySalesSystem.DAL.Repositories
 
             if (result != null)
             {
-                if (result.InvoiceStatus.Equals("Pending"))
+                if (result.InvoiceStatus.Equals("Draft"))
                 {
-                    result.InvoiceStatus = "Draft";
+                    result.InvoiceStatus = "Pending";
                 }
-                result.InvoiceStatus = "Pending";
+                result.InvoiceStatus = "Draft";
                 _dbSet.Update(result);
             }
         }

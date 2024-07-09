@@ -11,7 +11,7 @@ namespace JewelrySalesSystem.DAL.Entities
         public DateTime OrderDate { get; set; } = DateTime.Now;
         public bool IsActive { get; set; } = true;
         public string InvoiceType { get; set; } = "Sale";
-        public string InvoiceStatus { get; set; } = "Pending";
+        public string InvoiceStatus { get; set; } = string.Empty;
         public float Total { get; set; }
         public float PerDiscount { get; set; }
         public float TotalWithDiscount { get; set; }
