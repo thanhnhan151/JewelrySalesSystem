@@ -69,7 +69,7 @@ namespace JewelrySalesSystem.BAL.Services
                                         ProductId = item.ProductId,
                                         ProductPrice = existedProduct.ProductPrice * item.Quantity,
                                         Quantity = item.Quantity
-                                    });                                  
+                                    });
                                 }
 
                                 break;
@@ -604,10 +604,10 @@ namespace JewelrySalesSystem.BAL.Services
                 throw new Exception($"Invoice with id {invoiceId} not found.");
             }
 
-            
 
-            MigraDoc.DocumentObjectModel.Document doc = new MigraDoc.DocumentObjectModel.Document();
-            MigraDoc.DocumentObjectModel.Section sec = doc.AddSection();
+
+            MigraDoc.DocumentObjectModel.Document doc = new();
+            Section sec = doc.AddSection();
 
             var titleStyle = doc.AddStyle("TitleStyle", "Normal");
             titleStyle.Font.Name = "Times New Roman";
@@ -618,7 +618,7 @@ namespace JewelrySalesSystem.BAL.Services
             arialStyle.Font.Name = "Arial";
             arialStyle.Font.Size = 15;
 
-            
+
 
             Paragraph titleParagraph = sec.AddParagraph("Jewelry Sales System", "TitleStyle");
             titleParagraph.Format.Alignment = ParagraphAlignment.Center;
@@ -628,8 +628,8 @@ namespace JewelrySalesSystem.BAL.Services
             Paragraph titleType;
             if (invoice.InvoiceType.Equals("Sale"))
             {
-                 titleType = sec.AddParagraph("Sale Invoice", "TitleStyle");
-                
+                titleType = sec.AddParagraph("Sale Invoice", "TitleStyle");
+
             }
             else
             {
@@ -646,14 +646,14 @@ namespace JewelrySalesSystem.BAL.Services
             sec.AddParagraph($"Order Date: {invoice.OrderDate.ToString("yyyy-MM-dd")}", "TitleStyle");
 
             sec.AddParagraph();
-            MigraDoc.DocumentObjectModel.Tables.Table table = new MigraDoc.DocumentObjectModel.Tables.Table();
+            Table table = new();
             table.Borders.Width = 0.5;
-            MigraDoc.DocumentObjectModel.Tables.Column column = table.AddColumn(MigraDoc.DocumentObjectModel.Unit.FromCentimeter(5));
+            Column column = table.AddColumn(MigraDoc.DocumentObjectModel.Unit.FromCentimeter(5));
             column = table.AddColumn(MigraDoc.DocumentObjectModel.Unit.FromCentimeter(10));
             column = table.AddColumn(MigraDoc.DocumentObjectModel.Unit.FromCentimeter(3));
-            
-            MigraDoc.DocumentObjectModel.Tables.Row row = table.AddRow();
-            MigraDoc.DocumentObjectModel.Tables.Cell cell = row.Cells[0];
+
+            Row row = table.AddRow();
+            Cell cell = row.Cells[0];
             cell = row.Cells[0];
             Paragraph itemParagraph = cell.AddParagraph("Item");
             itemParagraph.Format.Font.Bold = true;
@@ -665,7 +665,7 @@ namespace JewelrySalesSystem.BAL.Services
             cell = row.Cells[2];
             Paragraph priceParagraph = cell.AddParagraph("Price");
             priceParagraph.Format.Font.Bold = true;
-            priceParagraph.Format.Alignment = ParagraphAlignment.Center; 
+            priceParagraph.Format.Alignment = ParagraphAlignment.Center;
             var count = 1;
             foreach (var item in invoice.InvoiceDetails)
             {
@@ -685,8 +685,8 @@ namespace JewelrySalesSystem.BAL.Services
             row.Cells[2].AddParagraph($"{invoice.Total}");
             row.Cells[2].Format.Alignment = ParagraphAlignment.Right;
             sec.AddParagraph();
-            
-            
+
+
 
             doc.LastSection.Add(table);
             for (int i = 0; i < 3; i++)
@@ -695,7 +695,7 @@ namespace JewelrySalesSystem.BAL.Services
             }
             var saleTitle = sec.AddParagraph("Salesman", "TitleStyle");
             saleTitle.Format.Alignment = ParagraphAlignment.Right;
-            
+
             var barcodeBytes = await GenerateBarCode(invoiceId);
             if (barcodeBytes != null)
             {
@@ -710,11 +710,11 @@ namespace JewelrySalesSystem.BAL.Services
                 // Xóa tệp tạm thời sau khi sử dụng xong
                 //File.Delete(tempFilePath);
             }
-            #pragma warning disable
+#pragma warning disable
             MigraDoc.Rendering.PdfDocumentRenderer docRend = new MigraDoc.Rendering.PdfDocumentRenderer(true);
             docRend.Document = doc;
 
-           
+
             docRend.RenderDocument();
 
 
@@ -726,8 +726,8 @@ namespace JewelrySalesSystem.BAL.Services
                 return ms.ToArray();
             }
 
-           
-            
+
+
         }
 
         public async Task ChangePendingToDraft(int id)
@@ -743,7 +743,7 @@ namespace JewelrySalesSystem.BAL.Services
 
             if (invoice != null)
             {
-                #pragma warning disable 
+#pragma warning disable
                 var barcodeWriter = new BarcodeWriter
                 {
                     Format = BarcodeFormat.CODE_128,
@@ -751,7 +751,7 @@ namespace JewelrySalesSystem.BAL.Services
                     {
                         Height = 100,
                         Width = 100,
-                        
+
                     }
                 };
                 var count = 0;
@@ -759,7 +759,7 @@ namespace JewelrySalesSystem.BAL.Services
                 foreach (var detail in invoice.InvoiceDetails)
                 {
                     barcodeContent += $"{detail.ProductId}";
-                    if(invoice.InvoiceDetails.Count > 1 && count<invoice.InvoiceDetails.Count)
+                    if (invoice.InvoiceDetails.Count > 1 && count < invoice.InvoiceDetails.Count)
                     {
                         barcodeContent += $",";
                     }
@@ -780,7 +780,7 @@ namespace JewelrySalesSystem.BAL.Services
         public async Task<byte[]> GenerateInvoiceExcel(int month, int year)
         {
             var isValidYear = await _unitOfWork.Invoices.CheckValidYear(year);
-             if (!IsValidMonth(month) || !isValidYear)
+            if (!IsValidMonth(month) || !isValidYear)
             {
                 return null;
             }
@@ -806,7 +806,7 @@ namespace JewelrySalesSystem.BAL.Services
 
             return byteArray;
 
-                        bool IsValidMonth(int month)
+            bool IsValidMonth(int month)
             {
                 return month >= 1 && month <= 12;
             }
