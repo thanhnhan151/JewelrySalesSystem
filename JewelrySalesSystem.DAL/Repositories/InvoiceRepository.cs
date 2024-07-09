@@ -235,6 +235,15 @@ namespace JewelrySalesSystem.DAL.Repositories
             return await _context.Invoices.AnyAsync(i => i.OrderDate.Year == year);
         }
 
+        public async Task<List<Invoice>> GetInvoicesByEmployeeAndMonthAsync(int employeeId, int month , int year)
+        {
+            return await _context.Invoices
+            .Where(invoice => invoice.UserId == employeeId &&
+                              invoice.OrderDate.Month == month &&
+                              invoice.OrderDate.Year == year)
+            .ToListAsync();
+        }
+
         //public async Task<Invoice> AddPurchaseInvoice(Invoice invoice)
         //{
         //    //if (createPurchaseInvoiceRequest.InvoiceType.Equals("in"))

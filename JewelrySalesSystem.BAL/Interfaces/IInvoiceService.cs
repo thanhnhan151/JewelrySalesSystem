@@ -37,5 +37,8 @@ namespace JewelrySalesSystem.BAL.Interfaces
         Task<byte[]> GenerateInvoicePdf(int invoiceId);
 
         Task<byte[]> GenerateInvoiceExcel(int month, int year);
+
+        Task<float> GetMonthlyRevenueAsync(int id ,int month, int year);
+        Task<int> GetTransactionCountAsync(int id, int month, int year);
     }
 }

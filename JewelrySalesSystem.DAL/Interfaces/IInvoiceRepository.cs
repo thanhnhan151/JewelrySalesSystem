@@ -34,5 +34,7 @@ namespace JewelrySalesSystem.DAL.Interfaces
         Task<List<Invoice>> GetInvoicesForMonthAsync(int month, int year);
 
         Task<bool> CheckValidYear(int year);
+
+        Task<List<Invoice>> GetInvoicesByEmployeeAndMonthAsync(int employeeId, int month , int year);
     }
 }
