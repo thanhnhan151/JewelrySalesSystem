@@ -1,5 +1,6 @@
 ﻿using JewelrySalesSystem.BAL.Models.Invoices;
 using JewelrySalesSystem.DAL.Common;
+using System.Threading.Tasks;
 
 namespace JewelrySalesSystem.BAL.Interfaces
 {
@@ -38,7 +39,11 @@ namespace JewelrySalesSystem.BAL.Interfaces
 
         Task<byte[]> GenerateInvoiceExcel(int month, int year);
 
-        Task<float> GetMonthlyRevenueAsync(int id ,int month, int year);
-        Task<int> GetTransactionCountAsync(int id, int month, int year);
+        Task<float> GetMonthlyRevenueAsync(int month, int year);
+        Task<int> GetTransactionCountAsync(int month, int year);
+
+        Task<float> GetDailyRevenueAsync(int day,int month, int year);
+
+        Task<float> GetMonthlyProfitChangeAsync();
     }
 }

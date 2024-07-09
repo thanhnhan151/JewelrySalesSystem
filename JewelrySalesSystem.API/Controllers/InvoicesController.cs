@@ -433,14 +433,14 @@ namespace JewelrySalesSystem.API.Controllers
         }
         #endregion
 
-        #region Monthly Revenue
+        #region Monthly Profit
         /// <summary>
         ///Get Monthly Revenue
         /// </summary>
-        /// <param name="userId">UserId </param>
         /// <returns>Monthly Revenue</returns>
-        [HttpGet("monthlyRevenue/{userId}")]
-        public async Task<IActionResult> GetMonthlyRevenue(int userId)
+        /// 
+        [HttpGet("monthlyProfit")]
+        public async Task<IActionResult> GetMonthlyRevenue()
         {
             try
             {
@@ -448,7 +448,7 @@ namespace JewelrySalesSystem.API.Controllers
                 var month = currentDate.Month;
                 var year = currentDate.Year;
 
-                var revenue = await _invoiceService.GetMonthlyRevenueAsync(userId, month,year);
+                var revenue = await _invoiceService.GetMonthlyRevenueAsync(month,year);
                 return Ok(revenue);
             }
             catch (Exception ex)
@@ -462,10 +462,9 @@ namespace JewelrySalesSystem.API.Controllers
         /// <summary>
         ///Get Number of Transactions
         /// </summary>
-        /// <param name="userId">UserId </param>
-        /// <returns>MNumber of transactions</returns>
-        [HttpGet("transaction/{userId}")]
-        public async Task<IActionResult> GetTransactionCount(int userId)
+        /// <returns>Number of transactions</returns>
+        [HttpGet("transaction")]
+        public async Task<IActionResult> GetTransactionCount()
         {
             try
             {
@@ -473,12 +472,55 @@ namespace JewelrySalesSystem.API.Controllers
                 var month = currentDate.Month;
                 var year = currentDate.Year;
 
-                var transactionCount = await _invoiceService.GetTransactionCountAsync(userId, month, year);
+                var transactionCount = await _invoiceService.GetTransactionCountAsync(month, year);
                 return Ok(transactionCount);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
+            }
+        }
+        #endregion
+
+        #region Daily Profit
+        /// <summary>
+        ///Get Daily Revenue
+        /// </summary>
+        /// <returns>Daily Revenue</returns>
+        /// 
+        [HttpGet("dailyProfit")]
+        public async Task<IActionResult> GetDailyRevenue()
+        {
+            try
+            {
+                var currentDate = DateTime.Now;
+                var day = currentDate.Day;
+                var month = currentDate.Month;
+                var year = currentDate.Year;
+
+                var revenue = await _invoiceService.GetDailyRevenueAsync(day,month, year);
+                return Ok(revenue);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        #endregion
+
+        #region Monthly Profit Change
+        [HttpGet("monthlyProfitChange")]
+        public async Task<IActionResult> GetMonthlyProfitChange()
+        {
+            try
+            {
+                var profitChange = await _invoiceService.GetMonthlyProfitChangeAsync();
+                return Ok(profitChange);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while getting the monthly profit change.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
             }
         }
         #endregion
