@@ -167,11 +167,35 @@ namespace JewelrySalesSystem.BAL.Services
 
                 var product = await _unitOfWork.Products.GetByNameAsync(gem.GemName);
 
-                if (product != null)
+                if (price == 1)
                 {
-                    product.ProductName = updateGemRequest.GemName;
-                    product.ProductPrice = price * (1 + shapePriceRate / 100);
-                    _unitOfWork.Products.UpdateEntity(product);
+                    var gemPriceList = new GemPriceList
+                    {
+                        OriginId = newGem.OriginId,
+                        CaratId = newGem.CaratId,
+                        ColorId = newGem.ColorId,
+                        CutId = newGem.CutId,
+                        ClarityId = newGem.CutId,
+                        Price = 10000000
+                    };
+
+                    _unitOfWork.Gems.AddGemPrice(gemPriceList);
+
+                    if (product != null)
+                    {
+                        product.ProductName = updateGemRequest.GemName;
+                        product.ProductPrice = gemPriceList.Price * (1 + shapePriceRate / 100);
+                        _unitOfWork.Products.UpdateEntity(product);
+                    }
+                }
+                else
+                {
+                    if (product != null)
+                    {
+                        product.ProductName = updateGemRequest.GemName;
+                        product.ProductPrice = price * (1 + shapePriceRate / 100);
+                        _unitOfWork.Products.UpdateEntity(product);
+                    }
                 }
 
                 await _unitOfWork.Gems.UpdateGem(newGem);
