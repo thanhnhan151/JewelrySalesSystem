@@ -149,21 +149,18 @@ namespace JewelrySalesSystem.BAL.Services
 
             if (gem != null)
             {
-                var newGem = new Gem
-                {
-                    GemName = updateGemRequest.GemName,
-                    FeaturedImage = updateGemRequest.FeaturedImage,
-                    OriginId = updateGemRequest.OriginId,
-                    CaratId = updateGemRequest.CaratId,
-                    ColorId = updateGemRequest.ColorId,
-                    ClarityId = updateGemRequest.ClarityId,
-                    CutId = updateGemRequest.CutId,
-                    ShapeId = updateGemRequest.ShapeId
-                };
+                gem.GemName = updateGemRequest.GemName;
+                gem.FeaturedImage = updateGemRequest.FeaturedImage;
+                gem.OriginId = updateGemRequest.OriginId;
+                gem.CaratId = updateGemRequest.CaratId;
+                gem.ColorId = updateGemRequest.ColorId;
+                gem.ClarityId = updateGemRequest.ClarityId;
+                gem.CutId = updateGemRequest.CutId;
+                gem.ShapeId = updateGemRequest.ShapeId;
 
-                float shapePriceRate = await _unitOfWork.Gems.GetShapePriceRateAsync(newGem.ShapeId);
+                float shapePriceRate = await _unitOfWork.Gems.GetShapePriceRateAsync(gem.ShapeId);
 
-                float price = await _unitOfWork.Gems.GetGemPriceAsync(newGem);
+                float price = await _unitOfWork.Gems.GetGemPriceAsync(gem);
 
                 var product = await _unitOfWork.Products.GetByNameAsync(gem.GemName);
 
@@ -171,11 +168,11 @@ namespace JewelrySalesSystem.BAL.Services
                 {
                     var gemPriceList = new GemPriceList
                     {
-                        OriginId = newGem.OriginId,
-                        CaratId = newGem.CaratId,
-                        ColorId = newGem.ColorId,
-                        CutId = newGem.CutId,
-                        ClarityId = newGem.CutId,
+                        OriginId = gem.OriginId,
+                        CaratId = gem.CaratId,
+                        ColorId = gem.ColorId,
+                        CutId = gem.CutId,
+                        ClarityId = gem.CutId,
                         Price = 10000000
                     };
 
@@ -198,7 +195,7 @@ namespace JewelrySalesSystem.BAL.Services
                     }
                 }
 
-                await _unitOfWork.Gems.UpdateGem(newGem);
+                await _unitOfWork.Gems.UpdateGem(gem);
                 await _unitOfWork.CompleteAsync();
             }
         }
