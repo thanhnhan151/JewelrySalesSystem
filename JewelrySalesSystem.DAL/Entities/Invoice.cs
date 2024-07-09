@@ -15,6 +15,7 @@ namespace JewelrySalesSystem.DAL.Entities
         public float Total { get; set; }
         public float PerDiscount { get; set; }
         public float TotalWithDiscount { get; set; }
+        public string InOrOut { get; set; } = "In";
 
         // Customer
         public int CustomerId { get; set; }

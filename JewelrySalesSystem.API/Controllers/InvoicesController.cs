@@ -36,6 +36,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// </summary>
         /// <param name="invoiceStatus">Invoice Status</param>
         /// <param name="invoiceType">Invoice Type</param>
+        /// <param name="inOrOut">Purchase In or Out</param>
         /// <param name="page">Current page the user is on</param>
         /// <param name="pageSize">Number of entities you want to show</param>
         /// <param name="isActive">Invoice active or not</param>
@@ -53,6 +54,7 @@ namespace JewelrySalesSystem.API.Controllers
         public async Task<IActionResult> GetAllAsync(
             string? invoiceStatus,
             string? invoiceType,
+            string? inOrOut,
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
@@ -62,7 +64,7 @@ namespace JewelrySalesSystem.API.Controllers
         {
             try
             {
-                var result = await _invoiceService.PaginationAsync(invoiceStatus, invoiceType, searchTerm, sortColumn, sortOrder, isActive, page, pageSize);
+                var result = await _invoiceService.PaginationAsync(invoiceStatus, invoiceType, inOrOut, searchTerm, sortColumn, sortOrder, isActive, page, pageSize);
 
                 if (result != null)
                 {
@@ -93,11 +95,11 @@ namespace JewelrySalesSystem.API.Controllers
         ///       "perDiscount": 10,
         ///       "invoiceDetails": [
         ///         {
-        ///           "productId": 1,
+        ///           "productId": 2,
         ///           "quantity": 1
         ///         },
         ///         {
-        ///           "productId": 2,
+        ///           "productId": 3,
         ///           "quantity": 2
         ///         }
         ///       ]
@@ -152,7 +154,7 @@ namespace JewelrySalesSystem.API.Controllers
         ///     {
         ///       "customerName": "Tran Thi A",
         ///       "phoneNumber": "0912345789",
-        ///       "invoiceType": "out",
+        ///       "inOrOut": "In",
         ///       "userId": 1,
         ///       "total": 15000000,
         ///       "perDiscount": 0,
