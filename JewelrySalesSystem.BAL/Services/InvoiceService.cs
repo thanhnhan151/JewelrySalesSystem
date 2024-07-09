@@ -37,13 +37,14 @@ namespace JewelrySalesSystem.BAL.Services
         public async Task<PaginatedList<GetInvoiceResponse>> PaginationAsync(
             string? invoiceStatus,
             string? invoiceType,
+            string? inOrOut,
             string? searchTerm,
             string? sortColumn,
             string? sortOrder,
             bool isActive,
             int page,
             int pageSize)
-        => _mapper.Map<PaginatedList<GetInvoiceResponse>>(await _unitOfWork.Invoices.PaginationAsync(invoiceStatus, invoiceType, searchTerm, sortColumn, sortOrder, isActive, page, pageSize));
+        => _mapper.Map<PaginatedList<GetInvoiceResponse>>(await _unitOfWork.Invoices.PaginationAsync(invoiceStatus, invoiceType, inOrOut, searchTerm, sortColumn, sortOrder, isActive, page, pageSize));
 
         public async Task<CreateInvoiceRequest> AddAsync(CreateInvoiceRequest createInvoiceRequest)
         {
@@ -375,7 +376,8 @@ namespace JewelrySalesSystem.BAL.Services
             {
                 //OrderDate = DateTime.Now,
                 //CustomerId = await _unitOfWork.Customers.GetCustomerByNameAsync(createPurchaseInvoiceRequest.CustomerName),
-                InvoiceType = createPurchaseInvoiceRequest.InvoiceType,
+                InvoiceType = "Purchase",
+                InOrOut = createPurchaseInvoiceRequest.InOrOut,
                 UserId = createPurchaseInvoiceRequest.UserId,
                 WarrantyId = 1,
                 Total = createPurchaseInvoiceRequest.Total,
