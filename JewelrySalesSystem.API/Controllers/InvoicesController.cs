@@ -460,5 +460,27 @@ namespace JewelrySalesSystem.API.Controllers
             return File(excelFile, "text/csv", $"InvoiceListFor_{month}_{year}.xlsx");
         }
         #endregion
+
+        #region Monthly Revenue
+        [HttpGet("Monthly Revenue")]
+        public async Task<IActionResult> GetMonthlyRevenue(int id) {
+
+            try
+            {
+                var currentDate = DateTime.Now;
+                var month = currentDate.Month;
+
+                var revenue = await _invoiceService.GetMonthlyRevenueAsync(id, month);
+                return Ok(revenue);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+
+        #endregion
     }
+
 }

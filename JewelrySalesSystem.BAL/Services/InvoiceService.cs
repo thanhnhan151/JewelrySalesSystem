@@ -614,6 +614,12 @@ namespace JewelrySalesSystem.BAL.Services
                 return month >= 1 && month <= 12;
             }
         }
+
+        public async Task<float> GetMonthlyRevenueAsync(int id, int month)
+        {
+            var invoices = await _unitOfWork.Invoices.GetInvoicesByEmployeeAndMonthAsync(id, month);
+            return invoices.Sum(invoice => invoice.Total);
+        }
     }
 }
 
