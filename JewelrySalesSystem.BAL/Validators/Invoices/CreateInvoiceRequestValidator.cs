@@ -46,9 +46,9 @@ namespace JewelrySalesSystem.BAL.Validators.Invoices
 
 
             //Validate ProductId in InvoiceDetails: Not Empty, is integer, >0, is existed
-            RuleForEach(i => i.InvoiceDetails).NotEmpty().WithMessage("Values in InvoiceDetails is not null")
-                .Must(MustBeAnId).WithMessage("Values in InvoiceDetails is an integer and greater than 0")
-                .MustAsync(async (productId, cancellationToken) => await beValidProduct(productId, cancellationToken)).WithMessage("Product Id is not existed");
+            //RuleForEach(i => i.InvoiceDetails).NotEmpty().WithMessage("Values in InvoiceDetails is not null")
+            //    .Must(MustBeAnId).WithMessage("Values in InvoiceDetails is an integer and greater than 0")
+            //    .MustAsync(async (productId, cancellationToken) => await beValidProduct(productId, cancellationToken)).WithMessage("Product Id is not existed");
 
 
 

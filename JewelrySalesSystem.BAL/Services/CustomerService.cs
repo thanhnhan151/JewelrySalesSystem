@@ -52,7 +52,7 @@ namespace JewelrySalesSystem.BAL.Services
         {
             foreach (var item in list)
             {
-                if (item.Point > 0 && item.Point < 99)
+                if (item.Point > 49 && item.Point < 99)
                 {
                     item.Discount = 5;
                 }

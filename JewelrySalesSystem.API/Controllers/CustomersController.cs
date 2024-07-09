@@ -83,7 +83,7 @@ namespace JewelrySalesSystem.API.Controllers
 
                 if (result != null)
                 {
-                    if (result.Point > 0 && result.Point < 99)
+                    if (result.Point > 49 && result.Point < 99)
                     {
                         result.Discount = 5;
                     }
