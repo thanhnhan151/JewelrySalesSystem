@@ -50,7 +50,11 @@ namespace JewelrySalesSystem.BAL.Validators.Invoices
             //    .Must(MustBeAnId).WithMessage("Values in InvoiceDetails is an integer and greater than 0")
             //    .MustAsync(async (productId, cancellationToken) => await beValidProduct(productId, cancellationToken)).WithMessage("Product Id is not existed");
 
+            //var validator = new CreateInvoiceItemRequestValidator(_productService);
 
+            RuleForEach(i => i.InvoiceDetails).NotEmpty().WithMessage("Values in InvoiceDetails is not null")
+                .OverridePropertyName("InvoiceDetails")
+                .SetValidator(new CreateInvoiceItemRequestValidator(_productService));
 
         }
 

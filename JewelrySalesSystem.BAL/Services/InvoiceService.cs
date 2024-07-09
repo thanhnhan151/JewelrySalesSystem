@@ -18,6 +18,9 @@ using MigraDoc.DocumentObjectModel;
 using MigraDoc.Rendering;
 using System.Numerics;
 using System.Text;
+using JewelrySalesSystem.DAL.Repositories;
+using JewelrySalesSystem.DAL.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace JewelrySalesSystem.BAL.Services
 {
@@ -25,13 +28,14 @@ namespace JewelrySalesSystem.BAL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-
+        
         public InvoiceService(
             IUnitOfWork unitOfWork
-            , IMapper mapper)
+            , IMapper mapper
+            )
         {
             _mapper = mapper;
-            _unitOfWork = unitOfWork;
+            _unitOfWork = unitOfWork;  
         }
 
         public async Task<PaginatedList<GetInvoiceResponse>> PaginationAsync(
@@ -641,15 +645,18 @@ namespace JewelrySalesSystem.BAL.Services
             sec.AddParagraph();
 
             sec.AddParagraph($"Invoice ID: {invoice.InvoiceId}", "TitleStyle");
+            
             sec.AddParagraph($"Customer Name: {invoice.Customer.FullName}", "TitleStyle");
             sec.AddParagraph($"Phone: {invoice.Customer.PhoneNumber}", "TitleStyle");
             sec.AddParagraph($"Order Date: {invoice.OrderDate.ToString("yyyy-MM-dd")}", "TitleStyle");
-
+            
             sec.AddParagraph();
             Table table = new();
             table.Borders.Width = 0.5;
-            Column column = table.AddColumn(MigraDoc.DocumentObjectModel.Unit.FromCentimeter(5));
-            column = table.AddColumn(MigraDoc.DocumentObjectModel.Unit.FromCentimeter(10));
+            Column column = table.AddColumn(MigraDoc.DocumentObjectModel.Unit.FromCentimeter(1));
+            column = table.AddColumn(MigraDoc.DocumentObjectModel.Unit.FromCentimeter(8));
+            column = table.AddColumn(MigraDoc.DocumentObjectModel.Unit.FromCentimeter(2));
+            column = table.AddColumn(MigraDoc.DocumentObjectModel.Unit.FromCentimeter(2));
             column = table.AddColumn(MigraDoc.DocumentObjectModel.Unit.FromCentimeter(3));
 
             Row row = table.AddRow();
@@ -663,10 +670,19 @@ namespace JewelrySalesSystem.BAL.Services
             productNameParagraph.Format.Font.Bold = true;
             productNameParagraph.Format.Alignment = ParagraphAlignment.Center;
             cell = row.Cells[2];
+            Paragraph quantityParagraph = cell.AddParagraph("Quantity");
+            quantityParagraph.Format.Font.Bold = true;
+            quantityParagraph.Format.Alignment = ParagraphAlignment.Center;
+            cell = row.Cells[3];
+            Paragraph unit = cell.AddParagraph("Unit");
+            unit.Format.Font.Bold = true;
+            unit.Format.Alignment = ParagraphAlignment.Center;
+            cell = row.Cells[4];
             Paragraph priceParagraph = cell.AddParagraph("Price");
             priceParagraph.Format.Font.Bold = true;
             priceParagraph.Format.Alignment = ParagraphAlignment.Center;
-            var count = 1;
+            var count = 1; var totalQuantity = 0;
+            //float total = 0;
             foreach (var item in invoice.InvoiceDetails)
             {
                 row = table.AddRow();
@@ -674,28 +690,47 @@ namespace JewelrySalesSystem.BAL.Services
                 row.Cells[0].Format.Alignment = ParagraphAlignment.Center;
                 row.Cells[1].AddParagraph(item.Product.ProductName);
                 row.Cells[1].Format.Alignment = ParagraphAlignment.Center;
-                row.Cells[2].AddParagraph(item.ProductPrice.ToString());
-                row.Cells[2].Format.Alignment = ParagraphAlignment.Right;
+                row.Cells[2].AddParagraph(item.Quantity.ToString());
+                row.Cells[2].Format.Alignment = ParagraphAlignment.Center;
+                if (item.Product.Unit != null)
+                {
+                    row.Cells[3].AddParagraph(item.Product.Unit.Name);
+                }
+                else
+                {
+                    row.Cells[3].AddParagraph("N/A");
+                }
+                row.Cells[3].Format.Alignment = ParagraphAlignment.Center;
+                string formattedPrice = item.ProductPrice.ToString("N0", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
+                row.Cells[4].AddParagraph($"{formattedPrice} đ");
+                row.Cells[4].Format.Alignment = ParagraphAlignment.Right;
                 count++;
+                //totalQuantity += item.Quantity;
+                //total += item.ProductPrice * item.Quantity;
             }
             row = table.AddRow();
             row.Cells[0].AddParagraph("Total");
             row.Cells[0].Format.Alignment = ParagraphAlignment.Center;
             row.Cells[0].Format.Font.Bold = true;
-            row.Cells[2].AddParagraph($"{invoice.Total}");
-            row.Cells[2].Format.Alignment = ParagraphAlignment.Right;
-            sec.AddParagraph();
-
-
-
+            //row.Cells[2].AddParagraph($"{totalQuantity}");
+            //row.Cells[2].Format.Alignment = ParagraphAlignment.Center;
+            string formattedTotal = invoice.Total.ToString("N0", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
+            row.Cells[4].AddParagraph($"{formattedTotal} đ");
+            row.Cells[4].Format.Alignment = ParagraphAlignment.Right;
+            row = table.AddRow();
             doc.LastSection.Add(table);
+            sec.AddParagraph();
+            var discount = sec.AddParagraph($"Discount: {invoice.PerDiscount}%");
+            discount.Format.Alignment = ParagraphAlignment.Right;
+            discount.Format.Font.Bold = true;
+            string formattedTotalDiscount = invoice.TotalWithDiscount.ToString("N0", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
+            var totalWithDiscount = sec.AddParagraph($"Total with Discount: {formattedTotalDiscount} đ");
+            totalWithDiscount.Format.Font.Bold = true;
+            totalWithDiscount.Format.Alignment = ParagraphAlignment.Right;
             for (int i = 0; i < 3; i++)
             {
                 sec.AddParagraph();
             }
-            var saleTitle = sec.AddParagraph("Salesman", "TitleStyle");
-            saleTitle.Format.Alignment = ParagraphAlignment.Right;
-
             var barcodeBytes = await GenerateBarCode(invoiceId);
             if (barcodeBytes != null)
             {
@@ -703,13 +738,23 @@ namespace JewelrySalesSystem.BAL.Services
                 File.WriteAllBytes(tempFilePath, barcodeBytes);
 
                 var image = sec.AddImage(tempFilePath);
-                image.Width = "4cm";
-                image.Height = "2cm";
-                image.Left = "2cm";
+                //image.Width = "4cm";
+                //image.Height = "2cm";
+
+                image.Left = "0.5cm";
 
                 // Xóa tệp tạm thời sau khi sử dụng xong
                 //File.Delete(tempFilePath);
             }
+            var saleTitle = sec.AddParagraph("Salesman", "TitleStyle");
+            saleTitle.Format.LeftIndent = 350;
+            for (int i = 0; i < 3; i++)
+            {
+                sec.AddParagraph();
+            }
+            var saleName = sec.AddParagraph($"{invoice.User.FullName}", "TitleStyle");
+            saleName.Format.LeftIndent = 340;
+            
 #pragma warning disable
             MigraDoc.Rendering.PdfDocumentRenderer docRend = new MigraDoc.Rendering.PdfDocumentRenderer(true);
             docRend.Document = doc;
@@ -749,8 +794,8 @@ namespace JewelrySalesSystem.BAL.Services
                     Format = BarcodeFormat.CODE_128,
                     Options = new EncodingOptions
                     {
-                        Height = 100,
-                        Width = 100,
+                        Height = 80,
+                        Width = 325,
 
                     }
                 };
@@ -759,10 +804,11 @@ namespace JewelrySalesSystem.BAL.Services
                 foreach (var detail in invoice.InvoiceDetails)
                 {
                     barcodeContent += $"{detail.ProductId}";
-                    if (invoice.InvoiceDetails.Count > 1 && count < invoice.InvoiceDetails.Count)
+                    if (invoice.InvoiceDetails.Count > 1 && count < (invoice.InvoiceDetails.Count-1))
                     {
                         barcodeContent += $",";
                     }
+                    count++;
                 }
                 var barcodeBitmap = barcodeWriter.Write(barcodeContent);
 
