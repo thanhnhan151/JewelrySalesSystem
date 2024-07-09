@@ -58,7 +58,11 @@ namespace JewelrySalesSystem.DAL.Repositories
 
             if (invoiceType != null)
             {
-                if (invoiceType.Equals("in"))
+                if (invoiceType.Equals("Sale"))
+                {
+                    invoicesQuery = invoicesQuery.Where(i => i.InvoiceType.Equals(invoiceType));
+                }
+                else if (invoiceType.Equals("in"))
                 {
                     invoicesQuery = invoicesQuery.Where(i => i.InvoiceType.Equals(invoiceType));
                 }
