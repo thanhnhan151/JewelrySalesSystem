@@ -45,14 +45,19 @@ namespace JewelrySalesSystem.BAL.Services
         public async Task UpdateAsync(UpdateMaterialRequest updateMaterialRequest)
         {
             var material = await _unitOfWork.Materials.GetEntityByIdAsync(updateMaterialRequest.MaterialId);
-            var product = await _unitOfWork.Products.GetByNameAsync(updateMaterialRequest.MaterialName);
+            
 
-            if (material != null && product != null)
+            if (material != null)
             {
-                product.ProductName = updateMaterialRequest.MaterialName;
-                material.MaterialName = updateMaterialRequest.MaterialName;
+                var product = await _unitOfWork.Products.GetByNameAsync(material.MaterialName);
 
-                _unitOfWork.Products.UpdateEntity(product);
+                if (product != null)
+                {
+                    product.ProductName = updateMaterialRequest.MaterialName;
+                    _unitOfWork.Products.UpdateEntity(product);
+                }
+                
+                material.MaterialName = updateMaterialRequest.MaterialName;              
                 _unitOfWork.Materials.UpdateEntity(material);
                 await _unitOfWork.CompleteAsync();
             }

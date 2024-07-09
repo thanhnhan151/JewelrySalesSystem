@@ -138,28 +138,45 @@ namespace JewelrySalesSystem.BAL.Services
 
         public async Task UpdateAsync(UpdateGemRequest updateGemRequest)
         {
-            var product = await _unitOfWork.Products.GetByNameAsync(updateGemRequest.GemName);
             var validator = await _updateValidator.ValidateAsync(updateGemRequest);
             if (!validator.IsValid)
             {
                 throw new ValidationException(validator.Errors);
             }
-            var gem = new Gem
-            {
-                GemId = updateGemRequest.GemId,
-                GemName = updateGemRequest.GemName,
-                FeaturedImage = updateGemRequest.FeaturedImage,
-                OriginId = updateGemRequest.OriginId,
-                CaratId = updateGemRequest.CaratId,
-                ColorId = updateGemRequest.ColorId,
-                ClarityId = updateGemRequest.ClarityId,
-                CutId = updateGemRequest.CutId,
-                ShapeId = updateGemRequest.ShapeId
-            };
 
-            if (product != null) _unitOfWork.Products.UpdateEntity(product);
-            await _unitOfWork.Gems.UpdateGem(gem);
-            await _unitOfWork.CompleteAsync();
+            var gem = await _unitOfWork.Gems.GetEntityByIdAsync(updateGemRequest.GemId);
+
+
+            if (gem != null)
+            {
+                var newGem = new Gem
+                {
+                    GemName = updateGemRequest.GemName,
+                    FeaturedImage = updateGemRequest.FeaturedImage,
+                    OriginId = updateGemRequest.OriginId,
+                    CaratId = updateGemRequest.CaratId,
+                    ColorId = updateGemRequest.ColorId,
+                    ClarityId = updateGemRequest.ClarityId,
+                    CutId = updateGemRequest.CutId,
+                    ShapeId = updateGemRequest.ShapeId
+                };
+
+                float shapePriceRate = await _unitOfWork.Gems.GetShapePriceRateAsync(newGem.ShapeId);
+
+                float price = await _unitOfWork.Gems.GetGemPriceAsync(newGem);
+
+                var product = await _unitOfWork.Products.GetByNameAsync(gem.GemName);
+
+                if (product != null)
+                {
+                    product.ProductName = updateGemRequest.GemName;
+                    product.ProductPrice = price * (1 + shapePriceRate / 100);
+                    _unitOfWork.Products.UpdateEntity(product);
+                }
+
+                await _unitOfWork.Gems.UpdateGem(newGem);
+                await _unitOfWork.CompleteAsync();
+            }
         }
 
         public async Task<GetGemResponse?> GetByIdWithIncludeAsync(int id)
