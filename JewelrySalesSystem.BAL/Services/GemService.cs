@@ -180,6 +180,7 @@ namespace JewelrySalesSystem.BAL.Services
 
                     if (product != null)
                     {
+                        product.FeaturedImage = updateGemRequest.FeaturedImage;
                         product.ProductName = updateGemRequest.GemName;
                         product.ProductPrice = gemPriceList.Price * (1 + shapePriceRate / 100);
                         _unitOfWork.Products.UpdateEntity(product);
@@ -189,6 +190,7 @@ namespace JewelrySalesSystem.BAL.Services
                 {
                     if (product != null)
                     {
+                        product.FeaturedImage = updateGemRequest.FeaturedImage;
                         product.ProductName = updateGemRequest.GemName;
                         product.ProductPrice = price * (1 + shapePriceRate / 100);
                         _unitOfWork.Products.UpdateEntity(product);
