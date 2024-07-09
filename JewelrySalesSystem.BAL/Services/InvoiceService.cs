@@ -213,6 +213,14 @@ namespace JewelrySalesSystem.BAL.Services
             if (customer != null)
             {
                 invoice.CustomerId = customer.CustomerId;
+
+                //changes here
+                if (updateInvoiceRequest.PerDiscount == 0)
+                {
+                    //1M vnd = 1 point
+                    int points = (int)(updateInvoiceRequest.Total / 1000000);
+                    await ProcessPoint(points, customer.CustomerId, updateInvoiceRequest.InvoiceStatus);
+                }
             }
 
             await _unitOfWork.Invoices.UpdateInvoice(invoice);
@@ -220,6 +228,22 @@ namespace JewelrySalesSystem.BAL.Services
             await _unitOfWork.CompleteAsync();
 
             return updateInvoiceRequest;
+        }
+
+        //changes here
+        private async Task ProcessPoint(int point, int customerId, string invoiceStatus)
+        {
+            if (invoiceStatus.ToLower() == "delivered")
+            {
+                var customer = await _unitOfWork.Customers.GetEntityByIdAsync(customerId);
+
+                if (customer != null)
+                {
+                    customer.Point += point;
+                    _unitOfWork.Customers.UpdateEntity(customer);
+                    await _unitOfWork.CompleteAsync();
+                }
+            }
         }
 
         public async Task<GetInvoiceResponse?> GetByIdWithIncludeAsync(int id) => _mapper.Map<GetInvoiceResponse>(await _unitOfWork.Invoices.GetByIdWithIncludeAsync(id));
