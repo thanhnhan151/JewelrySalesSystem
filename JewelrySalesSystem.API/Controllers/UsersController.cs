@@ -179,7 +179,7 @@ namespace JewelrySalesSystem.API.Controllers
 
                 await _userService.UpdateAsync(updateUserRequest);
 
-                return NoContent();
+                return Ok(updateUserRequest);
             }
             catch (Exception ex)
             {
