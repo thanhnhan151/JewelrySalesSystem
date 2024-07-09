@@ -179,7 +179,7 @@ namespace JewelrySalesSystem.API.Controllers
             {
                 await _gemService.UpdateAsync(updateGemRequest);
 
-                return Ok();
+                return Ok(updateGemRequest);
             }
             catch (Exception ex)
             {

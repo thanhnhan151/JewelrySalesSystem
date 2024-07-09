@@ -309,7 +309,7 @@ namespace JewelrySalesSystem.API.Controllers
 
                 await _productService.UpdateAsync(updateProductRequest);
 
-                return Ok();
+                return Ok(updateProductRequest);
             }
             catch (Exception ex)
             {
