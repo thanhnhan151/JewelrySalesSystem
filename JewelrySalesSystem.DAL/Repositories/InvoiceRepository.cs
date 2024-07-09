@@ -59,6 +59,10 @@ namespace JewelrySalesSystem.DAL.Repositories
                 {
                     invoicesQuery = invoicesQuery.Where(i => i.InvoiceStatus.Equals(invoiceStatus));
                 }
+                else
+                {
+                    invoicesQuery = invoicesQuery.Where(i => i.InvoiceStatus.Equals(invoiceStatus));
+                }
             }
 
             if (invoiceType != null)
@@ -71,6 +75,10 @@ namespace JewelrySalesSystem.DAL.Repositories
                 {
                     invoicesQuery = invoicesQuery.Where(i => i.InvoiceType.Equals(invoiceType));
                 }
+                else
+                {
+                    invoicesQuery = invoicesQuery.Where(i => i.InvoiceType.Equals(invoiceType));
+                }
             }
 
             if (inOrOut != null)
@@ -80,6 +88,10 @@ namespace JewelrySalesSystem.DAL.Repositories
                     invoicesQuery = invoicesQuery.Where(i => i.InOrOut.Equals(inOrOut));
                 }
                 else if (inOrOut.Equals("Out"))
+                {
+                    invoicesQuery = invoicesQuery.Where(i => i.InOrOut.Equals(inOrOut));
+                }
+                else
                 {
                     invoicesQuery = invoicesQuery.Where(i => i.InOrOut.Equals(inOrOut));
                 }
@@ -258,7 +270,7 @@ namespace JewelrySalesSystem.DAL.Repositories
             }
             catch (Exception ex)
             {
-   
+
                 throw new Exception($"Error retrieving invoices: {ex.Message}");
             }
         }

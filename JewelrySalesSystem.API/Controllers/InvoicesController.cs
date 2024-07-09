@@ -34,9 +34,9 @@ namespace JewelrySalesSystem.API.Controllers
         /// <summary>
         /// Get all invoices in the system
         /// </summary>
-        /// <param name="invoiceStatus">Invoice Status</param>
-        /// <param name="invoiceType">Invoice Type</param>
-        /// <param name="inOrOut">Purchase In or Out</param>
+        /// <param name="invoiceStatus">Invoice Status (Draft, Pending, Processing, Delivered, Cancelled)</param>
+        /// <param name="invoiceType">Invoice Type (Sale, Purchase)</param>
+        /// <param name="inOrOut">Purchase In or Out (In, Out)</param>
         /// <param name="page">Current page the user is on</param>
         /// <param name="pageSize">Number of entities you want to show</param>
         /// <param name="isActive">Invoice active or not</param>
