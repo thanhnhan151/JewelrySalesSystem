@@ -18,9 +18,6 @@ using MigraDoc.DocumentObjectModel;
 using MigraDoc.Rendering;
 using System.Numerics;
 using System.Text;
-using JewelrySalesSystem.DAL.Repositories;
-using JewelrySalesSystem.DAL.Interfaces;
-using Microsoft.Extensions.Logging;
 
 namespace JewelrySalesSystem.BAL.Services
 {
@@ -611,8 +608,6 @@ namespace JewelrySalesSystem.BAL.Services
                 throw new Exception($"Invoice with id {invoiceId} not found.");
             }
 
-
-
             MigraDoc.DocumentObjectModel.Document doc = new();
             Section sec = doc.AddSection();
 
@@ -684,7 +679,7 @@ namespace JewelrySalesSystem.BAL.Services
             Paragraph priceParagraph = cell.AddParagraph("Price");
             priceParagraph.Format.Font.Bold = true;
             priceParagraph.Format.Alignment = ParagraphAlignment.Center;
-            var count = 1; var totalQuantity = 0;
+            var count = 1; /*var totalQuantity = 0;*/
             //float total = 0;
             foreach (var item in invoice.InvoiceDetails)
             {
