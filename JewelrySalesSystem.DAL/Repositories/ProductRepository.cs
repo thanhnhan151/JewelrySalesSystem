@@ -226,5 +226,7 @@ namespace JewelrySalesSystem.DAL.Repositories
                            .ToListAsync();
 
         public void UpdateAllProducts(List<Product> products) => _dbSet.UpdateRange(products);
+
+        public async Task<Product?> GetByNameAsync(string name) => await _dbSet.FirstOrDefaultAsync(p => p.ProductName.Equals(name));
     }
 }

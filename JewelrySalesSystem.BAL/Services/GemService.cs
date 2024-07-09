@@ -89,7 +89,10 @@ namespace JewelrySalesSystem.BAL.Services
                     ProductName = createGemRequest.GemName,
                     FeaturedImage = createGemRequest.FeaturedImage,
                     ProductPrice = price * (1 + shapePriceRate / 100),
-                    ProductTypeId = 4
+                    ProductTypeId = 4,
+                    UnitId = 3,
+                    Quantity = 50,
+                    CounterId = 1
                 };
 
                 var produtResult = _unitOfWork.Products.AddEntity(product);
@@ -115,7 +118,10 @@ namespace JewelrySalesSystem.BAL.Services
                     ProductName = createGemRequest.GemName,
                     FeaturedImage = createGemRequest.FeaturedImage,
                     ProductPrice = createGemRequest.Price * (1 + shapePriceRate / 100),
-                    ProductTypeId = 4
+                    ProductTypeId = 4,
+                    UnitId = 3,
+                    Quantity = 50,
+                    CounterId = 1
                 };
 
                 var produtResult = _unitOfWork.Products.AddEntity(product);
@@ -132,7 +138,7 @@ namespace JewelrySalesSystem.BAL.Services
 
         public async Task UpdateAsync(UpdateGemRequest updateGemRequest)
         {
-
+            var product = await _unitOfWork.Products.GetByNameAsync(updateGemRequest.GemName);
             var validator = await _updateValidator.ValidateAsync(updateGemRequest);
             if (!validator.IsValid)
             {
@@ -150,6 +156,8 @@ namespace JewelrySalesSystem.BAL.Services
                 CutId = updateGemRequest.CutId,
                 ShapeId = updateGemRequest.ShapeId
             };
+
+            if (product != null) _unitOfWork.Products.UpdateEntity(product);
             await _unitOfWork.Gems.UpdateGem(gem);
             await _unitOfWork.CompleteAsync();
         }

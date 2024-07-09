@@ -29,6 +29,8 @@ namespace JewelrySalesSystem.DAL.Interfaces
 
         Task<Product?> GetByIdWithIncludeAsync(int id);
 
+        Task<Product?> GetByNameAsync(string name);
+
         Task<List<Product>> GetJewelryAndMaterialProducts();
 
         void UpdateAllProducts(List<Product> products);
