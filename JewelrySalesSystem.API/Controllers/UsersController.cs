@@ -78,7 +78,7 @@ namespace JewelrySalesSystem.API.Controllers
         ///       "email": "testemail@gmail.com",
         ///       "password": "test",
         ///       "address": "test",
-        ///       "roleId": 3
+        ///       "roleId": 4
         ///     }
         ///         
         /// </remarks> 
@@ -247,7 +247,10 @@ namespace JewelrySalesSystem.API.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return BadRequest(new
+                {
+                    ErrorMessage = ex.Message
+                });
             }
         }
         #endregion

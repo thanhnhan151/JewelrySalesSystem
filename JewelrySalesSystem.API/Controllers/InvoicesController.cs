@@ -439,5 +439,26 @@ namespace JewelrySalesSystem.API.Controllers
             return File(pdfBytes, "application/pdf", "invoice.pdf");
         }
         #endregion
+
+        #region  Generate Invoice to Excel
+        /// <summary>
+        /// Generate Invoice to Excel
+        /// </summary>
+        /// <param name="month">Month you want to export to excel file</param>
+        /// <param name="year">Year you want to export to excel file</param>
+        /// <returns>Excel file has all sales invoices for a month</returns>
+        [HttpGet("report")]
+        public async Task<IActionResult> GetInvoiceReport(int month, int year)
+        {
+            var excelFile = await _invoiceService.GenerateInvoiceExcel(month, year);
+
+            if (excelFile == null)
+            {
+                return BadRequest("Invalid month or year.");
+            }
+
+            return File(excelFile, "text/csv", $"InvoiceListFor_{month}_{year}.xlsx");
+        }
+        #endregion
     }
 }

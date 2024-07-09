@@ -19,6 +19,20 @@ namespace JewelrySalesSystem.BAL.Services
             _unitOfWork = unitOfWork;
         }
 
+        public async Task AddAsync(CreateCustomerRequest createCustomerRequest)
+        {
+            var customer = await _unitOfWork.Customers.GetCustomerByPhoneAsync(createCustomerRequest.PhoneNumber) ?? throw new Exception($"Customer with {createCustomerRequest.PhoneNumber} has already existed");
+
+            var result = _unitOfWork.Customers.AddEntity(new DAL.Entities.Customer
+            {
+                FullName = createCustomerRequest.CustomerName,
+                PhoneNumber = createCustomerRequest.PhoneNumber,
+                Point = createCustomerRequest.Point
+            });
+
+            await _unitOfWork.CompleteAsync();
+        }
+
         public async Task<GetCustomerResponse?> GetCustomerByNameAsync(string customerName)
         => _mapper.Map<GetCustomerResponse>(await _unitOfWork.Customers.GetCustomerByNameAsync(customerName));
 

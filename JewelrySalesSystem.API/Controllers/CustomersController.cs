@@ -1,4 +1,5 @@
 ﻿using JewelrySalesSystem.BAL.Interfaces;
+using JewelrySalesSystem.BAL.Models.Customers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -61,7 +62,6 @@ namespace JewelrySalesSystem.API.Controllers
         }
         #endregion
 
-
         #region Get Customer Point By Phone Number
         /// <summary>
         /// Get customer discount based on name in the system
@@ -108,6 +108,46 @@ namespace JewelrySalesSystem.API.Controllers
             {
                 ErrorMessage = $"Customer with  phone number: {phoneNumber} does not exist"
             });
+        }
+        #endregion
+
+        #region Add New Customer
+        /// <summary>
+        /// Add a customer in the system
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     {
+        ///       "customerName": "Phung Van A",
+        ///       "phoneNumber": "0999123456",
+        ///       "point": 0
+        ///     }
+        ///         
+        /// </remarks> 
+        /// <returns>Customer that was created</returns>
+        /// <response code="200">Customer that was created</response>
+        /// <response code="400">Failed validation</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server</response>
+        [HttpPost]
+        public async Task<IActionResult> AddAsync([FromBody] CreateCustomerRequest createCustomerRequest)
+        {
+            try
+            {
+                await _customerService.AddAsync(createCustomerRequest);
+
+                return Ok(createCustomerRequest);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    ErrorMessage = ex.Message
+                });
+            }
         }
         #endregion
     }

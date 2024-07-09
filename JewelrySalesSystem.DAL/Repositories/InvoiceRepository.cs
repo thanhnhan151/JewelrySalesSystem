@@ -58,7 +58,11 @@ namespace JewelrySalesSystem.DAL.Repositories
 
             if (invoiceType != null)
             {
-                if (invoiceType.Equals("in"))
+                if (invoiceType.Equals("Sale"))
+                {
+                    invoicesQuery = invoicesQuery.Where(i => i.InvoiceType.Equals(invoiceType));
+                }
+                else if (invoiceType.Equals("in"))
                 {
                     invoicesQuery = invoicesQuery.Where(i => i.InvoiceType.Equals(invoiceType));
                 }
@@ -208,6 +212,18 @@ namespace JewelrySalesSystem.DAL.Repositories
                 result.InvoiceStatus = "Pending";
                 _dbSet.Update(result);
             }
+        }
+
+        public async Task<List<Invoice>> GetInvoicesForMonthAsync(int month, int year)
+        {
+            return await _context.Invoices
+                         .Where(i => i.OrderDate.Month == month && i.OrderDate.Year == year)
+                         .ToListAsync();
+        }
+
+        public async Task<bool> CheckValidYear(int year)
+        {
+            return await _context.Invoices.AnyAsync(i => i.OrderDate.Year == year);
         }
 
         //public async Task<Invoice> AddPurchaseInvoice(Invoice invoice)

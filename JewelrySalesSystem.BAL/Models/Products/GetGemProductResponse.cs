@@ -15,10 +15,15 @@
 
         public bool IsActive { get; set; }
 
+        public int Quantity { get; set; }
+
         // Counter 
-        public string CounterName { get; set; } = string.Empty;
+        public string Counter { get; set; } = string.Empty;
 
         // Product Type
         public string ProductType { get; set; } = string.Empty;
+
+        // Unit
+        public string Unit { get; set; } = string.Empty;
     }
 }

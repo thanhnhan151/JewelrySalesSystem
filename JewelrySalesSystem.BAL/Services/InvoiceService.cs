@@ -1,4 +1,4 @@
-﻿using System.Reflection.Metadata;
+using System.Reflection.Metadata;
 using AutoMapper;
 using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.Invoices;
@@ -17,8 +17,7 @@ using ZXing.Windows.Compatibility;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.Rendering;
 using System.Numerics;
-
-
+using System.Text;
 
 namespace JewelrySalesSystem.BAL.Services
 {
@@ -70,7 +69,7 @@ namespace JewelrySalesSystem.BAL.Services
                                         ProductId = item.ProductId,
                                         ProductPrice = existedProduct.ProductPrice * item.Quantity,
                                         Quantity = item.Quantity
-                                    });
+                                    });                                  
                                 }
 
                                 break;
@@ -98,6 +97,8 @@ namespace JewelrySalesSystem.BAL.Services
 
                                 break;
                         }
+                        existedProduct.Quantity -= item.Quantity;
+                        _unitOfWork.Products.UpdateEntity(existedProduct);
                     }
                 }
             }
@@ -122,6 +123,8 @@ namespace JewelrySalesSystem.BAL.Services
             else
             {
                 var newestCustomer = new Customer { FullName = createInvoiceRequest.CustomerName, PhoneNumber = createInvoiceRequest.PhoneNumber };
+
+                invoice.PerDiscount = 0;
 
                 invoice.Customer = newestCustomer;
             }
@@ -734,8 +737,6 @@ namespace JewelrySalesSystem.BAL.Services
             await _unitOfWork.CompleteAsync();
         }
 
-        
-
         public async Task<byte[]> GenerateBarCode(int id)
         {
             var invoice = await _unitOfWork.Invoices.GetByIdWithIncludeAsync(id);
@@ -776,8 +777,41 @@ namespace JewelrySalesSystem.BAL.Services
             return null;
         }
 
-        
+        public async Task<byte[]> GenerateInvoiceExcel(int month, int year)
+        {
+            var isValidYear = await _unitOfWork.Invoices.CheckValidYear(year);
+             if (!IsValidMonth(month) || !isValidYear)
+            {
+                return null;
+            }
+            var invoices = await _unitOfWork.Invoices.GetInvoicesForMonthAsync(month, year);
 
-    }     
+            var csvBuilder = new StringBuilder();
+
+            csvBuilder.AppendLine($"Invoice ID\tOrder Date\tCustomer ID\tUser ID\tInvoice Type\tPer Discount\tTotal");
+
+            foreach (var invoice in invoices)
+            {
+                csvBuilder.AppendLine($"{invoice.InvoiceId}\t{invoice.OrderDate}\t{invoice.CustomerId}\t{invoice.UserId}\t{invoice.InvoiceType}\t{invoice.PerDiscount}\t{invoice.Total}");
+            }
+
+            var totalInvoices = invoices.Count;
+
+            var totalSum = invoices.Sum(i => i.Total);
+
+            csvBuilder.AppendLine($"Total Invoices: {totalInvoices}");
+            csvBuilder.AppendLine($"Total: {totalSum}");
+
+            var byteArray = Encoding.UTF8.GetBytes(csvBuilder.ToString());
+
+            return byteArray;
+
+                        bool IsValidMonth(int month)
+            {
+                return month >= 1 && month <= 12;
+            }
+        }
     }
+}
+
 
