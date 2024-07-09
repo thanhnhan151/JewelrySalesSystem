@@ -45,5 +45,8 @@ namespace JewelrySalesSystem.BAL.Interfaces
         Task<float> GetDailyRevenueAsync(int day,int month, int year);
 
         Task<float> GetMonthlyProfitChangeAsync();
+
+        Task<List<float>> GetRevenueForEachMonthAsync(DateTime date);
+        Task<List<int>> GetQuantiyProductForEachMonthAsync(DateTime date);
     }
 }

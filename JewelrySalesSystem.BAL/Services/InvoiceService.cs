@@ -919,6 +919,36 @@ namespace JewelrySalesSystem.BAL.Services
             float profitChange = (float)((currentMonthProfit - previousMonthProfit) /(previousMonthProfit * 0.01));
             return profitChange;
         }
+
+
+        public async Task<List<float>> GetRevenueForEachMonthAsync(DateTime date)
+        {
+            var monthlyRevenue = new List<float>();
+
+            for (int month = 1; month <= 12; month++)
+            {
+                var invoices = await _unitOfWork.Invoices.GetInvoicesForMonthAsync(month, date.Year);
+                var monthRevenue = invoices.Sum(invoice => invoice.Total);
+                monthlyRevenue.Add(monthRevenue);
+            }
+            return monthlyRevenue;
+        }
+
+        public async Task<List<int>> GetQuantiyProductForEachMonthAsync(DateTime date)
+        {
+            var monthlyProductsList = new List<int>();
+
+            for (int month = 1; month <= 12; month++)
+            {
+                var quantityProducts = await _unitOfWork.Invoices.GetMonthlyProductSalesAsync(month, date.Year);
+                var monthQuantity = quantityProducts.Sum();
+                monthlyProductsList.Add(monthQuantity);
+            }
+            return monthlyProductsList;
+        }
+
+
+
     }
 }
 
