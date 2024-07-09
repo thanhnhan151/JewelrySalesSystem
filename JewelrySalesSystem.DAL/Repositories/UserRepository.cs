@@ -48,7 +48,8 @@ namespace JewelrySalesSystem.DAL.Repositories
             , int pageSize)
         {
             IQueryable<User> usersQuery = _dbSet
-                .Include(u => u.Role);
+                .Include(u => u.Role)
+                .Include(u => u.Counter);
 
             if (isActive) usersQuery = usersQuery.Where(u => u.IsActive);
 
@@ -84,7 +85,7 @@ namespace JewelrySalesSystem.DAL.Repositories
 
         public async Task<User?> GetByIdWithIncludeAsync(int id)
         {
-            var result = await _dbSet.Include(u => u.Role)
+            var result = await _dbSet.Include(u => u.Role).Include(u => u.Counter)
                                .FirstOrDefaultAsync(u => u.UserId == id);
 
             if (result == null) { return null; }
@@ -98,11 +99,20 @@ namespace JewelrySalesSystem.DAL.Repositories
 
             if (checkExistUser == null)
             {
-                throw new Exception($"User with {id} not found");
+                throw new Exception($"User with {id} does not exist");
             }
-            //Delete by change property status = false
-            checkExistUser.IsActive = false;
-            _dbSet.Update(checkExistUser);
+            else
+            {
+                if (checkExistUser.IsActive)
+                {
+                    checkExistUser.IsActive = false;
+                }
+                else
+                {
+                    checkExistUser.IsActive = true;
+                }
+                _dbSet.Update(checkExistUser);
+            }
         }
 
         public async Task<User> CheckDuplicate(string detail, string option)
@@ -135,7 +145,7 @@ namespace JewelrySalesSystem.DAL.Repositories
             if (result.RoleId == 1 || result.RoleId == 2)
             {
                 throw new Exception($"Can not assign administator or manager to a counter");
-            } 
+            }
 
             if (result.CounterId == null)
             {
@@ -145,7 +155,7 @@ namespace JewelrySalesSystem.DAL.Repositories
             else if (result.CounterId == counterId)
             {
                 throw new Exception($"User: {userId} has already been assigned to counter: {counterId}");
-            }          
+            }
             else
             {
                 result.CounterId = counterId;

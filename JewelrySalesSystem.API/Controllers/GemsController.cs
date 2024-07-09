@@ -1,7 +1,5 @@
 ﻿using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.Gems;
-using JewelrySalesSystem.BAL.Validators.Gems;
-using MailKit.Search;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -252,6 +250,36 @@ namespace JewelrySalesSystem.API.Controllers
             }
 
             return BadRequest();
+        }
+        #endregion
+
+        #region Delete Gem
+        /// <summary>
+        /// Change the gem status in the system
+        /// </summary>
+        /// <param name="id">Id of the gem you want to change</param>
+        /// <response code="200">Ok</response>
+        /// <response code="400">If the product is null</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server</response>
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            try
+            {
+                await _gemService.DeleteAsync(id);              
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new
+                {
+                    ErrorMessage = ex.Message
+                });
+            }
         }
         #endregion
     }

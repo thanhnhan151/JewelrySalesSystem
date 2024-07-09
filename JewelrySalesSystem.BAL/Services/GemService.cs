@@ -241,5 +241,11 @@ namespace JewelrySalesSystem.BAL.Services
         }
 
         public async Task<List<GetGemPriceResponse>> GetGemPricesAsync() => _mapper.Map<List<GetGemPriceResponse>>(await _unitOfWork.Gems.GetGemPricesAsync());
+
+        public async Task DeleteAsync(int id)
+        {
+            await _unitOfWork.Gems.DeleteAsync(id);
+            await _unitOfWork.CompleteAsync();
+        }
     }
 }

@@ -217,5 +217,25 @@ namespace JewelrySalesSystem.DAL.Repositories
         public async Task<List<GemPriceList>> GetGemPricesAsync() => await _context.GemPrices.OrderByDescending(g => g.Id).ToListAsync();
 
         public void AddGemPrice(GemPriceList gemPriceList) => _context.GemPrices.Add(gemPriceList);
+
+        public async Task DeleteAsync(int id)
+        {
+            var gem = await _dbSet.FindAsync(id);
+
+            if (gem != null)
+            {
+                if (gem.IsActive)
+                {
+                    gem.IsActive = false;
+                } else
+                {
+                    gem.IsActive = true;
+                }               
+                _dbSet.Update(gem);
+            } else
+            {
+                throw new Exception($"Gem with {id} does not exist");
+            }         
+        }
     }
 }

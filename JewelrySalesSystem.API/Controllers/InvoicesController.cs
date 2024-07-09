@@ -313,7 +313,7 @@ namespace JewelrySalesSystem.API.Controllers
 
                 await _invoiceService.DeleteInvoice(id);
 
-                return NoContent();
+                return Ok();
             }
             catch (Exception ex)
             {

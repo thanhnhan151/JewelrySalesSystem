@@ -35,7 +35,20 @@ namespace JewelrySalesSystem.BAL.Services
             bool isActive,
             int page,
             int pageSize)
-        => _mapper.Map<PaginatedList<GetUserResponse>>(await _unitOfWork.Users.PaginationAsync(searchTerm, sortColumn, sortOrder, isActive, page, pageSize));
+        {
+            var result = _mapper.Map<PaginatedList<GetUserResponse>>(await _unitOfWork.Users.PaginationAsync(searchTerm, sortColumn, sortOrder, isActive, page, pageSize));
+
+            foreach (var item in result.Items)
+            {
+                if (item.Counter == null)
+                {
+                    item.Counter = "Unassigned";
+                }
+            }
+
+            return result;
+        }
+
 
         public async Task<CreateUserRequest> AddAsync(CreateUserRequest createUserRequest)
         {

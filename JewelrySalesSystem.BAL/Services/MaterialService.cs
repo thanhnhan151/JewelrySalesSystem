@@ -117,7 +117,14 @@ namespace JewelrySalesSystem.BAL.Services
 
             if (result != null)
             {
-                result.IsActive = false;
+                if (result.IsActive)
+                {
+                    result.IsActive = false;
+                }
+                else
+                {
+                    result.IsActive = true;
+                }
                 _unitOfWork.Materials.UpdateEntity(result);
                 await _unitOfWork.CompleteAsync();
             }

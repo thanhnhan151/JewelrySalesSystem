@@ -55,6 +55,10 @@ namespace JewelrySalesSystem.DAL.Repositories
                 {
                     invoicesQuery = invoicesQuery.Where(i => i.InvoiceStatus.Equals(invoiceStatus));
                 }
+                else if (invoiceStatus.Equals("Draft"))
+                {
+                    invoicesQuery = invoicesQuery.Where(i => i.InvoiceStatus.Equals(invoiceStatus));
+                }
             }
 
             if (invoiceType != null)
@@ -116,7 +120,7 @@ namespace JewelrySalesSystem.DAL.Repositories
             var result = await _dbSet
                                 .Include(i => i.InvoiceDetails)
                                     .ThenInclude(i => i.Product)
-                                .ThenInclude(i => i.Unit)
+                                           .ThenInclude(i => i.Unit)
                                 .Include(i => i.Customer)
                                 .Include(i => i.User)
                                 .Include(i => i.Warranty)
@@ -130,7 +134,14 @@ namespace JewelrySalesSystem.DAL.Repositories
         public async Task DeleteById(int id)
         {
             var found = await _dbSet.FindAsync(id) ?? throw new Exception($"Invoice with {id} is not found!");
-            found.IsActive = false;
+            if (found.IsActive)
+            {
+                found.IsActive = false;
+            }
+            else
+            {
+                found.IsActive = true;
+            }
             _dbSet.Update(found);
         }
 

@@ -143,8 +143,14 @@ namespace JewelrySalesSystem.DAL.Repositories
         public async Task DeleteProduct(int id)
         {
             var checkExistProduct = await _dbSet.FindAsync(id) ?? throw new Exception($"Product with {id} not found");
-            //Delete by change property status = false
-            checkExistProduct.IsActive = false;
+            if (checkExistProduct.IsActive)
+            {
+                checkExistProduct.IsActive = false;
+            }
+            else
+            {
+                checkExistProduct.IsActive = true;
+            }
             _dbSet.Update(checkExistProduct);
         }
 

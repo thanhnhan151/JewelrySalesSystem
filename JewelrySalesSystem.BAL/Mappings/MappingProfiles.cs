@@ -39,7 +39,8 @@ namespace JewelrySalesSystem.BAL.Mappings
 
             #region User
             CreateMap<User, GetUserResponse>()
-                .ForMember(u => u.Role, u => u.MapFrom(u => u.Role.RoleName));
+                .ForMember(u => u.Role, u => u.MapFrom(u => u.Role.RoleName))
+                .ForMember(u => u.Counter, u => u.MapFrom(u => u.Counter.CounterName));
 
             CreateMap<PaginatedList<User>, PaginatedList<GetUserResponse>>();
 
