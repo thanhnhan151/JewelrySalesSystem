@@ -2,7 +2,7 @@
 {
     public class CreatePurchaseInvoiceRequest
     {
-        public string InvoiceType { get; set; } = string.Empty;
+        public string InOrOut { get; set; } = string.Empty;
 
         // Customer
         public string CustomerName { get; set; } = string.Empty;
