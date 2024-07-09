@@ -89,6 +89,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// 
         ///     {
         ///       "customerName": "Tran Thi A",
+        ///       "invoiceStatus": "Draft",
         ///       "phoneNumber": "0912345789",
         ///       "userId": 1,
         ///       "total": 15000000,
