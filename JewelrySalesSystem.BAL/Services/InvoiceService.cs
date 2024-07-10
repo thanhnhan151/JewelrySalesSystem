@@ -5,7 +5,7 @@ using JewelrySalesSystem.BAL.Models.Invoices;
 using JewelrySalesSystem.DAL.Common;
 using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
-using MigraDoc.DocumentObjectModel.Tables;
+
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Drawing.BarCodes;
 using PdfSharpCore.Pdf;
@@ -14,10 +14,14 @@ using ZXing;
 using ZXing.Common;
 using ZXing.OneD;
 using ZXing.Windows.Compatibility;
-using MigraDoc.DocumentObjectModel;
-using MigraDoc.Rendering;
+
 using System.Numerics;
 using System.Text;
+using MigraDocCore.DocumentObjectModel.MigraDoc.DocumentObjectModel.Shapes;
+using MigraDocCore.DocumentObjectModel.Tables;
+using MigraDocCore.DocumentObjectModel;
+using PdfSharpCore.Utils;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace JewelrySalesSystem.BAL.Services
 {
@@ -632,7 +636,7 @@ namespace JewelrySalesSystem.BAL.Services
                 throw new Exception($"Invoice with id {invoiceId} not found.");
             }
 
-            MigraDoc.DocumentObjectModel.Document doc = new();
+            MigraDocCore.DocumentObjectModel.Document doc = new();
             Section sec = doc.AddSection();
 
             var titleStyle = doc.AddStyle("TitleStyle", "Normal");
@@ -667,19 +671,19 @@ namespace JewelrySalesSystem.BAL.Services
             sec.AddParagraph();
 
             sec.AddParagraph($"Invoice ID: {invoice.InvoiceId}", "TitleStyle");
-            
+
             sec.AddParagraph($"Customer Name: {invoice.Customer.FullName}", "TitleStyle");
             sec.AddParagraph($"Phone: {invoice.Customer.PhoneNumber}", "TitleStyle");
             sec.AddParagraph($"Order Date: {invoice.OrderDate.ToString("yyyy-MM-dd")}", "TitleStyle");
-            
+
             sec.AddParagraph();
             Table table = new();
             table.Borders.Width = 0.5;
-            Column column = table.AddColumn(MigraDoc.DocumentObjectModel.Unit.FromCentimeter(1));
-            column = table.AddColumn(MigraDoc.DocumentObjectModel.Unit.FromCentimeter(8));
-            column = table.AddColumn(MigraDoc.DocumentObjectModel.Unit.FromCentimeter(2));
-            column = table.AddColumn(MigraDoc.DocumentObjectModel.Unit.FromCentimeter(2));
-            column = table.AddColumn(MigraDoc.DocumentObjectModel.Unit.FromCentimeter(3));
+            Column column = table.AddColumn(MigraDocCore.DocumentObjectModel.Unit.FromCentimeter(1));
+            column = table.AddColumn(MigraDocCore.DocumentObjectModel.Unit.FromCentimeter(8));
+            column = table.AddColumn(MigraDocCore.DocumentObjectModel.Unit.FromCentimeter(2));
+            column = table.AddColumn(MigraDocCore.DocumentObjectModel.Unit.FromCentimeter(2));
+            column = table.AddColumn(MigraDocCore.DocumentObjectModel.Unit.FromCentimeter(3));
 
             Row row = table.AddRow();
             Cell cell = row.Cells[0];
@@ -756,17 +760,29 @@ namespace JewelrySalesSystem.BAL.Services
             var barcodeBytes = await GenerateBarCode(invoiceId);
             if (barcodeBytes != null)
             {
-                string tempFilePath = Path.Combine(Path.GetTempPath(), "barcode.png");
+                string tempFilePath = Path.Combine(Path.GetTempPath(), "barcode.jpeg");
                 File.WriteAllBytes(tempFilePath, barcodeBytes);
+                if (File.Exists(tempFilePath))
+                {
+                    if (ImageSource.ImageSourceImpl == null)
+                        ImageSource.ImageSourceImpl = new ImageSharpImageSource<Rgba32>();
 
-                var image = sec.AddImage(tempFilePath);
+                    //var image = MigraDocCore.DocumentObjectModel.MigraDoc.DocumentObjectModel.Shapes.ImageSource.FromFile(tempFilePath);
+                    sec.AddImage(ImageSource.FromFile(tempFilePath));
+                }
+                //string tempFilePath = Path.Combine(Path.GetTempPath(), "barcode.png");
+
+
+
+
+
                 //image.Width = "4cm";
                 //image.Height = "2cm";
 
-                image.Left = "0.5cm";
+                //image.Left = "0.5cm";
 
-                // Xóa tệp tạm thời sau khi sử dụng xong
-                //File.Delete(tempFilePath);
+                //Xóa tệp tạm thời sau khi sử dụng xong
+                File.Delete(tempFilePath);
             }
             var saleTitle = sec.AddParagraph("Salesman", "TitleStyle");
             saleTitle.Format.LeftIndent = 350;
@@ -776,9 +792,9 @@ namespace JewelrySalesSystem.BAL.Services
             }
             var saleName = sec.AddParagraph($"{invoice.User.FullName}", "TitleStyle");
             saleName.Format.LeftIndent = 340;
-            
+
 #pragma warning disable
-            MigraDoc.Rendering.PdfDocumentRenderer docRend = new MigraDoc.Rendering.PdfDocumentRenderer(true);
+            MigraDocCore.Rendering.PdfDocumentRenderer docRend = new MigraDocCore.Rendering.PdfDocumentRenderer(true);
             docRend.Document = doc;
 
 
@@ -826,7 +842,7 @@ namespace JewelrySalesSystem.BAL.Services
                 foreach (var detail in invoice.InvoiceDetails)
                 {
                     barcodeContent += $"{detail.ProductId}";
-                    if (invoice.InvoiceDetails.Count > 1 && count < (invoice.InvoiceDetails.Count-1))
+                    if (invoice.InvoiceDetails.Count > 1 && count < (invoice.InvoiceDetails.Count - 1))
                     {
                         barcodeContent += $",";
                     }
