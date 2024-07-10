@@ -446,6 +446,11 @@ namespace JewelrySalesSystem.BAL.Services
                 //}
             }
 
+            foreach(var item in invoiceDetails)
+            {
+                total += item.ProductPrice;
+            }
+
             var customer = await _unitOfWork.Customers.GetCustomerByNameAsync(createPurchaseInvoiceRequest.CustomerName);
 
             var invoice = new Invoice
@@ -453,12 +458,13 @@ namespace JewelrySalesSystem.BAL.Services
                 //OrderDate = DateTime.Now,
                 //CustomerId = await _unitOfWork.Customers.GetCustomerByNameAsync(createPurchaseInvoiceRequest.CustomerName),
                 InvoiceType = "Purchase",
+                InvoiceStatus = "Pending",
                 InOrOut = createPurchaseInvoiceRequest.InOrOut,
                 UserId = createPurchaseInvoiceRequest.UserId,
                 WarrantyId = 1,
-                Total = createPurchaseInvoiceRequest.Total,
+                Total = total,
                 PerDiscount = 0,
-                TotalWithDiscount = createPurchaseInvoiceRequest.Total,
+                TotalWithDiscount = total,
                 InvoiceDetails = invoiceDetails
             };
 

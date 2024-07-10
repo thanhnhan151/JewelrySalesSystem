@@ -8,7 +8,7 @@ namespace JewelrySalesSystem.DAL.Entities
     {
         [Key]
         public int InvoiceId { get; set; }
-        public DateTime OrderDate { get; set; } = DateTime.Now;
+        public DateTime OrderDate { get; set; } = DateTime.Now.AddHours(7);
         public bool IsActive { get; set; } = true;
         public string InvoiceType { get; set; } = "Sale";
         public string InvoiceStatus { get; set; } = string.Empty;

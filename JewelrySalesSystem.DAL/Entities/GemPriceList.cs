@@ -30,6 +30,6 @@ namespace JewelrySalesSystem.DAL.Entities
 
         public float Price { get; set; }
 
-        public DateTime EffDate { get; set; } = DateTime.Now;
+        public DateTime EffDate { get; set; } = DateTime.Now.AddHours(7);
     }
 }

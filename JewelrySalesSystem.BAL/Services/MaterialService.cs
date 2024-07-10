@@ -82,8 +82,7 @@ namespace JewelrySalesSystem.BAL.Services
                     new MaterialPriceList
                     {
                         SellPrice = createMaterialRequest.MaterialPrice.SellPrice,
-                        BuyPrice = createMaterialRequest.MaterialPrice.BuyPrice,
-                        EffDate = DateTime.Now
+                        BuyPrice = createMaterialRequest.MaterialPrice.BuyPrice
                     }
                 }
             };

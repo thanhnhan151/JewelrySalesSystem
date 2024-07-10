@@ -155,12 +155,10 @@ namespace JewelrySalesSystem.API.Controllers
         /// Sample request:
         /// 
         ///     {
-        ///       "invoiceStatus": "Draft",
         ///       "customerName": "Tran Thi A",
         ///       "phoneNumber": "0912345789",
         ///       "inOrOut": "In",
         ///       "userId": 1,
-        ///       "total": 15000000,
         ///       "perDiscount": 0,
         ///       "invoiceDetails": [
         ///         1,

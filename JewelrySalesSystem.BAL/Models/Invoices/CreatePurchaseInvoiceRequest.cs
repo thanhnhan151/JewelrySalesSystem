@@ -16,7 +16,7 @@
 
         //public virtual ICollection<float> Weights {  get; set; } = new List<float>();
 
-        public float Total { get; set; }
+        //public float Total { get; set; }
 
         // Invoice Details
         public virtual ICollection<CreateInvoiceItemRequest> InvoiceDetails { get; set; } = [];
