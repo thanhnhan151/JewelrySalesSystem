@@ -27,5 +27,7 @@ namespace JewelrySalesSystem.BAL.Interfaces
         Task DeleteAsync(int id);
 
         Task AssignUserToCounter(int userId, int counterId);
+
+        Task<byte[]> GetEmployeeRevenue(int month, int year);
     }
 }
