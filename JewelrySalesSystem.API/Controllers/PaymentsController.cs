@@ -1,5 +1,4 @@
 ﻿using JewelrySalesSystem.BAL.Interfaces;
-using JewelrySalesSystem.BAL.Models.VnPays;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,12 +15,34 @@ namespace JewelrySalesSystem.API.Controllers
             _vnPayService = vnPayService;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreatePaymentRequest request)
-        {
-            var url = _vnPayService.CreateUrl(request);
+        //[HttpPost]
+        //public IActionResult Create([FromBody] CreatePaymentRequest request)
+        //{
+        //    var url = _vnPayService.CreateUrl(request);
 
-            return Ok(url);
+        //    return Ok(url);
+        //}
+
+        [HttpGet("vnpay-return")]
+        public async Task<IActionResult> PaymentCallBack()
+        {
+            var response = await _vnPayService.ExecutePayment(Request.Query);
+
+            if (response != null)
+            {
+                if (response.VnPayResponseCode == "00")
+                {
+                    return Ok(response);
+                }
+                else
+                {
+                    return BadRequest(new
+                    {
+                        ErrorMessage = response.VnPayResponseCode
+                    });
+                }
+            }
+            return NoContent();
         }
     }
 }

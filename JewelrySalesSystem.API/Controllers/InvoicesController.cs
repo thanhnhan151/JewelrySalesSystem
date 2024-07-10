@@ -16,11 +16,12 @@ namespace JewelrySalesSystem.API.Controllers
         private readonly IUserService _userService;
         private readonly IWarrantyService _warrantyService;
         private readonly IProductService _productService;
+        private readonly IVnPayService _vnPayService;
 
 
         public InvoicesController(
             ILogger<InvoicesController> logger,
-            IInvoiceService invoiceService, ICustomerService customerService, IUserService userService, IWarrantyService warrantyService, IProductService productService)
+            IInvoiceService invoiceService, ICustomerService customerService, IUserService userService, IWarrantyService warrantyService, IProductService productService, IVnPayService vnPayService)
         {
             _logger = logger;
             _invoiceService = invoiceService;
@@ -28,6 +29,7 @@ namespace JewelrySalesSystem.API.Controllers
             _userService = userService;
             _productService = productService;
             _warrantyService = warrantyService;
+            _vnPayService = vnPayService;
         }
 
         #region Get All Invoices
@@ -222,6 +224,27 @@ namespace JewelrySalesSystem.API.Controllers
             {
                 ErrorMessage = $"Invoice with {id} does not exist"
             });
+        }
+        #endregion
+
+        #region Invoice Checkout
+        /// <summary>
+        /// Check out an invoice in the system
+        /// </summary>
+        /// <param name="id">Id of the invoice you want to pay</param>
+        /// <returns>An user</returns>
+        /// <response code="200">Return an url to VnPay</response>
+        /// <response code="400">If the invoice is null</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server</response>
+        [HttpPost("{id}/payment")]
+        public async Task<IActionResult> CreateAsync(int id)
+        {
+            var url = await _vnPayService.CreateUrl(id);
+
+            return Ok(url);
         }
         #endregion
 
