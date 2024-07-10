@@ -167,6 +167,8 @@ namespace JewelrySalesSystem.DAL.Repositories
             existingInvoice.CustomerId = invoice.CustomerId;
             existingInvoice.UserId = invoice.UserId;
             existingInvoice.WarrantyId = invoice.WarrantyId;
+            existingInvoice.InvoiceStatus = invoice.InvoiceStatus;
+            existingInvoice.PerDiscount = invoice.PerDiscount;
             existingInvoice.IsActive = invoice.IsActive;
             existingInvoice.InvoiceType = invoice.InvoiceType;
 

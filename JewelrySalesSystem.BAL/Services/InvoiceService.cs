@@ -117,6 +117,8 @@ namespace JewelrySalesSystem.BAL.Services
             if (customer != null)
             {
                 invoice.CustomerId = customer.CustomerId;
+                //tru diem dua tren perDiscount
+                await ProcessPointByPerDiscount((int)createInvoiceRequest.PerDiscount, customer.CustomerId, createInvoiceRequest.InvoiceStatus);
             }
             else
             {
@@ -132,6 +134,55 @@ namespace JewelrySalesSystem.BAL.Services
             await _unitOfWork.CompleteAsync();
 
             return createInvoiceRequest;
+        }
+
+        //tru diem dua tren perDiscount
+        private async Task ProcessPointByPerDiscount(int perDiscount, int customerId, string invoiceStatus)
+        {
+            if (invoiceStatus.ToLower() == "pending")
+            {
+                var customer = await _unitOfWork.Customers.GetEntityByIdAsync(customerId);
+                if (customer != null)
+                {
+                    if (perDiscount == 5)
+                    {
+                        customer.Point -= 50;
+                    }
+                    else if (perDiscount == 10)
+                    {
+                        customer.Point -= 100;
+                    }
+                    else if (perDiscount == 15)
+                    {
+                        customer.Point -= 200;
+                    }
+                    if (customer.Point < 0) { customer.Point = 0; }
+                    _unitOfWork.Customers.UpdateEntity(customer);
+                    await _unitOfWork.CompleteAsync();
+                }
+            }
+            else if (invoiceStatus.ToLower() == "draft" || invoiceStatus.ToLower() == "cancel")
+            {
+                var customer = await _unitOfWork.Customers.GetEntityByIdAsync(customerId);
+                if (customer != null)
+                {
+                    if (perDiscount == 5)
+                    {
+                        customer.Point += 50;
+                    }
+                    else if (perDiscount == 10)
+                    {
+                        customer.Point += 100;
+                    }
+                    else if (perDiscount == 15)
+                    {
+                        customer.Point += 200;
+                    }
+                    if (customer.Point < 0) { customer.Point = 0; }
+                    _unitOfWork.Customers.UpdateEntity(customer);
+                    await _unitOfWork.CompleteAsync();
+                }
+            }
         }
 
         public async Task<UpdateInvoiceRequest> UpdateAsync(UpdateInvoiceRequest updateInvoiceRequest)
@@ -215,6 +266,10 @@ namespace JewelrySalesSystem.BAL.Services
                     //1M vnd = 1 point
                     int points = (int)(updateInvoiceRequest.Total / 1000000);
                     await ProcessPoint(points, customer.CustomerId, updateInvoiceRequest.InvoiceStatus);
+                }
+                else
+                {
+                    await ProcessPointByPerDiscount((int)updateInvoiceRequest.PerDiscount, customer.CustomerId, updateInvoiceRequest.InvoiceStatus);                    
                 }
             }
 
