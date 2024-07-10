@@ -48,5 +48,6 @@ namespace JewelrySalesSystem.BAL.Interfaces
 
         Task<List<float>> GetRevenueForEachMonthAsync(DateTime date);
         Task<List<int>> GetQuantiyProductForEachMonthAsync(DateTime date);
+        Task<byte[]> GenerateWarrantyInvoicePdf(int invoiceId, int warrantyId);
     }
 }

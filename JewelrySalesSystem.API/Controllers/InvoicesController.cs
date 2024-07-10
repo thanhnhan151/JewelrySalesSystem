@@ -570,6 +570,23 @@ namespace JewelrySalesSystem.API.Controllers
             }
         }
         #endregion
+
+        #region Generate Warranty Of Invoices
+        /// <summary>   
+        /// Generate Warranty Card to Pdf
+        /// </summary>
+        /// <param name="invoiceId">InvoiceId you want to export to PDF file</param>
+        /// <param name="warrantyId">Warranty you want to apply in invoice</param>
+        /// <returns>Invoice PDF file</returns>
+        [HttpPost("/pdf")]
+        public async Task<IActionResult> GetWarrantyOfInvoicePdf(int invoiceId, int warrantyId)
+        {
+            var pdfBytes = await _invoiceService.GenerateWarrantyInvoicePdf(invoiceId, warrantyId);
+
+            // Return PDF as File Content
+            return File(pdfBytes, "application/pdf", "invoiceWarranty.pdf");
+        }
+        #endregion
     }
 
 }
