@@ -1,21 +1,12 @@
-using System.Reflection.Metadata;
 using AutoMapper;
 using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.Invoices;
 using JewelrySalesSystem.DAL.Common;
 using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
-
-using PdfSharpCore.Drawing;
-using PdfSharpCore.Drawing.BarCodes;
-using PdfSharpCore.Pdf;
-using PdfSharpCore.Pdf.Advanced;
 using ZXing;
 using ZXing.Common;
-using ZXing.OneD;
 using ZXing.Windows.Compatibility;
-
-using System.Numerics;
 using System.Text;
 using MigraDocCore.DocumentObjectModel.MigraDoc.DocumentObjectModel.Shapes;
 using MigraDocCore.DocumentObjectModel.Tables;

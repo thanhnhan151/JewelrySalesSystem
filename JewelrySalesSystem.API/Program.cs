@@ -98,7 +98,9 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.Services.AddHttpContextAccessor();
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.Configure<VnPayConfig>(builder.Configuration.GetSection(VnPayConfig.ConfigName));
 
 
 var app = builder.Build();

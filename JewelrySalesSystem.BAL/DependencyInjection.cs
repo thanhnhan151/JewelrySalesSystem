@@ -70,6 +70,8 @@ namespace JewelrySalesSystem.BAL
 
             services.AddScoped<ICounterService, CounterService>();
 
+            services.AddScoped<IVnPayService, VnPayService>();
+
             //Validate
 
             services.AddScoped<IValidator<CreateUserRequest>, CreateUserValidator>();
