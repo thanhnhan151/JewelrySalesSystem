@@ -14,11 +14,11 @@
 
         //public float Weight { get; set; }
 
-        public virtual ICollection<float> Weights {  get; set; } = new List<float>();
+        //public virtual ICollection<float> Weights {  get; set; } = new List<float>();
 
         public float Total { get; set; }
 
         // Invoice Details
-        public virtual ICollection<int> InvoiceDetails { get; set; } = new List<int>();
+        public virtual ICollection<CreateInvoiceItemRequest> InvoiceDetails { get; set; } = [];
     }
 }
