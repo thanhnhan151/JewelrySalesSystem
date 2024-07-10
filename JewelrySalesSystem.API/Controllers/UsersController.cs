@@ -257,5 +257,36 @@ namespace JewelrySalesSystem.API.Controllers
             }
         }
         #endregion
+
+
+        #region Revenue Of Each Employee.
+        /// <summary>
+        /// Get revenue of each employee.
+        /// </summary>
+        [HttpGet("employee-revenue")]
+        public async Task<IActionResult> GetEmployeeRevenue()
+        {
+            try
+            {
+                var currentDate = DateTime.Now;
+                var month = currentDate.Month;
+                var year = currentDate.Year;
+                var excelFile = await _userService.GetEmployeeRevenue(month, year);
+                if (excelFile == null || excelFile.Length == 0)
+                {
+                    return BadRequest("Invalid month or year.");
+                }
+
+                return File(excelFile, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"EmployeeRevenue_{month}_{year}.xlsx");
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception($"{ex.Message}");
+            }
+        }
+        #endregion
+
     }
+
 }

@@ -5,6 +5,8 @@ using JewelrySalesSystem.BAL.Models.Users;
 using JewelrySalesSystem.DAL.Common;
 using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
+using OfficeOpenXml;
+using System.Text;
 
 namespace JewelrySalesSystem.BAL.Services
 {
@@ -23,6 +25,7 @@ namespace JewelrySalesSystem.BAL.Services
             _unitOfWork = unitOfWork;
             _createUserValidator = validator;
             _updateUserValidator = updateUserValidator;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
         }
 
         public async Task<User?> LoginAsync(string userName, string passWord)
@@ -93,6 +96,48 @@ namespace JewelrySalesSystem.BAL.Services
         {
             await _unitOfWork.Users.AssignUserToCounter(userId, counterId);
             await _unitOfWork.CompleteAsync();
+        }
+        public async Task<byte[]> GetEmployeeRevenue(int month, int year)
+        {
+            var allUsers = await _unitOfWork.Users.GetAllEntitiesAsync();
+            var invoices = await _unitOfWork.Invoices.GetInvoicesForMonthAsync(month, year);
+
+            var groupedInvoices = invoices.GroupBy(i => i.UserId)
+                                          .Select(g => new
+                                          {
+                                              UserId = g.Key,
+                                              Revenue = g.Sum(i => i.Total)
+                                          });
+
+            var userRevenue = allUsers.Select(user => new
+            {
+                UserName = user.UserName,
+                UserId = user.UserId,
+                Revenue = groupedInvoices.FirstOrDefault(g => g.UserId == user.UserId)?.Revenue ?? 0
+            });
+
+            using var package = new ExcelPackage();
+            var worksheet = package.Workbook.Worksheets.Add("Employee Revenue");
+
+            // Set the headers
+            worksheet.Cells[1, 1].Value = "EmployeeId";
+            worksheet.Cells[1, 2].Value = "FullName";
+            worksheet.Cells[1, 3].Value = "Revenue";
+
+            // Add data rows
+            var row = 2;
+            foreach (var ur in userRevenue)
+            {
+                worksheet.Cells[row, 1].Value = ur.UserId;
+                worksheet.Cells[row, 2].Value = ur.UserName;
+                worksheet.Cells[row, 3].Value = ur.Revenue;
+                row++;
+            }
+
+            // Convert the package to a byte array
+            var stream = new MemoryStream();
+            package.SaveAs(stream);
+            return stream.ToArray();
         }
     }
 }
