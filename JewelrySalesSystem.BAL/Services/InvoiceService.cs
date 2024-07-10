@@ -674,7 +674,7 @@ namespace JewelrySalesSystem.BAL.Services
 
             sec.AddParagraph($"Customer Name: {invoice.Customer.FullName}", "TitleStyle");
             sec.AddParagraph($"Phone: {invoice.Customer.PhoneNumber}", "TitleStyle");
-            sec.AddParagraph($"Order Date: {invoice.OrderDate.ToString("yyyy-MM-dd")}", "TitleStyle");
+            sec.AddParagraph($"Order Date: {invoice.OrderDate.ToString("yyyy-MM-dd HH:mm:ss")}", "TitleStyle");
 
             sec.AddParagraph();
             Table table = new();
@@ -743,7 +743,7 @@ namespace JewelrySalesSystem.BAL.Services
             string formattedTotal = invoice.Total.ToString("N0", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
             row.Cells[4].AddParagraph($"{formattedTotal} đ");
             row.Cells[4].Format.Alignment = ParagraphAlignment.Right;
-            row = table.AddRow();
+            //row = table.AddRow();
             doc.LastSection.Add(table);
             sec.AddParagraph();
             var discount = sec.AddParagraph($"Discount: {invoice.PerDiscount}%");
@@ -753,10 +753,51 @@ namespace JewelrySalesSystem.BAL.Services
             var totalWithDiscount = sec.AddParagraph($"Total with Discount: {formattedTotalDiscount} đ");
             totalWithDiscount.Format.Font.Bold = true;
             totalWithDiscount.Format.Alignment = ParagraphAlignment.Right;
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 4; i++)
             {
                 sec.AddParagraph();
             }
+            //var barcodeBytes = await GenerateBarCode(invoiceId);
+            //if (barcodeBytes != null)
+            //{
+            //    string tempFilePath = Path.Combine(Path.GetTempPath(), "barcode.jpeg");
+            //    File.WriteAllBytes(tempFilePath, barcodeBytes);
+            //    if (File.Exists(tempFilePath))
+            //    {
+            //        if (ImageSource.ImageSourceImpl == null)
+            //            ImageSource.ImageSourceImpl = new ImageSharpImageSource<Rgba32>();
+
+            //        //var image = MigraDocCore.DocumentObjectModel.MigraDoc.DocumentObjectModel.Shapes.ImageSource.FromFile(tempFilePath);
+            //        sec.AddImage(ImageSource.FromFile(tempFilePath));
+            //    }
+            //    //string tempFilePath = Path.Combine(Path.GetTempPath(), "barcode.png");
+
+
+
+
+
+            //    //image.Width = "4cm";
+            //    //image.Height = "2cm";
+
+            //    //image.Left = "0.5cm";
+
+            //    //Xóa tệp tạm thời sau khi sử dụng xong
+            //    File.Delete(tempFilePath);
+            //}
+            //var saleTitle = sec.AddParagraph("Salesman", "TitleStyle");
+            //saleTitle.Format.LeftIndent = 350;
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    sec.AddParagraph();
+            //}
+            //var saleName = sec.AddParagraph($"{invoice.User.FullName}", "TitleStyle");
+            //saleName.Format.LeftIndent = 340;
+
+            Table table2 = new();
+            table2.Borders.Width = 0;
+            Column column2 = table2.AddColumn(MigraDocCore.DocumentObjectModel.Unit.FromCentimeter(8));
+            column2 = table2.AddColumn(MigraDocCore.DocumentObjectModel.Unit.FromCentimeter(8));
+            Row row2 = table2.AddRow();
             var barcodeBytes = await GenerateBarCode(invoiceId);
             if (barcodeBytes != null)
             {
@@ -768,30 +809,25 @@ namespace JewelrySalesSystem.BAL.Services
                         ImageSource.ImageSourceImpl = new ImageSharpImageSource<Rgba32>();
 
                     //var image = MigraDocCore.DocumentObjectModel.MigraDoc.DocumentObjectModel.Shapes.ImageSource.FromFile(tempFilePath);
-                    sec.AddImage(ImageSource.FromFile(tempFilePath));
+                    row2.Cells[0].AddImage(ImageSource.FromFile(tempFilePath));
                 }
-                //string tempFilePath = Path.Combine(Path.GetTempPath(), "barcode.png");
 
-
-
-
-
-                //image.Width = "4cm";
-                //image.Height = "2cm";
-
-                //image.Left = "0.5cm";
-
-                //Xóa tệp tạm thời sau khi sử dụng xong
                 File.Delete(tempFilePath);
             }
-            var saleTitle = sec.AddParagraph("Salesman", "TitleStyle");
-            saleTitle.Format.LeftIndent = 350;
+            row2.Cells[1].AddParagraph("Salesman");
+            //row2.Cells[1].Format.Font.Name = "Times New Roman";
+            //row2.Cells[1].Format.Font.Size = 13;
+            //row2.Cells[1].Format.Alignment = ParagraphAlignment.Center;
             for (int i = 0; i < 3; i++)
             {
-                sec.AddParagraph();
+                row2.Cells[1].AddParagraph();
             }
-            var saleName = sec.AddParagraph($"{invoice.User.FullName}", "TitleStyle");
-            saleName.Format.LeftIndent = 340;
+            var saleName = row2.Cells[1].AddParagraph($"{invoice.User.FullName}");
+            row2.Cells[1].Format.Font.Name = "Times New Roman";
+            row2.Cells[1].Format.Font.Size = 13;
+            row2.Cells[1].Format.Alignment = ParagraphAlignment.Center;
+            doc.LastSection.Add(table2);
+
 
 #pragma warning disable
             MigraDocCore.Rendering.PdfDocumentRenderer docRend = new MigraDocCore.Rendering.PdfDocumentRenderer(true);
