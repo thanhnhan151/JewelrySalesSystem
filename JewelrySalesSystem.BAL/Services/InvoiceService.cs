@@ -1044,6 +1044,166 @@ namespace JewelrySalesSystem.BAL.Services
             }
             return monthlyProductsList;
         }
+
+        public async Task<byte[]> GenerateWarrantyInvoicePdf(int invoiceId, int warrantyId)
+        {
+            var invoice = await _unitOfWork.Invoices.GetByIdWithIncludeAsync(invoiceId);
+            if (invoice == null)
+            {
+                throw new Exception($"Invoice with id {invoiceId} not found.");
+            }
+            var warranty = await _unitOfWork.Warranties.GetEntityByIdAsync(warrantyId);
+            if (warranty == null)
+            {
+                throw new Exception($"Invoice with id {warrantyId} not found.");
+            }
+
+            
+            MigraDocCore.DocumentObjectModel.Document doc = new();
+            Section sec = doc.AddSection();
+
+            var titleStyle = doc.AddStyle("TitleStyle", "Normal");
+            titleStyle.Font.Name = "Times New Roman";
+            titleStyle.Font.Size = 13;
+            titleStyle.Font.Bold = true;
+
+            var arialStyle = doc.AddStyle("ArialStyle", "Normal");
+            arialStyle.Font.Name = "Arial";
+            arialStyle.Font.Size = 15;
+
+            var propertyStyle = doc.AddStyle("PropertyStyle", "Normal");
+            propertyStyle.Font.Name = "Times New Roman";
+            propertyStyle.Font.Size = 14;
+            propertyStyle.Font.Bold = true;
+
+
+
+            Paragraph titleParagraph = sec.AddParagraph("Jewelry Sales System", "TitleStyle");
+            titleParagraph.Format.Alignment = ParagraphAlignment.Center;
+            titleParagraph.Format.Font.Size = 24;
+            sec.AddParagraph();
+            var titleType = sec.AddParagraph("Warranty Card", "TitleStyle");
+            titleParagraph.Format.Alignment = ParagraphAlignment.Center;
+            titleType.Format.Alignment = ParagraphAlignment.Center;
+            titleType.Format.Font.Size = 16;
+
+            for (int i = 0; i < 2; i++)
+            {
+                sec.AddParagraph();
+            }
+
+            Table table = new();
+            table.Borders.Width = 0;
+            Column column = table.AddColumn(MigraDocCore.DocumentObjectModel.Unit.FromCentimeter(5));
+            column = table.AddColumn(MigraDocCore.DocumentObjectModel.Unit.FromCentimeter(8));
+            Row row = table.AddRow();
+            row.Cells[0].AddParagraph($"Customer Name:").Style = "PropertyStyle";
+            row.Cells[1].AddParagraph($"{invoice.Customer.FullName}");
+            row.Cells[1].Format.Font.Name = "Times New Roman";
+            row.Cells[1].Format.Font.Size = 13;
+
+            row = table.AddRow();
+            row.Cells[0].AddParagraph($"Phone:").Style = "PropertyStyle";
+            row.Cells[1].AddParagraph($"{invoice.Customer.PhoneNumber}");
+            row.Cells[1].Format.Font.Name = "Times New Roman";
+            row.Cells[1].Format.Font.Size = 13;
+
+            row = table.AddRow();
+            row.Cells[0].AddParagraph($"Application Date:").Style = "PropertyStyle";
+            row.Cells[1].AddParagraph($"{warranty.StartDate.ToString("yyyy-MM-dd")}");
+            row.Cells[1].Format.Font.Name = "Times New Roman";
+            row.Cells[1].Format.Font.Size = 13;
+            doc.LastSection.Add(table);
+            //sec.AddParagraph();
+            //sec.AddParagraph($"Products are warranted from now: ");
+
+            for (int i = 0; i < 1; i++)
+            {
+                sec.AddParagraph();
+            }
+
+            Table table2 = new();
+            table2.Borders.Width = 0.5;
+            Column column2 = table2.AddColumn(MigraDocCore.DocumentObjectModel.Unit.FromCentimeter(3));
+            column = table2.AddColumn(MigraDocCore.DocumentObjectModel.Unit.FromCentimeter(8));
+            column = table2.AddColumn(MigraDocCore.DocumentObjectModel.Unit.FromCentimeter(5));
+            var count = 1;
+
+            Row row2 = table2.AddRow();
+            Cell cell = row2.Cells[0];
+            cell = row2.Cells[0];
+            Paragraph itemParagraph = cell.AddParagraph("Item");
+            itemParagraph.Format.Font.Bold = true;
+            itemParagraph.Format.Alignment = ParagraphAlignment.Center;
+            cell = row2.Cells[1];
+            Paragraph productNameParagraph = cell.AddParagraph("Product Name");
+            productNameParagraph.Format.Font.Bold = true;
+            productNameParagraph.Format.Alignment = ParagraphAlignment.Center;
+            cell = row2.Cells[2];
+            Paragraph quantityParagraph = cell.AddParagraph("Warranty End Date");
+            quantityParagraph.Format.Font.Bold = true;
+            quantityParagraph.Format.Alignment = ParagraphAlignment.Center;
+           
+            foreach (var item in invoice.InvoiceDetails)
+            {
+                if(item.Product.ProductTypeId == 3)
+                {
+                    row2 = table2.AddRow();
+                    row2.Cells[0].AddParagraph($"{count}");
+                    row2.Cells[0].Format.Alignment = ParagraphAlignment.Center;
+                    row2.Cells[1].AddParagraph(item.Product.ProductName);
+                    row2.Cells[1].Format.Alignment = ParagraphAlignment.Center;
+                    row2.Cells[2].AddParagraph(warranty.StartDate.AddMonths(6).ToString("yyyy-MM-dd"));
+                    row2.Cells[2].Format.Alignment = ParagraphAlignment.Center;
+                    count++;
+                }
+               
+            }
+
+            doc.LastSection.Add(table2);
+
+            for (int i = 0; i < 2; i++)
+            {
+                sec.AddParagraph();
+            }
+            Table table3 = new();
+            table3.Borders.Width = 0;
+            Column column3 = table3.AddColumn(MigraDocCore.DocumentObjectModel.Unit.FromCentimeter(8));
+            column3 = table3.AddColumn(MigraDocCore.DocumentObjectModel.Unit.FromCentimeter(8));
+            Row row3 = table3.AddRow();
+            
+            row3.Cells[1].AddParagraph("Salesman");
+            //row2.Cells[1].Format.Font.Name = "Times New Roman";
+            //row2.Cells[1].Format.Font.Size = 13;
+            //row2.Cells[1].Format.Alignment = ParagraphAlignment.Center;
+            for (int i = 0; i < 3; i++)
+            {
+                row3.Cells[1].AddParagraph();
+            }
+            var saleName = row3.Cells[1].AddParagraph($"{invoice.User.FullName}");
+            row3.Cells[1].Format.Font.Name = "Times New Roman";
+            row3.Cells[1].Format.Font.Size = 13;
+            row3.Cells[1].Format.Alignment = ParagraphAlignment.Center;
+
+            doc.LastSection.Add(table3);
+#pragma warning disable
+            MigraDocCore.Rendering.PdfDocumentRenderer docRend = new MigraDocCore.Rendering.PdfDocumentRenderer(true);
+            docRend.Document = doc;
+
+
+            docRend.RenderDocument();
+
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+
+                //pdf.Save(ms);
+                docRend.PdfDocument.Save(ms);
+                return ms.ToArray();
+            }
+
+        }
+
     }
 }
 
