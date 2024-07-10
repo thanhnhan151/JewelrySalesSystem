@@ -31,6 +31,7 @@ namespace JewelrySalesSystem.DAL.Repositories
             IQueryable<Invoice> invoicesQuery = _dbSet.OrderByDescending(i => i.OrderDate)
                                                       .Include(i => i.InvoiceDetails)
                                                             .ThenInclude(i => i.Product)
+                                                                  .ThenInclude(i => i.Unit)
                                                       .Include(i => i.Customer)
                                                       .Include(i => i.User)
                                                       .Include(i => i.Warranty);

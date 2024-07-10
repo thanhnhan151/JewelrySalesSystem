@@ -525,7 +525,6 @@ namespace JewelrySalesSystem.API.Controllers
         }
         #endregion
 
-
         #region List MonthRevenue of the Year for Admin
         /// <summary>
         ///Get List MonthRevenue of the Year for Admin
@@ -571,8 +570,6 @@ namespace JewelrySalesSystem.API.Controllers
             }
         }
         #endregion
-
-
     }
 
 }

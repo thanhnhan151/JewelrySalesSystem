@@ -920,7 +920,6 @@ namespace JewelrySalesSystem.BAL.Services
             return profitChange;
         }
 
-
         public async Task<List<float>> GetRevenueForEachMonthAsync(DateTime date)
         {
             var monthlyRevenue = new List<float>();
@@ -946,9 +945,6 @@ namespace JewelrySalesSystem.BAL.Services
             }
             return monthlyProductsList;
         }
-
-
-
     }
 }
 
