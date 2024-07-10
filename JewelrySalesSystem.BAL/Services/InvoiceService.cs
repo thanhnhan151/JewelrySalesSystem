@@ -317,14 +317,14 @@ namespace JewelrySalesSystem.BAL.Services
 
             float total = 0;
 
-            int countProductHasMaterial = 0;
+            //int countProductHasMaterial = 0;
 
             if (createPurchaseInvoiceRequest.InvoiceDetails.Count > 0)
             {
 
                 foreach (var item in createPurchaseInvoiceRequest.InvoiceDetails)
                 {
-                    var existedProduct = await _unitOfWork.Products.GetEntityByIdAsync(item);
+                    var existedProduct = await _unitOfWork.Products.GetEntityByIdAsync(item.ProductId);
 
                     if (existedProduct != null)
                     {
@@ -341,11 +341,11 @@ namespace JewelrySalesSystem.BAL.Services
 
                                     invoiceDetails.Add(new InvoiceDetail
                                     {
-                                        ProductId = item,
+                                        ProductId = item.ProductId,
                                         //ProductPrice = existedProduct.ProductPrice
-                                        ProductPrice = buyMaterialPrice.BuyPrice * createPurchaseInvoiceRequest.Weights.ElementAt(countProductHasMaterial) * 375 / 100,
+                                        ProductPrice = buyMaterialPrice.BuyPrice * item.Quantity * 375 / 100,
                                     });
-                                    countProductHasMaterial++;
+                                    //countProductHasMaterial++;
                                 }
 
                                 break;
@@ -355,9 +355,9 @@ namespace JewelrySalesSystem.BAL.Services
                                 invoiceDetails.Add(new InvoiceDetail
                                 {
 
-                                    ProductId = item,
+                                    ProductId = item.ProductId,
                                     //ProductPrice = existedProduct.ProductPrice,
-                                    ProductPrice = (materialPrice.BuyPrice * materialInProduct.Weight) * 375 / 100,
+                                    ProductPrice = (materialPrice.BuyPrice * materialInProduct.Weight) * item.Quantity * 375 / 100,
                                 });
 
                                 break;
@@ -368,8 +368,8 @@ namespace JewelrySalesSystem.BAL.Services
                                 {
                                     invoiceDetails.Add(new InvoiceDetail
                                     {
-                                        ProductId = item,
-                                        ProductPrice = existedProduct.ProductPrice * 70 / 100,
+                                        ProductId = item.ProductId,
+                                        ProductPrice = existedProduct.ProductPrice * item.Quantity * 70 / 100,
 
                                     });
                                 }
@@ -452,7 +452,7 @@ namespace JewelrySalesSystem.BAL.Services
             //    }
 
             //}
-            if (invoice.InvoiceType.Equals("out"))
+            if (invoice.InOrOut.ToLower() == "out")
             {
                 foreach (var item in invoice.InvoiceDetails)
                 {
@@ -474,7 +474,8 @@ namespace JewelrySalesSystem.BAL.Services
             //}
             try
             {
-                if (allAreGoldProduct == true && countProductHasMaterial == createPurchaseInvoiceRequest.Weights.Count)
+                if (allAreGoldProduct == true)
+                //if (allAreGoldProduct == true && countProductHasMaterial == createPurchaseInvoiceRequest.Weights.Count)
                 {
                     var result = _unitOfWork.Invoices.AddEntity(invoice);
                     await _unitOfWork.CompleteAsync();
