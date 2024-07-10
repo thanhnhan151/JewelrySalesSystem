@@ -17,6 +17,7 @@
 
         // User
         public string UserName { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
 
         // Warranty
         public string Warranty { get; set; } = string.Empty;

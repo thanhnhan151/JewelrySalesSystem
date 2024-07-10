@@ -215,11 +215,7 @@ namespace JewelrySalesSystem.DAL.Repositories
                 if (result.InvoiceStatus.Equals("Pending"))
                 {
                     result.InvoiceStatus = "Processing";
-                }
-                else if (result.InvoiceStatus.Equals("Processing"))
-                {
-                    result.InvoiceStatus = "Delivered";
-                }
+                }              
                 _dbSet.Update(result);
             }
         }

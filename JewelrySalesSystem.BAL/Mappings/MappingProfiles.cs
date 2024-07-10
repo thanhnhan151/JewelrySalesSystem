@@ -140,6 +140,8 @@ namespace JewelrySalesSystem.BAL.Mappings
 
                 .ForMember(i => i.UserName, i => i.MapFrom(i => i.User.UserName))
 
+                .ForMember(i => i.PhoneNumber, i => i.MapFrom(i => i.User.PhoneNumber))
+
                 .ForMember(i => i.Warranty, i => i.MapFrom(i => i.Warranty.Description));
 
             CreateMap<PaginatedList<Invoice>, PaginatedList<GetInvoiceResponse>>();
