@@ -189,14 +189,14 @@ namespace JewelrySalesSystem.DAL.Repositories
 
 
                 var existProductMaterials = await _context.ProductMaterials.Where(ma => ma.ProductId == product.ProductId).ToListAsync();
-                var existingProductMaterialsDict = existProductMaterials.ToDictionary(pm => pm.MaterialId, pm => pm);
-                var newProductMaterials = product.ProductMaterials.Where(m => !existProductMaterials.Any(em => em.MaterialId == m.MaterialId))
-                                                                  .Select(m => new ProductMaterial
-                                                                  {
-                                                                      Id = m.Id,
-                                                                      MaterialId = m.MaterialId,
-                                                                      ProductId = product.ProductId
-                                                                  });
+                var existingProductMaterialsDict = existProductMaterials.ToDictionary(pm => (pm.MaterialId, pm.Weight), pm => pm);
+                var newProductMaterials = product.ProductMaterials.Where(m => !existingProductMaterialsDict.ContainsKey((m.MaterialId, m.Weight)))
+                                                  .Select(m => new ProductMaterial
+                                                  {
+                                                      MaterialId = m.MaterialId,
+                                                      ProductId = product.ProductId,
+                                                      Weight = m.Weight,
+                                                  });
                 var removedProductMaterials = existingProductMaterialsDict.Values.Where(em => !product.ProductMaterials.Any(m => m.MaterialId == em.MaterialId)).ToList();
                 _context.ProductMaterials.RemoveRange(removedProductMaterials);
                 _context.ProductMaterials.AddRange(newProductMaterials);
