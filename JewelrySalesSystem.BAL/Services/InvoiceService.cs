@@ -1003,6 +1003,7 @@ namespace JewelrySalesSystem.BAL.Services
                 throw new Exception($"Invoice with id {warrantyId} not found.");
             }
 
+            
             MigraDocCore.DocumentObjectModel.Document doc = new();
             Section sec = doc.AddSection();
 
@@ -1097,7 +1098,7 @@ namespace JewelrySalesSystem.BAL.Services
                     row2.Cells[0].Format.Alignment = ParagraphAlignment.Center;
                     row2.Cells[1].AddParagraph(item.Product.ProductName);
                     row2.Cells[1].Format.Alignment = ParagraphAlignment.Center;
-                    row2.Cells[2].AddParagraph(warranty.EndDate.ToString("yyyy-MM-dd"));
+                    row2.Cells[2].AddParagraph(warranty.StartDate.AddMonths(6).ToString("yyyy-MM-dd"));
                     row2.Cells[2].Format.Alignment = ParagraphAlignment.Center;
                     count++;
                 }
