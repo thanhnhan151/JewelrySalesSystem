@@ -170,6 +170,11 @@ namespace JewelrySalesSystem.API.Controllers
         ///       {
         ///         "buyPrice": 7600000,
         ///         "sellPrice": 7800000,
+        ///         "materialId": 5
+        ///       },
+        ///       {
+        ///         "buyPrice": 7600000,
+        ///         "sellPrice": 7800000,
         ///         "materialId": 6
         ///       }
         ///     ]
