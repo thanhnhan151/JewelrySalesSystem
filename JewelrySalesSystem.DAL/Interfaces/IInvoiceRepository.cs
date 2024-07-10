@@ -39,5 +39,7 @@ namespace JewelrySalesSystem.DAL.Interfaces
 
         Task<List<Invoice>> GetDailyRevenue(int day,int month, int year);
 
+        Task<List<int>> GetMonthlyProductSalesAsync(int month, int year);
+
     }
 }

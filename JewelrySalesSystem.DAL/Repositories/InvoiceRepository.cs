@@ -292,6 +292,37 @@ namespace JewelrySalesSystem.DAL.Repositories
             }
         }
 
+        //public async Task<List<Invoice>> GetInvoicesByMonthAsync(int month, int year)
+        //{
+        //    return await _context.Invoices
+        //    .Where(invoice => invoice.OrderDate.Month == month &&
+        //                      invoice.OrderDate.Year == year)
+        //    .ToListAsync();
+        //}
+
+        public async Task<List<int>> GetMonthlyProductSalesAsync(int month, int year)
+        {
+            var invoices = await _context.Invoices
+                .Where(i => i.OrderDate.Year == year && i.OrderDate.Month == month && i.InvoiceType == "Sale")
+                .ToListAsync();
+
+            var productSales = new List<int>();
+
+            foreach (var invoice in invoices)
+            {
+                var invoiceDetails = await _context.InvoiceDetails
+                    .Where(id => id.InvoiceId == invoice.InvoiceId)
+                    .ToListAsync();
+
+                foreach (var detail in invoiceDetails)
+                {
+                    productSales.Add(detail.Quantity);
+                }
+            }
+
+            return productSales;
+        }
+
 
         //public async Task<Invoice> AddPurchaseInvoice(Invoice invoice)
         //{

@@ -524,6 +524,55 @@ namespace JewelrySalesSystem.API.Controllers
             }
         }
         #endregion
+
+
+        #region List MonthRevenue of the Year for Admin
+        /// <summary>
+        ///Get List MonthRevenue of the Year for Admin
+        /// </summary>
+        /// <returns>Week Revenue</returns>
+        [HttpGet("MonthlyRevenueOfYear")]
+        public async Task<IActionResult> GetListMonthRevenueOfYear()
+        {
+            try
+            {
+                var currentDate = DateTime.Now;
+
+
+                var revenue = await _invoiceService.GetRevenueForEachMonthAsync(currentDate);
+                return Ok(revenue);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        #endregion
+
+        #region List QuantityProduct sale each Month of the Year for Admin
+        /// <summary>
+        ///Get List QuantityProduct sale each Month of the Year for Admin
+        /// </summary>
+        /// <returns>Week Revenue</returns>
+        [HttpGet("QuantityProductSaleInMonth")]
+        public async Task<IActionResult> GetLQuantityProductOfSaleInMonth()
+        {
+            try
+            {
+                var currentDate = DateTime.Now;
+
+
+                var revenue = await _invoiceService.GetQuantiyProductForEachMonthAsync(currentDate);
+                return Ok(revenue);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        #endregion
+
+
     }
 
 }
