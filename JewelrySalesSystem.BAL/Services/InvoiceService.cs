@@ -13,6 +13,7 @@ using MigraDocCore.DocumentObjectModel.Tables;
 using MigraDocCore.DocumentObjectModel;
 using PdfSharpCore.Utils;
 using SixLabors.ImageSharp.PixelFormats;
+using OfficeOpenXml;
 
 namespace JewelrySalesSystem.BAL.Services
 {
@@ -959,25 +960,39 @@ namespace JewelrySalesSystem.BAL.Services
             }
             var invoices = await _unitOfWork.Invoices.GetInvoicesForMonthAsync(month, year);
 
-            var csvBuilder = new StringBuilder();
-
-            csvBuilder.AppendLine($"Invoice ID\tOrder Date\tCustomer ID\tUser ID\tInvoice Type\tPer Discount\tTotal");
-
-            foreach (var invoice in invoices)
+            using (var package = new ExcelPackage())
             {
-                csvBuilder.AppendLine($"{invoice.InvoiceId}\t{invoice.OrderDate}\t{invoice.CustomerId}\t{invoice.UserId}\t{invoice.InvoiceType}\t{invoice.PerDiscount}\t{invoice.Total}");
+                var worksheet = package.Workbook.Worksheets.Add("Invoices");
+                worksheet.Cells[1, 1].Value = "Invoice ID";
+                worksheet.Cells[1, 2].Value = "Order Date";
+                worksheet.Cells[1, 3].Value = "Customer ID";
+                worksheet.Cells[1, 4].Value = "User ID";
+                worksheet.Cells[1, 5].Value = "Invoice Type";
+                worksheet.Cells[1, 6].Value = "Per Discount";
+                worksheet.Cells[1, 7].Value = "Total";
+
+                int row = 2;
+                foreach (var invoice in invoices)
+                {
+                    worksheet.Cells[row, 1].Value = invoice.InvoiceId;
+                    worksheet.Cells[row, 2].Value = invoice.OrderDate.ToString("d");
+                    worksheet.Cells[row, 3].Value = invoice.CustomerId;
+                    worksheet.Cells[row, 4].Value = invoice.UserId;
+                    worksheet.Cells[row, 5].Value = invoice.InvoiceType;
+                    worksheet.Cells[row, 6].Value = invoice.PerDiscount;
+                    worksheet.Cells[row, 7].Value = invoice.Total;
+                    row++;
+                }
+
+                worksheet.Cells[row, 1].Value = "Total Invoices:";
+                worksheet.Cells[row, 2].Value = invoices.Count;
+                worksheet.Cells[row, 6].Value = "Total:";
+                worksheet.Cells[row, 7].Value = invoices.Sum(i => i.Total);
+
+                worksheet.Cells[1, 1, row, 7].AutoFitColumns();
+
+                return package.GetAsByteArray();
             }
-
-            var totalInvoices = invoices.Count;
-
-            var totalSum = invoices.Sum(i => i.Total);
-
-            csvBuilder.AppendLine($"Total Invoices: {totalInvoices}");
-            csvBuilder.AppendLine($"Total: {totalSum}");
-
-            var byteArray = Encoding.UTF8.GetBytes(csvBuilder.ToString());
-
-            return byteArray;
 
             bool IsValidMonth(int month)
             {
