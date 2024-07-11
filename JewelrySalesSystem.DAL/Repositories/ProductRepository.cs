@@ -157,8 +157,8 @@ namespace JewelrySalesSystem.DAL.Repositories
         public async Task UpdateProduct(Product product)
         {
             //Check exist
-            var checkExistProductTask = _dbSet.FindAsync(product.ProductId);
-            var checkExistProduct = await checkExistProductTask;
+            //var checkExistProductTask = _dbSet.FindAsync(product.ProductId);
+            var checkExistProduct = await _dbSet.FindAsync(product.ProductId);
             if (checkExistProduct != null)
             {
                 //Update data
@@ -170,6 +170,7 @@ namespace JewelrySalesSystem.DAL.Repositories
                 checkExistProduct.CategoryId = product.CategoryId;
                 checkExistProduct.ProductTypeId = product.ProductTypeId;
                 checkExistProduct.GenderId = product.GenderId;
+                checkExistProduct.Counter = product.Counter;
 
 
                 var existProductGems = await _context.ProductGems.Where(pe => pe.ProductId == product.ProductId).ToListAsync();
@@ -189,17 +190,28 @@ namespace JewelrySalesSystem.DAL.Repositories
 
 
                 var existProductMaterials = await _context.ProductMaterials.Where(ma => ma.ProductId == product.ProductId).ToListAsync();
-                var existingProductMaterialsDict = existProductMaterials.ToDictionary(pm => (pm.MaterialId, pm.Weight), pm => pm);
-                var newProductMaterials = product.ProductMaterials.Where(m => !existingProductMaterialsDict.ContainsKey((m.MaterialId, m.Weight)))
-                                                  .Select(m => new ProductMaterial
-                                                  {
-                                                      MaterialId = m.MaterialId,
-                                                      ProductId = product.ProductId,
-                                                      Weight = m.Weight,
-                                                  });
+                var existingProductMaterialsDict = existProductMaterials.ToDictionary(pm => pm.MaterialId, pm => pm);
+                var newProductMaterials = product.ProductMaterials.Where(m => !existingProductMaterialsDict.ContainsKey(m.MaterialId))
+                          .Select(m => new ProductMaterial
+                          {
+                              MaterialId = m.MaterialId,
+                              ProductId = product.ProductId,
+                              Weight = m.Weight,
+                          });
+                //var removedProductMaterials = product.ProductMaterials.Where(m => !existingProductMaterialsDict.ContainsKey(m.MaterialId, m.Weight));
+                var updatedProductMaterials = product.ProductMaterials.Where(m => existingProductMaterialsDict.ContainsKey(m.MaterialId))
+                              .Select(m => new ProductMaterial
+                              {
+                                  Id = existingProductMaterialsDict[m.MaterialId].Id,
+                                  MaterialId = m.MaterialId,
+                                  ProductId = product.ProductId,
+                                  Weight = m.Weight,
+                              });
                 var removedProductMaterials = existingProductMaterialsDict.Values.Where(em => !product.ProductMaterials.Any(m => m.MaterialId == em.MaterialId)).ToList();
                 _context.ProductMaterials.RemoveRange(removedProductMaterials);
+                _context.ProductMaterials.UpdateRange(updatedProductMaterials);
                 _context.ProductMaterials.AddRange(newProductMaterials);
+                
 
 
 
