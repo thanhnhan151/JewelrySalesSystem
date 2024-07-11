@@ -214,7 +214,7 @@ namespace JewelrySalesSystem.API.Controllers
 
                 await _userService.DeleteAsync(id);
 
-                return Ok();
+                return Ok(c);
             }
             catch (Exception ex)
             {
@@ -258,7 +258,6 @@ namespace JewelrySalesSystem.API.Controllers
         }
         #endregion
 
-
         #region Revenue Of Each Employee.
         /// <summary>
         /// Get revenue of each employee.
@@ -286,7 +285,6 @@ namespace JewelrySalesSystem.API.Controllers
             }
         }
         #endregion
-
     }
 
 }

@@ -323,7 +323,7 @@ namespace JewelrySalesSystem.API.Controllers
 
                 await _materialService.DeleteAsync(id);
 
-                return Ok();
+                return Ok("Update Successfully!");
             }
             catch (Exception ex)
             {

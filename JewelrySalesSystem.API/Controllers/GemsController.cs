@@ -271,7 +271,7 @@ namespace JewelrySalesSystem.API.Controllers
             {
                 await _gemService.DeleteAsync(id);              
 
-                return Ok();
+                return Ok("Update Successfully!");
             }
             catch (Exception ex)
             {
