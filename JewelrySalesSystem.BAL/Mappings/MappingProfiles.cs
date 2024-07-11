@@ -191,6 +191,8 @@ namespace JewelrySalesSystem.BAL.Mappings
             CreateMap<PaginatedList<Customer>, PaginatedList<GetCustomerResponse>>();
 
             CreateMap<Customer, GetCustomerResponse>();
+            CreateMap<UpdateCustomerRequest, Customer>().ReverseMap();
+
             #endregion
 
             #region Carat

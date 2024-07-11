@@ -150,5 +150,48 @@ namespace JewelrySalesSystem.API.Controllers
             }
         }
         #endregion
+
+
+        #region Update Customer
+        /// <summary>
+        /// Add a customer in the system
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     {
+        ///       "customerId": "1";
+        ///       "customerName": "Phung Van A",
+        ///       "phoneNumber": "0999123456",
+        ///       "point": 0
+        ///     }
+        ///         
+        /// </remarks> 
+        /// <returns>Customer that was created</returns>
+        /// <response code="200">Customer that was created</response>
+        /// <response code="400">Failed validation</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server</response>
+        [HttpPut]
+        public async Task<IActionResult> UpdateAsync([FromBody] UpdateCustomerRequest updateCustomerRequest)
+        {
+            try
+            {
+                await _customerService.UpdateAsync(updateCustomerRequest);
+
+                return Ok(updateCustomerRequest);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+        #endregion
+
     }
 }

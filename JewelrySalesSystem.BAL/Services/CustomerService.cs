@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using JewelrySalesSystem.BAL.Interfaces;
+using JewelrySalesSystem.BAL.Models.Categories;
 using JewelrySalesSystem.BAL.Models.Customers;
 using JewelrySalesSystem.DAL.Common;
+using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
 
 namespace JewelrySalesSystem.BAL.Services
@@ -53,6 +55,22 @@ namespace JewelrySalesSystem.BAL.Services
             GetDiscount(result.Items);
 
             return result;
+        }
+
+        public async Task UpdateAsync(UpdateCustomerRequest updateCustomerRequest)
+        {
+            
+            var checkDuplicateCustomer = await _unitOfWork.Customers.GetCustomerByPhoneAsync(updateCustomerRequest.PhoneNumber);
+            if(checkDuplicateCustomer != null && (checkDuplicateCustomer.CustomerId != updateCustomerRequest.CustomerId))
+            {
+                throw new Exception($"A customer with the phone number {updateCustomerRequest.PhoneNumber} already exists.");
+            }
+            else
+            {
+                _unitOfWork.Customers.UpdateEntity(_mapper.Map<Customer>(updateCustomerRequest));
+            }
+            await _unitOfWork.CompleteAsync();
+
         }
 
         private void GetDiscount(List<GetCustomerResponse> list)

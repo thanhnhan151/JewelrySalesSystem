@@ -14,6 +14,8 @@ namespace JewelrySalesSystem.BAL.Interfaces
 
         Task AddAsync(CreateCustomerRequest createCustomerRequest);
 
+        Task UpdateAsync(UpdateCustomerRequest updateCustomerRequest);
+
         Task<GetCustomerResponse?> GetCustomerByNameAsync(string customerName);
 
         Task<GetCustomerResponse?> GetCustomerByPhoneAsync(string phoneNumber);
