@@ -214,7 +214,7 @@ namespace JewelrySalesSystem.API.Controllers
 
                 await _userService.DeleteAsync(id);
 
-                return Ok(c);
+                return Ok("Update Successfully!");
             }
             catch (Exception ex)
             {
