@@ -365,7 +365,7 @@ namespace JewelrySalesSystem.API.Controllers
                 if (result is not null)
                 {
                     await _invoiceService.ChangeInvoiceStatus(id);
-                    return Ok();
+                    return Ok("Update Successfully!");
                 }
             }
             catch (Exception ex)
@@ -402,7 +402,7 @@ namespace JewelrySalesSystem.API.Controllers
                 if (result is not null)
                 {
                     await _invoiceService.CancelInvoice(id);
-                    return Ok();
+                    return Ok("Update Successfully!");
                 }
             }
             catch (Exception ex)
