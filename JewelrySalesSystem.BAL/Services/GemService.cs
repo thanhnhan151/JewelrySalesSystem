@@ -95,9 +95,9 @@ namespace JewelrySalesSystem.BAL.Services
                     CounterId = 1
                 };
 
-                var produtResult = _unitOfWork.Products.AddEntity(product);
-
                 var gemResult = _unitOfWork.Gems.AddEntity(gem);
+
+                var produtResult = _unitOfWork.Products.AddEntity(product);              
             }
             else
             {
@@ -124,11 +124,11 @@ namespace JewelrySalesSystem.BAL.Services
                     CounterId = 1
                 };
 
-                var produtResult = _unitOfWork.Products.AddEntity(product);
-
                 var gemResult = _unitOfWork.Gems.AddEntity(gem);
 
                 _unitOfWork.Gems.AddGemPrice(gemPrice);
+
+                var produtResult = _unitOfWork.Products.AddEntity(product);             
             }
 
             await _unitOfWork.CompleteAsync();
