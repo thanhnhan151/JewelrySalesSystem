@@ -57,5 +57,31 @@ namespace JewelrySalesSystem.API.Controllers
             }
         }
         #endregion
+
+        #region Get All Role
+        /// <summary>
+        /// Get role in the system
+        /// </summary>
+        [HttpGet("getAllRole")]
+        public async Task<IActionResult> GetAllRole()
+        {
+            try
+            {
+                var result = await _roleService.GetAllAsync();
+                if (result == null)
+                {
+                    return NotFound();
+                }
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+               throw new Exception($"{ex.Message}");
+            }
+        }
+        #endregion
     }
+
+
 }
+

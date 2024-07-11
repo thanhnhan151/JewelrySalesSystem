@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using JewelrySalesSystem.BAL.Interfaces;
+using JewelrySalesSystem.BAL.Models.Counters;
 using JewelrySalesSystem.BAL.Models.Roles;
 using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
@@ -34,5 +35,12 @@ namespace JewelrySalesSystem.BAL.Services
 
             return createRoleRequest;
         }
+
+        public async Task<List<GetRoleResponse>> GetAllAsync()
+        {
+            var roles = await _unitOfWork.Roles.GetAllEntitiesAsync();
+            return _mapper.Map<List<GetRoleResponse>>(roles);
+        }
+
     }
 }

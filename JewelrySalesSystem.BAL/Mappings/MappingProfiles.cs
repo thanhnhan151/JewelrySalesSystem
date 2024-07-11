@@ -29,6 +29,7 @@ namespace JewelrySalesSystem.BAL.Mappings
         {
             #region Role
             CreateMap<CreateRoleRequest, Role>();
+            CreateMap<Role, GetRoleResponse>() ;
             #endregion
 
             #region Gender
