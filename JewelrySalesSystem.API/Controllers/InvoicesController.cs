@@ -423,7 +423,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// </summary>
         /// <param name="invoiceId">InvoiceId you want to export to PDF file</param>
         /// <returns>Invoice PDF file</returns>
-        [HttpPost("{invoiceId}/pdf")]
+        [HttpGet("{invoiceId}/pdf")]
         public async Task<IActionResult> GetInvoicePdf(int invoiceId)
         {
             var pdfBytes = await _invoiceService.GenerateInvoicePdf(invoiceId);
@@ -599,7 +599,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// <param name="invoiceId">InvoiceId you want to export to PDF file</param>
         /// <param name="warrantyId">Warranty you want to apply in invoice</param>
         /// <returns>Invoice PDF file</returns>
-        [HttpPost("/pdf")]
+        [HttpGet("pdf")]
         public async Task<IActionResult> GetWarrantyOfInvoicePdf(int invoiceId, int warrantyId)
         {
             var pdfBytes = await _invoiceService.GenerateWarrantyInvoicePdf(invoiceId, warrantyId);
