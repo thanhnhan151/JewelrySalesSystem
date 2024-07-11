@@ -59,18 +59,18 @@ namespace JewelrySalesSystem.API.Controllers
         #endregion
 
         #region Get All Role
-        [HttpGet("get all role")]
         /// <summary>
-        ///Get all role in the system
+        /// Get role in the system
         /// </summary>
+        [HttpGet("getAllRole")]
         public async Task<IActionResult> GetAllRole()
         {
             try
             {
                 var result = await _roleService.GetAllAsync();
-                if (result == null || result.Count == 0)
+                if (result == null)
                 {
-                    return NotFound("No roles found.");
+                    return NotFound();
                 }
                 return Ok(result);
             }
