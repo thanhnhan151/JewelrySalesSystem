@@ -32,7 +32,7 @@ namespace JewelrySalesSystem.API.Controllers
             {
                 if (response.VnPayResponseCode == "00")
                 {
-                    return Ok(response);
+                    return Redirect("http://localhost:3000/payment/success");
                 }
                 else
                 {

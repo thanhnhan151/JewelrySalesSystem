@@ -242,7 +242,10 @@ namespace JewelrySalesSystem.API.Controllers
         {
             var url = await _vnPayService.CreateUrl(id);
 
-            return Ok(url);
+            return Ok(new
+            {
+                PaymentUrl = url
+            });
         }
         #endregion
 
