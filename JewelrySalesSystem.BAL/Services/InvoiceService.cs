@@ -245,33 +245,33 @@ namespace JewelrySalesSystem.BAL.Services
             {
                 InvoiceId = updateInvoiceRequest.InvoiceId,
                 InvoiceStatus = updateInvoiceRequest.InvoiceStatus,
-                OrderDate = DateTime.Now,
-                UserId = updateInvoiceRequest.UserId,
+                //OrderDate = DateTime.Now,
+                //UserId = updateInvoiceRequest.UserId,
                 WarrantyId = 1,
                 InvoiceDetails = invoiceDetails,
                 Total = updateInvoiceRequest.Total,
-                PerDiscount = updateInvoiceRequest.PerDiscount,
-                TotalWithDiscount = updateInvoiceRequest.Total - (updateInvoiceRequest.Total * updateInvoiceRequest.PerDiscount) / 100
+                //PerDiscount = updateInvoiceRequest.PerDiscount,
+                //TotalWithDiscount = updateInvoiceRequest.Total - (updateInvoiceRequest.Total * updateInvoiceRequest.PerDiscount) / 100
             };
 
-            var customer = await _unitOfWork.Customers.GetCustomerByNameAsync(updateInvoiceRequest.CustomerName);
+            //var customer = await _unitOfWork.Customers.GetCustomerByNameAsync(updateInvoiceRequest.CustomerName);
 
-            if (customer != null)
-            {
-                invoice.CustomerId = customer.CustomerId;
+            //if (customer != null)
+            //{
+            //    invoice.CustomerId = customer.CustomerId;
 
-                //changes here
-                if (updateInvoiceRequest.PerDiscount == 0)
-                {
-                    //1M vnd = 1 point
-                    int points = (int)(updateInvoiceRequest.Total / 1000000);
-                    await ProcessPoint(points, customer.CustomerId, updateInvoiceRequest.InvoiceStatus);
-                }
-                else
-                {
-                    await ProcessPointByPerDiscount((int)updateInvoiceRequest.PerDiscount, customer.CustomerId, updateInvoiceRequest.InvoiceStatus);                    
-                }
-            }
+            //    //changes here
+            //    if (updateInvoiceRequest.PerDiscount == 0)
+            //    {
+            //        //1M vnd = 1 point
+            //        int points = (int)(updateInvoiceRequest.Total / 1000000);
+            //        await ProcessPoint(points, customer.CustomerId, updateInvoiceRequest.InvoiceStatus);
+            //    }
+            //    else
+            //    {
+            //        await ProcessPointByPerDiscount((int)updateInvoiceRequest.PerDiscount, customer.CustomerId, updateInvoiceRequest.InvoiceStatus);                    
+            //    }
+            //}
 
             await _unitOfWork.Invoices.UpdateInvoice(invoice);
 
@@ -397,6 +397,7 @@ namespace JewelrySalesSystem.BAL.Services
                                     invoiceDetails.Add(new InvoiceDetail
                                     {
                                         ProductId = item.ProductId,
+                                        Quantity = item.Quantity,
                                         //ProductPrice = existedProduct.ProductPrice
                                         ProductPrice = buyMaterialPrice.BuyPrice * item.Quantity * 375 / 100,
                                     });
@@ -411,6 +412,7 @@ namespace JewelrySalesSystem.BAL.Services
                                 {
 
                                     ProductId = item.ProductId,
+                                    Quantity = item.Quantity,
                                     //ProductPrice = existedProduct.ProductPrice,
                                     ProductPrice = (materialPrice.BuyPrice * materialInProduct.Weight) * item.Quantity * 375 / 100,
                                 });
@@ -424,6 +426,7 @@ namespace JewelrySalesSystem.BAL.Services
                                     invoiceDetails.Add(new InvoiceDetail
                                     {
                                         ProductId = item.ProductId,
+                                        Quantity = item.Quantity,
                                         ProductPrice = existedProduct.ProductPrice * item.Quantity * 70 / 100,
 
                                     });
