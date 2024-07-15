@@ -163,14 +163,15 @@ namespace JewelrySalesSystem.DAL.Repositories
             var existingInvoice = await _dbSet
                 .Include(i => i.InvoiceDetails)
                 .FirstOrDefaultAsync(i => i.InvoiceId == invoice.InvoiceId) ?? throw new Exception($"Invoice with id {invoice.InvoiceId} not found.");
-            existingInvoice.OrderDate = invoice.OrderDate;
-            existingInvoice.CustomerId = invoice.CustomerId;
-            existingInvoice.UserId = invoice.UserId;
+            //existingInvoice.OrderDate = invoice.OrderDate;
+            //existingInvoice.CustomerId = invoice.CustomerId;
+            //existingInvoice.UserId = invoice.UserId;
             existingInvoice.WarrantyId = invoice.WarrantyId;
             existingInvoice.InvoiceStatus = invoice.InvoiceStatus;
-            existingInvoice.PerDiscount = invoice.PerDiscount;
-            existingInvoice.IsActive = invoice.IsActive;
-            existingInvoice.InvoiceType = invoice.InvoiceType;
+            existingInvoice.Total = invoice.Total;
+            //existingInvoice.PerDiscount = invoice.PerDiscount;
+            //existingInvoice.IsActive = invoice.IsActive;
+            //existingInvoice.InvoiceType = invoice.InvoiceType;
 
 
             var detailsToRemove = existingInvoice.InvoiceDetails
@@ -190,6 +191,7 @@ namespace JewelrySalesSystem.DAL.Repositories
                 if (existingDetail != null)
                 {
                     existingDetail.ProductPrice = newDetail.ProductPrice;
+                    existingDetail.Quantity = newDetail.Quantity;
                 }
                 else
                 {
@@ -198,6 +200,7 @@ namespace JewelrySalesSystem.DAL.Repositories
                         ProductId = newDetail.ProductId,
                         ProductPrice = newDetail.ProductPrice,
                         InvoiceId = existingInvoice.InvoiceId,
+                        Quantity = newDetail.Quantity,
                     });
                 }
             }
@@ -215,7 +218,11 @@ namespace JewelrySalesSystem.DAL.Repositories
                 if (result.InvoiceStatus.Equals("Pending"))
                 {
                     result.InvoiceStatus = "Processing";
-                }              
+                }
+                else if (result.InvoiceStatus.Equals("Processing"))
+                {
+                    result.InvoiceStatus = "Delivered";
+                }
                 _dbSet.Update(result);
             }
         }

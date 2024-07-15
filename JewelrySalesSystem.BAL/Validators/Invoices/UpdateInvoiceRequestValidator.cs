@@ -26,13 +26,13 @@ namespace JewelrySalesSystem.BAL.Validators.Invoices
                 .MustAsync(async (invoiceId, cancelationToken) => await beValidInvoice(invoiceId, cancelationToken)).WithMessage("Invoice Id is not existed");
 
             //Validate CustomerName: Not Empty, is existed
-            RuleFor(i => i.CustomerName).NotEmpty().WithMessage("CustomerName is required")
-                .MustAsync(async (customerName, cancelationToken) => await beValidCustomer(customerName, cancelationToken)).WithMessage("Customer is not existed");
+            //RuleFor(i => i.CustomerName).NotEmpty().WithMessage("CustomerName is required")
+            //    .MustAsync(async (customerName, cancelationToken) => await beValidCustomer(customerName, cancelationToken)).WithMessage("Customer is not existed");
 
-            //Validate UserId: Not Empty, is integer, >0, is existed
-            RuleFor(i => i.UserId).NotEmpty().WithMessage("User Id is required")
-                .GreaterThan(0).WithMessage("User Id must greater than 0")
-                .MustAsync(async (userId, cancellationToken) => await beValidUser(userId, cancellationToken)).WithMessage("User Id is not existed");
+            ////Validate UserId: Not Empty, is integer, >0, is existed
+            //RuleFor(i => i.UserId).NotEmpty().WithMessage("User Id is required")
+            //    .GreaterThan(0).WithMessage("User Id must greater than 0")
+            //    .MustAsync(async (userId, cancellationToken) => await beValidUser(userId, cancellationToken)).WithMessage("User Id is not existed");
 
             //Validate WarrantyId: Not Empty, is integer, >0, is existed
             //RuleFor(i => i.WarrantyId).NotEmpty().WithMessage("Warranty Id is required")
