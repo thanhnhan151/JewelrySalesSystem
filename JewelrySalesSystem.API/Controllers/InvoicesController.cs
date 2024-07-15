@@ -450,7 +450,7 @@ namespace JewelrySalesSystem.API.Controllers
                 return BadRequest("Invalid month or year.");
             }
 
-            return File(excelFile, "text/csv", $"InvoiceListFor_{month}_{year}.xlsx");
+            return File(excelFile, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"InvoiceListFor_{month}_{year}.xlsx");
         }
         #endregion
 
