@@ -4,6 +4,7 @@ using JewelrySalesSystem.BAL.Models.Categories;
 using JewelrySalesSystem.BAL.Models.Clarities;
 using JewelrySalesSystem.BAL.Models.Colors;
 using JewelrySalesSystem.BAL.Models.Counters;
+using JewelrySalesSystem.BAL.Models.CounterTypes;
 using JewelrySalesSystem.BAL.Models.Customers;
 using JewelrySalesSystem.BAL.Models.Cuts;
 using JewelrySalesSystem.BAL.Models.Gems;
@@ -220,6 +221,10 @@ namespace JewelrySalesSystem.BAL.Mappings
 
             #region Counter
             CreateMap<Counter, GetCounterResponse>();
+            #endregion
+
+            #region Counter Type
+            CreateMap<CounterType, GetCounterTypeResponse>();
             #endregion
         }
     }

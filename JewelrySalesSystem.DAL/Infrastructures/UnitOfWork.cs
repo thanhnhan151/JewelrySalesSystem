@@ -51,6 +51,8 @@ namespace JewelrySalesSystem.DAL.Infrastructures
 
         public ICounterRepository Counters { get; set; }
 
+        public ICounterTypeRepository CounterTypes { get; set; }
+
         public UnitOfWork(
             JewelryDbContext context,
             ILoggerFactory loggerFactory)
@@ -98,6 +100,8 @@ namespace JewelrySalesSystem.DAL.Infrastructures
             Shapes = new ShapeRepository(_context, _logger);
 
             Counters = new CounterRepository(_context, _logger);
+
+            CounterTypes = new CounterTypeRepository(_context, _logger);
         }
 
         public async Task CompleteAsync() => await _context.SaveChangesAsync();

@@ -44,6 +44,8 @@ namespace JewelrySalesSystem.DAL.Infrastructures
 
         ICounterRepository Counters { get; }
 
+        ICounterTypeRepository CounterTypes { get; }
+
         Task CompleteAsync();
     }
 }
