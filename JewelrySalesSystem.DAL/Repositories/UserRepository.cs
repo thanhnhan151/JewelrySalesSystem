@@ -162,5 +162,19 @@ namespace JewelrySalesSystem.DAL.Repositories
                 _dbSet.Update(result);
             }
         }
+
+        public async Task<List<User>> GetUsersWithRoleSeller(int roleId)
+            => await _dbSet
+                     .Include(u => u.Role)
+                     .Include(u => u.Counter)
+                     .Where(u => u.RoleId == roleId && u.CounterId == null)
+                     .ToListAsync();
+
+        public async Task<List<User>> GetUsersWithRoleCashier(int roleId)
+            => await _dbSet
+                     .Include(u => u.Role)
+                     .Include(u => u.Counter)
+                     .Where(u => u.RoleId == roleId && u.CounterId == null)
+                     .ToListAsync();
     }
 }

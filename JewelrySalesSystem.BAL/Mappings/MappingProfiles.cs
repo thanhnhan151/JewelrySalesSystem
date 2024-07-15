@@ -220,7 +220,11 @@ namespace JewelrySalesSystem.BAL.Mappings
             #endregion
 
             #region Counter
-            CreateMap<Counter, GetCounterResponse>();
+            CreateMap<Counter, GetCounterResponse>()
+                .ForMember(c => c.UserName, c => c.MapFrom(c => c.User.FullName))
+                .ForMember(c => c.CounterType, c => c.MapFrom(c => c.CounterType.CounterTypeName));
+
+            CreateMap<PaginatedList<Counter>, PaginatedList<GetCounterResponse>>();
             #endregion
 
             #region Counter Type

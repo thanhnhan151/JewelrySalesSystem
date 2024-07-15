@@ -6,7 +6,6 @@ using JewelrySalesSystem.DAL.Common;
 using JewelrySalesSystem.DAL.Entities;
 using JewelrySalesSystem.DAL.Infrastructures;
 using OfficeOpenXml;
-using System.Text;
 
 namespace JewelrySalesSystem.BAL.Services
 {
@@ -138,6 +137,36 @@ namespace JewelrySalesSystem.BAL.Services
             var stream = new MemoryStream();
             package.SaveAs(stream);
             return stream.ToArray();
+        }
+
+        public async Task<List<GetUserResponse>> GetUsersWithRoleSeller(int roleId) 
+        { 
+            var result = _mapper.Map<List<GetUserResponse>>(await _unitOfWork.Users.GetUsersWithRoleSeller(roleId));
+
+            foreach (var item in result)
+            {
+                if (item.Counter == null)
+                {
+                    item.Counter = "Unassigned";
+                }
+            }
+
+            return result;
+        }
+
+        public async Task<List<GetUserResponse>> GetUsersWithRoleCashier(int roleId)
+        {
+            var result = _mapper.Map<List<GetUserResponse>>(await _unitOfWork.Users.GetUsersWithRoleCashier(roleId));
+
+            foreach (var item in result)
+            {
+                if (item.Counter == null)
+                {
+                    item.Counter = "Unassigned";
+                }
+            }
+
+            return result;
         }
     }
 }

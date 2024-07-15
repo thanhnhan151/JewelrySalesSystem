@@ -16,6 +16,10 @@ namespace JewelrySalesSystem.DAL.Interfaces
             , int page
             , int pageSize);
 
+        Task<List<User>> GetUsersWithRoleSeller(int roleId);
+
+        Task<List<User>> GetUsersWithRoleCashier(int roleId);
+
         Task<User?> GetByIdWithIncludeAsync(int id);
 
         Task DeleteAsync(int id);

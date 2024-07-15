@@ -11,11 +11,10 @@ namespace JewelrySalesSystem.DAL.Entities
         public string CounterName { get; set; } = string.Empty;
         public bool IsActive { get; set; } = true;
 
-        public int CounterTypeId { get; set; }
+        public int? CounterTypeId { get; set; }
         public virtual CounterType CounterType { get; set; } = null!;
 
-        public int? UserId { get; set; }
-        public virtual User User { get; set; } = null!;
+        public virtual User? User { get; set; }
 
         public virtual ICollection<Product> Products { get; set; } = [];
     }

@@ -79,7 +79,7 @@ namespace JewelrySalesSystem.DAL.Persistence
                 entity.HasOne(g => g.Gem).WithMany(o => o.ProductGems)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
-
+          
             base.OnModelCreating(modelBuilder);
         }
 

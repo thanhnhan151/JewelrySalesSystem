@@ -64,6 +64,72 @@ namespace JewelrySalesSystem.API.Controllers
         }
         #endregion
 
+        #region Get All Sellers
+        /// <summary>
+        /// Get all unassigned sellers in the system
+        /// </summary>
+        /// <param name="roleId">User role</param>
+        /// <returns>A list of all sellers</returns>
+        /// <response code="200">Return all sellers in the system</response>
+        /// <response code="400">If no sellers are in the system</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server</response>
+        [HttpGet("roles/seller")]
+        public async Task<IActionResult> GetAllSellersAsync(int roleId = 5)
+        {
+            try
+            {
+                var result = await _userService.GetUsersWithRoleSeller(roleId);
+
+                if (result is not null)
+                {
+                    return Ok(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return BadRequest();
+        }
+        #endregion
+
+        #region Get All Cashiers
+        /// <summary>
+        /// Get all unassigned cashiers in the system
+        /// </summary>
+        /// <param name="roleId">User role</param>
+        /// <returns>A list of all cashiers</returns>
+        /// <response code="200">Return all cashiers in the system</response>
+        /// <response code="400">If no cashiers are in the system</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server</response>
+        [HttpGet("roles/cashier")]
+        public async Task<IActionResult> GetAllCashiersAsync(int roleId = 4)
+        {
+            try
+            {
+                var result = await _userService.GetUsersWithRoleCashier(roleId);
+
+                if (result is not null)
+                {
+                    return Ok(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return BadRequest();
+        }
+        #endregion
+
         #region Add User
         /// <summary>
         /// Add an user in the system
@@ -223,40 +289,40 @@ namespace JewelrySalesSystem.API.Controllers
         }
         #endregion
 
-        #region Assign User to Counter
-        /// <summary>
-        /// Assign an user to a counter in the system
-        /// </summary>
-        /// <param name="userId">User Id</param>
-        /// <param name="counterId">Counter Id</param>
-        /// <returns>No content</returns>
-        /// <response code="204">No content</response>
-        /// <response code="400">User does not exist</response>
-        /// <response code="401">Unauthorized</response>
-        /// <response code="403">Forbidden</response>
-        /// <response code="404">Not Found</response>
-        /// <response code="500">Internal Server</response>
-        [HttpPut("{userId}/assign-to-counter")]
-        public async Task<IActionResult> AssignToCounter(int userId, int counterId)
-        {
-            try
-            {
-                await _userService.AssignUserToCounter(userId, counterId);
+        //#region Assign User to Counter
+        ///// <summary>
+        ///// Assign an user to a counter in the system
+        ///// </summary>
+        ///// <param name="userId">User Id</param>
+        ///// <param name="counterId">Counter Id</param>
+        ///// <returns>No content</returns>
+        ///// <response code="204">No content</response>
+        ///// <response code="400">User does not exist</response>
+        ///// <response code="401">Unauthorized</response>
+        ///// <response code="403">Forbidden</response>
+        ///// <response code="404">Not Found</response>
+        ///// <response code="500">Internal Server</response>
+        //[HttpPut("{userId}/assign-to-counter")]
+        //public async Task<IActionResult> AssignToCounter(int userId, int counterId)
+        //{
+        //    try
+        //    {
+        //        await _userService.AssignUserToCounter(userId, counterId);
 
-                return Ok(new
-                {
-                    Message = "Assign successfully."
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new
-                {
-                    ErrorMessage = ex.Message
-                });
-            }
-        }
-        #endregion
+        //        return Ok(new
+        //        {
+        //            Message = "Assign successfully."
+        //        });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(new
+        //        {
+        //            ErrorMessage = ex.Message
+        //        });
+        //    }
+        //}
+        //#endregion
 
         #region Revenue Of Each Employee.
         /// <summary>

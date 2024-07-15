@@ -198,7 +198,7 @@ namespace JewelrySalesSystem.API.Controllers
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server</response>
         [HttpGet("price")]
-        public async Task<IActionResult> GetGemPriceAsync([FromBody] GemPriceRequest gemPriceRequest)
+        public async Task<IActionResult> GetGemPriceAsync([FromQuery] GemPriceRequest gemPriceRequest)
         {
             try
             {

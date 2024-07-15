@@ -16,6 +16,10 @@ namespace JewelrySalesSystem.BAL.Interfaces
             , int page
             , int pageSize);
 
+        Task<List<GetUserResponse>> GetUsersWithRoleSeller(int roleId);
+
+        Task<List<GetUserResponse>> GetUsersWithRoleCashier(int roleId);
+
         Task<CreateUserRequest> AddAsync(CreateUserRequest createUserRequest);
 
         Task UpdateAsync(UpdateUserRequest updateUserRequest);
