@@ -12,16 +12,19 @@ namespace JewelrySalesSystem.API.Controllers
     {
         private readonly ILogger<MaterialsController> _logger;
         private readonly IMaterialService _materialService;
+        private readonly IProductService _productService;
         private readonly IMaterialPriceListService _materialPriceListService;
 
         public MaterialsController(
             ILogger<MaterialsController> logger,
             IMaterialService materialService,
+            IProductService productService,
             IMaterialPriceListService materialPriceListService)
         {
             _logger = logger;
             _materialService = materialService;
             _materialPriceListService = materialPriceListService;
+            _productService = productService;
         }
 
         #region Get All Materials
@@ -200,6 +203,9 @@ namespace JewelrySalesSystem.API.Controllers
                 //});
 
                 var result = await _materialPriceListService.AddAsync(prices);
+
+                await _productService.UpdateProductPriceAsync();
+
                 return Ok(prices);
             }
             catch (Exception ex)
