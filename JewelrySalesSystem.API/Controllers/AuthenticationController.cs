@@ -74,20 +74,20 @@ namespace JewelrySalesSystem.API.Controllers
         }
         #endregion
 
-        #region Reset Password
-        /// <summary>
-        /// Reset account password using email
-        /// </summary>    
-        /// <returns>User account</returns>
-        /// <response code="200">Return user account</response>
-        /// <response code="400">If the email does not exist</response>
-        /// <response code="500">Internal Server</response>
-        [HttpPost("reset-password")]
-        public async Task<IActionResult> ResetPasswordAsync(string email)
-        {
-            return Ok();
-        }
-        #endregion
+        //#region Reset Password
+        ///// <summary>
+        ///// Reset account password using email
+        ///// </summary>    
+        ///// <returns>User account</returns>
+        ///// <response code="200">Return user account</response>
+        ///// <response code="400">If the email does not exist</response>
+        ///// <response code="500">Internal Server</response>
+        //[HttpPost("reset-password")]
+        //public async Task<IActionResult> ResetPasswordAsync(string email)
+        //{
+        //    return Ok();
+        //}
+        //#endregion
 
         #region Generate Access Token
         private string GenerateAccessToken(User user)
