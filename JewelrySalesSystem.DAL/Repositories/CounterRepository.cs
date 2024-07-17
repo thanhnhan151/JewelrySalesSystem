@@ -50,5 +50,7 @@ namespace JewelrySalesSystem.DAL.Repositories
             //"dob" => user => user.DoB,
             _ => counter => counter.CounterId
         };
+
+        public async Task<Counter?> GetByIdWithIncludeAsync(int id) => await _dbSet.Include(c => c.User).FirstOrDefaultAsync(c => c.CounterId == id);
     }
 }

@@ -190,14 +190,42 @@ namespace JewelrySalesSystem.API.Controllers
             {
                 await _counterService.AssignStaffToCounterAsync(counterId, userId);
 
-                return Ok(new
-                {
-                    Message = "Assign successfully."
-                });
+                return Ok("Assign successfully.");
             }
             catch (Exception ex)
             {
                 return BadRequest(new
+                {
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+        #endregion
+
+        #region Unassign Counter
+        /// <summary>
+        /// Unassign a counter
+        /// </summary>
+        /// <param name="id">Id of the counter you want to change</param>
+        /// <returns>A product</returns>
+        /// <response code="200">Ok</response>
+        /// <response code="400">If the user is null</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server</response>
+        [HttpPut("{id}/unassign")]
+        public async Task<IActionResult> UnassignCounterAsync(int id)
+        {
+            try
+            {
+                await _counterService.UnassignCounterAsync(id);
+
+                return Ok("Update Successfully!");
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new
                 {
                     ErrorMessage = ex.Message
                 });

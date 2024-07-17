@@ -33,15 +33,41 @@ namespace JewelrySalesSystem.BAL.Services
 
         public async Task AssignStaffToCounterAsync(int counterId, int userId)
         {
-            var user = await _unitOfWork.Users.GetByIdWithIncludeAsync(userId) ?? throw new Exception($"User with {userId} does not exist"); ;
+            var user = await _unitOfWork.Users.GetEntityByIdAsync(userId) ?? throw new Exception($"User with {userId} does not exist");
 
-            var counter = await _unitOfWork.Counters.GetEntityByIdAsync(counterId) ?? throw new Exception($"Counter with {counterId} does not exist"); ;
+            var counter = await _unitOfWork.Counters.GetEntityByIdAsync(counterId) ?? throw new Exception($"Counter with {counterId} does not exist");
 
             counter.User = user;
 
             _unitOfWork.Counters.UpdateEntity(counter);
 
             await _unitOfWork.CompleteAsync();
+        }
+
+        public async Task UnassignCounterAsync(int id)
+        {
+            var counter = await _unitOfWork.Counters.GetByIdWithIncludeAsync(id);
+
+            if (counter != null)
+            {
+                if (counter.User != null)
+                {
+                    var user = await _unitOfWork.Users.GetEntityByIdAsync(counter.User.UserId);
+
+                    if (user != null)
+                    {
+                        user.CounterId = null;
+
+                        _unitOfWork.Users.UpdateEntity(user);
+
+                        await _unitOfWork.CompleteAsync();
+                    }
+                }
+            }
+            else
+            {
+                throw new Exception($"Counter with {id} does not exist");
+            }
         }
 
         public async Task ChangeStatusAsync(int id)

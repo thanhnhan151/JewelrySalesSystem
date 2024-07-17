@@ -58,8 +58,18 @@ namespace JewelrySalesSystem.API.Controllers
 
                 if (result != null)
                 {
-                    var accessToken = GenerateAccessToken(result);
-                    return Ok(accessToken);
+                    if (result.IsActive)
+                    {
+                        var accessToken = GenerateAccessToken(result);
+                        return Ok(accessToken);
+                    }
+                    else
+                    {
+                        return BadRequest(new
+                        {
+                            ErrorMessage = "This account has been deactivated. Please contact Admin for further information!"
+                        });
+                    }
                 }
             }
             catch (Exception ex)

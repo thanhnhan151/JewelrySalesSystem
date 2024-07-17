@@ -13,5 +13,7 @@ namespace JewelrySalesSystem.DAL.Interfaces
             , bool isActive
             , int page
             , int pageSize);
+
+        Task<Counter?> GetByIdWithIncludeAsync(int id);
     }
 }
