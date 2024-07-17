@@ -246,7 +246,7 @@ namespace JewelrySalesSystem.BAL.Services
             {
                 InvoiceId = updateInvoiceRequest.InvoiceId,
                 InvoiceStatus = updateInvoiceRequest.InvoiceStatus,
-                //OrderDate = DateTime.Now,
+                OrderDate = DateTime.Now,
                 //UserId = updateInvoiceRequest.UserId,
                 WarrantyId = 1,
                 InvoiceDetails = invoiceDetails,
@@ -372,7 +372,6 @@ namespace JewelrySalesSystem.BAL.Services
             var invoiceDetails = new List<InvoiceDetail>();
 
             float total = 0;
-
             //int countProductHasMaterial = 0;
 
             if (createPurchaseInvoiceRequest.InvoiceDetails.Count > 0)
@@ -400,8 +399,9 @@ namespace JewelrySalesSystem.BAL.Services
                                         ProductId = item.ProductId,
                                         Quantity = item.Quantity,
                                         //ProductPrice = existedProduct.ProductPrice
-                                        ProductPrice = buyMaterialPrice.BuyPrice * item.Quantity * 375 / 100,
-                                    });
+                                        //ProductPrice = buyMaterialPrice.BuyPrice * item.Quantity * 375 / 100,
+                                        ProductPrice = buyMaterialPrice.BuyPrice * item.Quantity,
+                                    });;
                                     //countProductHasMaterial++;
                                 }
 
@@ -415,9 +415,10 @@ namespace JewelrySalesSystem.BAL.Services
                                     ProductId = item.ProductId,
                                     Quantity = item.Quantity,
                                     //ProductPrice = existedProduct.ProductPrice,
-                                    ProductPrice = (materialPrice.BuyPrice * materialInProduct.Weight) * item.Quantity * 375 / 100,
-                                });
+                                    ProductPrice = (float)(materialPrice.BuyPrice * materialInProduct.Weight * item.Quantity / 375),
+                                    
 
+                                });
                                 break;
                             default:
                                 var gem = await _unitOfWork.Gems.GetByNameWithIncludeAsync(existedProduct.ProductName);
