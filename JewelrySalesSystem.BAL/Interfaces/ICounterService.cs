@@ -23,5 +23,7 @@ namespace JewelrySalesSystem.BAL.Interfaces
         Task AssignStaffToCounterAsync(int counterId, int userId);
 
         Task UnassignCounterAsync(int id);
+
+        Task<List<GetAllCounterName>> GetAllCounterIdAndNamesAsync();
     }
 }
