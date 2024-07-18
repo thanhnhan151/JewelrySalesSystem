@@ -316,7 +316,7 @@ namespace JewelrySalesSystem.BAL.Services
                     {
                         var materialPrice = temp.MaterialPrices.SingleOrDefault();
 
-                        if (materialPrice != null) productPrice += ((item.Weight / 100) * materialPrice.SellPrice) * 375 / 100;
+                        if (materialPrice != null) productPrice += (float)((item.Weight / 100) * materialPrice.SellPrice) * 100 / 375;
                     }
                 }
             }
@@ -375,7 +375,7 @@ namespace JewelrySalesSystem.BAL.Services
                             {
                                 var materialPrice = material.MaterialPrices.SingleOrDefault();
 
-                                if (materialPrice != null) productPrice += ((temp.Weight / 100) * materialPrice.SellPrice) * 375 / 100;
+                                if (materialPrice != null) productPrice += (float)((temp.Weight / 100) * materialPrice.SellPrice) * 100 / 375;
                             }
                         }
                     }

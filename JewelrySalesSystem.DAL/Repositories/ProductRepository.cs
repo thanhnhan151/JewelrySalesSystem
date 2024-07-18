@@ -170,7 +170,9 @@ namespace JewelrySalesSystem.DAL.Repositories
                 checkExistProduct.CategoryId = product.CategoryId;
                 checkExistProduct.ProductTypeId = product.ProductTypeId;
                 checkExistProduct.GenderId = product.GenderId;
-                checkExistProduct.Counter = product.Counter;
+
+                checkExistProduct.CounterId = product.CounterId;
+                checkExistProduct.Quantity = product.Quantity;
 
 
                 var existProductGems = await _context.ProductGems.Where(pe => pe.ProductId == product.ProductId).ToListAsync();
@@ -226,11 +228,13 @@ namespace JewelrySalesSystem.DAL.Repositories
         //changes here
         public async Task<Product> CheckDuplicate(string productName) => await _dbSet.FirstOrDefaultAsync(p => p.ProductName == productName);
 
-        public async Task<bool> CategoryExit(int categoryId) => await _dbSet.AnyAsync(p => p.CategoryId == categoryId);
+        public async Task<bool> CategoryExist(int categoryId) => await _dbSet.AnyAsync(p => p.CategoryId == categoryId);
 
-        public async Task<bool> ProductTypeExit(int productTypeId) => await _dbSet.AnyAsync(p => p.ProductTypeId == productTypeId);
+        public async Task<bool> ProductTypeExist(int productTypeId) => await _dbSet.AnyAsync(p => p.ProductTypeId == productTypeId);
 
-        public async Task<bool> GenderExit(int genderId) => await _dbSet.AnyAsync(p => p.GenderId == genderId);
+        public async Task<bool> GenderExist(int genderId) => await _dbSet.AnyAsync(p => p.GenderId == genderId);
+
+        public async Task<bool> CounterExist(int counterId) => await _dbSet.AnyAsync(p => p.CounterId == counterId);
 
         public async Task<float> GetWeightAsync(int productId, int materialId) => await _context.ProductMaterials.Where(p => p.ProductId == productId
                                             && p.MaterialId == materialId)
