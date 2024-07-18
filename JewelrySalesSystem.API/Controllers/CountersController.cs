@@ -239,7 +239,11 @@ namespace JewelrySalesSystem.API.Controllers
         }
         #endregion
 
-        [HttpGet("id-names")]
+        #region
+        /// <summary>
+        /// Get all counters in the system including counter id and name
+        /// </summary>
+        [HttpGet("id-name")]
         public async Task<ActionResult<List<GetAllCounterName>>> GetAllCounterIdAndNames()
         {
             try
@@ -257,5 +261,7 @@ namespace JewelrySalesSystem.API.Controllers
 
             return NotFound();
         }
+
+        #endregion
     }
 }
