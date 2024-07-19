@@ -121,5 +121,15 @@ namespace JewelrySalesSystem.BAL.Services
                 await _unitOfWork.CompleteAsync();
             }
         }
+
+        public async Task<List<GetAllCounterName>> GetAllCounterIdAndNamesAsync()
+        {
+            var counters = await _unitOfWork.Counters.GetAllEntitiesAsync();
+            return counters.Select(c => new GetAllCounterName
+            {
+                CounterId = c.CounterId,
+                CounterName = c.CounterName
+            }).ToList();
+        }
     }
 }

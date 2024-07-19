@@ -1,7 +1,13 @@
 ﻿using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Models.Counters;
+using JewelrySalesSystem.DAL.Entities;
+using MailKit.Search;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using PdfSharpCore;
+using System.Drawing.Printing;
+using ZXing;
 
 namespace JewelrySalesSystem.API.Controllers
 {
@@ -231,6 +237,31 @@ namespace JewelrySalesSystem.API.Controllers
                 });
             }
         }
+        #endregion
+
+        #region
+        /// <summary>
+        /// Get all counters in the system including counter id and name
+        /// </summary>
+        [HttpGet("id-name")]
+        public async Task<ActionResult<List<GetAllCounterName>>> GetAllCounterIdAndNames()
+        {
+            try
+            {
+                var result = await _counterService.GetAllCounterIdAndNamesAsync();
+                if (result is not null)
+                {
+                    return Ok(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return NotFound();
+        }
+
         #endregion
     }
 }
