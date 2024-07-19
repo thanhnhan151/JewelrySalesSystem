@@ -28,12 +28,28 @@ namespace JewelrySalesSystem.BAL.Validators.Product
 
             RuleFor(p => p.FeaturedImage)
                 .NotEmpty().WithMessage("Featured Image is required!");
+
+            RuleFor(p => p.CounterId)
+                .NotEmpty().WithMessage("Counter ID is required")
+                .MustAsync(async (counterId, cancellation) => await AlreadyExistId(counterId, "CounterId"))
+                .WithMessage("Counter ID does not exist!");
         }
 
         private async Task<bool> CheckDuplicateAsync(string productName)
         {
             var existing = await _unitOfWork.Products.CheckDuplicate(productName);
             return existing != null;
+        }
+
+        private async Task<bool> AlreadyExistId(int id, string option)
+        {
+            switch (option.ToLower())
+            {
+                case "counterid":
+                    return await _unitOfWork.Products.CounterExist(id);
+                default:
+                    return false;
+            }
         }
 
     }

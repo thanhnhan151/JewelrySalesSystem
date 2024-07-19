@@ -44,10 +44,11 @@ namespace JewelrySalesSystem.DAL.Interfaces
         //changes here
         Task<Product> CheckDuplicate(string productName);
 
-        Task<bool> CategoryExit(int categoryId);
+        Task<bool> CategoryExist(int categoryId);
 
-        Task<bool> ProductTypeExit(int productTypeId);
+        Task<bool> CounterExist(int counterId);
+        Task<bool> ProductTypeExist(int productTypeId);
 
-        Task<bool> GenderExit(int genderId);
+        Task<bool> GenderExist(int genderId);
     }
 }
