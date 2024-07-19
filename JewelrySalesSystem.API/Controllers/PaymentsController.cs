@@ -26,23 +26,32 @@ namespace JewelrySalesSystem.API.Controllers
         [HttpGet("vnpay-return")]
         public async Task<IActionResult> PaymentCallBack()
         {
-            var response = await _vnPayService.ExecutePayment(Request.Query);
-
-            if (response != null)
+            try
             {
-                if (response.VnPayResponseCode == "00")
+                var response = await _vnPayService.ExecutePayment(Request.Query);
+
+                if (response != null)
                 {
-                    return Redirect("http://localhost:5173/#/payment/success");
-                }
-                else
-                {
-                    return BadRequest(new
+                    if (response.VnPayResponseCode == "00")
                     {
-                        ErrorMessage = response.VnPayResponseCode
-                    });
+                        return Redirect("http://localhost:5173/#/payment/success");
+                    }
+                    else
+                    {
+                        //return BadRequest(new
+                        //{
+                        //    ErrorMessage = response.VnPayResponseCode
+                        //});
+                        return Redirect("http://localhost:5173/#/payment/fail");
+                    }
                 }
+
+                return NoContent();
+            } catch (Exception)
+            {
+                return Redirect("http://localhost:5173/#/payment/fail");
             }
-            return NoContent();
+            
         }
     }
 }
