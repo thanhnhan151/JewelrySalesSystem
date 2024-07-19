@@ -88,6 +88,7 @@ namespace JewelrySalesSystem.BAL.Services
             var vnp_SecureHash = collections.FirstOrDefault(p => p.Key == "vnp_SecureHash").Value;
             var vnp_ResponseCode = vnPayLibrary.GetResponseData("vnp_ResponseCode");
             var vnp_OrderInfo = vnPayLibrary.GetResponseData("vnp_OrderInfo");
+            var vnp_Amount = Convert.ToInt64(vnPayLibrary.GetResponseData("vnp_Amount"));
 
             if (vnp_ResponseCode.Equals("00"))
             {
@@ -120,7 +121,8 @@ namespace JewelrySalesSystem.BAL.Services
                 OrderId = vnp_OrderId.ToString(),
                 TransactionId = vnp_TransactionId.ToString(),
                 Token = vnp_SecureHash,
-                VnPayResponseCode = vnp_ResponseCode
+                VnPayResponseCode = vnp_ResponseCode,
+                Amount = vnp_Amount
             };
         }
     }
