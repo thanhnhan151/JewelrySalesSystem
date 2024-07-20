@@ -227,15 +227,32 @@ namespace JewelrySalesSystem.DAL.Repositories
                 if (gem.IsActive)
                 {
                     gem.IsActive = false;
-                } else
+                }
+                else
                 {
                     gem.IsActive = true;
-                }               
+                }
+
+                var product = await _context.Products.Where(p => p.ProductName.Equals(gem.GemName)).FirstOrDefaultAsync();
+
+                if (product != null)
+                {
+                    if (product.IsActive)
+                    {
+                        product.IsActive = false;
+                    }
+                    else
+                    {
+                        product.IsActive = true;
+                    }
+                    _context.Products.Update(product);
+                }
                 _dbSet.Update(gem);
-            } else
+            }
+            else
             {
                 throw new Exception($"Gem with {id} does not exist");
-            }         
+            }
         }
     }
 }

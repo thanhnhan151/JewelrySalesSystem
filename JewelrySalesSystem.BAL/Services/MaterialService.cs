@@ -45,7 +45,7 @@ namespace JewelrySalesSystem.BAL.Services
         public async Task UpdateAsync(UpdateMaterialRequest updateMaterialRequest)
         {
             var material = await _unitOfWork.Materials.GetEntityByIdAsync(updateMaterialRequest.MaterialId);
-            
+
 
             if (material != null)
             {
@@ -56,8 +56,8 @@ namespace JewelrySalesSystem.BAL.Services
                     product.ProductName = updateMaterialRequest.MaterialName;
                     _unitOfWork.Products.UpdateEntity(product);
                 }
-                
-                material.MaterialName = updateMaterialRequest.MaterialName;              
+
+                material.MaterialName = updateMaterialRequest.MaterialName;
                 _unitOfWork.Materials.UpdateEntity(material);
                 await _unitOfWork.CompleteAsync();
             }
@@ -124,6 +124,23 @@ namespace JewelrySalesSystem.BAL.Services
                 {
                     result.IsActive = true;
                 }
+
+                var product = await _unitOfWork.Products.GetByNameAsync(result.MaterialName);
+
+                if (product != null)
+                {
+                    if (product.IsActive)
+                    {
+                        product.IsActive = false;
+                    }
+                    else
+                    {
+                        product.IsActive = true;
+                    }
+
+                    _unitOfWork.Products.UpdateEntity(product);
+                }
+
                 _unitOfWork.Materials.UpdateEntity(result);
                 await _unitOfWork.CompleteAsync();
             }
