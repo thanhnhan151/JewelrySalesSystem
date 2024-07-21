@@ -229,6 +229,10 @@ namespace JewelrySalesSystem.DAL.Repositories
                         }
                     }
                 }
+                else if (result.InvoiceStatus.Equals("Processing"))
+                {
+                    result.InvoiceStatus = "Delivered";
+                }
                 _dbSet.Update(result);
             }
         }
@@ -239,17 +243,22 @@ namespace JewelrySalesSystem.DAL.Repositories
 
             if (result != null)
             {
-                result.InvoiceStatus = "Cancelled";
-                var invoiceDetails = await _context.InvoiceDetails.Where(id => id.InvoiceId == result.InvoiceId).ToListAsync();
-                foreach (var detail in invoiceDetails)
+                if (result.InvoiceStatus.Equals("Processing"))
                 {
-                    var product = await _context.Products.FindAsync(detail.ProductId);
-                    if (product != null)
+                    var invoiceDetails = await _context.InvoiceDetails.Where(id => id.InvoiceId == result.InvoiceId).ToListAsync();
+                    foreach (var detail in invoiceDetails)
                     {
-                        product.Quantity += detail.Quantity;
-                        _context.Products.Update(product);
+                        var product = await _context.Products.FindAsync(detail.ProductId);
+                        if (product != null)
+                        {
+                            product.Quantity += detail.Quantity;
+                            _context.Products.Update(product);
+                        }
                     }
                 }
+
+                result.InvoiceStatus = "Cancelled";
+
                 _dbSet.Update(result);
             }
         }
