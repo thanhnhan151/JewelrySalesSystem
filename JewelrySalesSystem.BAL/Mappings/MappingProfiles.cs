@@ -192,8 +192,11 @@ namespace JewelrySalesSystem.BAL.Mappings
             #region Customer
             CreateMap<PaginatedList<Customer>, PaginatedList<GetCustomerResponse>>();
 
-            CreateMap<Customer, GetCustomerResponse>();
-            CreateMap<UpdateCustomerRequest, Customer>().ReverseMap();
+            CreateMap<Customer, GetCustomerResponse>()
+                .ForMember(c => c.CustomerName, c => c.MapFrom(c => c.FullName));
+
+            CreateMap<UpdateCustomerRequest, Customer>()
+                .ForMember(c => c.FullName, c => c.MapFrom(c => c.CustomerName));
 
             #endregion
 
