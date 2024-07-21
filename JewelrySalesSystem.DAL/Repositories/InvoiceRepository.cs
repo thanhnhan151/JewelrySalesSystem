@@ -240,6 +240,16 @@ namespace JewelrySalesSystem.DAL.Repositories
             if (result != null)
             {
                 result.InvoiceStatus = "Cancelled";
+                var invoiceDetails = await _context.InvoiceDetails.Where(id => id.InvoiceId == result.InvoiceId).ToListAsync();
+                foreach (var detail in invoiceDetails)
+                {
+                    var product = await _context.Products.FindAsync(detail.ProductId);
+                    if (product != null)
+                    {
+                        product.Quantity += detail.Quantity;
+                        _context.Products.Update(product);
+                    }
+                }
                 _dbSet.Update(result);
             }
         }

@@ -206,7 +206,7 @@ namespace JewelrySalesSystem.BAL.Services
 
                     if (existedProduct != null)
                     {
-                        switch (existedProduct.ProductTypeId)   
+                        switch (existedProduct.ProductTypeId)  
                         {
                             case 2:
                                 var material = await _unitOfWork.Materials.GetByNameWithIncludeAsync(existedProduct.ProductName);
