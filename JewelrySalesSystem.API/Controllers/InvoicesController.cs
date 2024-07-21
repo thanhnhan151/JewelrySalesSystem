@@ -259,10 +259,7 @@ namespace JewelrySalesSystem.API.Controllers
         ///     {
         ///       "invoiceId": 1,
         ///       "invoiceStatus": "Pending",
-        ///       "customerName": "Tran Thi A",
-        ///       "userId": 1,
         ///       "total": 15000000,
-        ///       "perDiscount": 10,
         ///       "invoiceDetails": [
         ///         {
         ///           "productId": 4,
