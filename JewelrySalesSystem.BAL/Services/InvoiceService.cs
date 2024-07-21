@@ -265,6 +265,10 @@ namespace JewelrySalesSystem.BAL.Services
                 else
                 {
                     invoice.TotalWithDiscount = updateInvoiceRequest.Total;
+                    //changes here
+                    var customer = await _unitOfWork.Customers.GetCustomerByNameAsync(invoice.Customer.FullName);
+                    int points = (int)(updateInvoiceRequest.Total / 1000000);
+                    await ProcessPoint(points, customer.CustomerId, updateInvoiceRequest.InvoiceStatus);
                 }
 
                 await _unitOfWork.Invoices.UpdateInvoice(invoice);
