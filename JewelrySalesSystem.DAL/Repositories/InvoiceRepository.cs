@@ -218,10 +218,16 @@ namespace JewelrySalesSystem.DAL.Repositories
                 if (result.InvoiceStatus.Equals("Pending"))
                 {
                     result.InvoiceStatus = "Processing";
-                }
-                else if (result.InvoiceStatus.Equals("Processing"))
-                {
-                    result.InvoiceStatus = "Delivered";
+                    var invoiceDetails = await _context.InvoiceDetails.Where(id => id.InvoiceId == result.InvoiceId).ToListAsync();
+                    foreach (var detail in invoiceDetails)
+                    {
+                        var product = await _context.Products.FindAsync(detail.ProductId);
+                        if (product != null)
+                        {
+                            product.Quantity -= detail.Quantity;
+                            _context.Products.Update(product);
+                        }
+                    }
                 }
                 _dbSet.Update(result);
             }
