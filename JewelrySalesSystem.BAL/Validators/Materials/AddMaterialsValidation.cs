@@ -14,7 +14,7 @@ namespace JewelrySalesSystem.BAL.Validators.Materials
 
             RuleFor(m => m.MaterialName)
                 .NotEmpty().WithMessage("Materials name is required!")
-                .Matches(@"^[a-zA-Z0-9]+$").WithMessage("Name cannot contain special characters!")
+                //.Matches(@"^[a-zA-Z0-9]+$").WithMessage("Name cannot contain special characters!")
                 .MustAsync(async (materialName, cancellation) => !await CheckDuplicateAsync(materialName))
                 .WithMessage("Materials name already exit!");
 

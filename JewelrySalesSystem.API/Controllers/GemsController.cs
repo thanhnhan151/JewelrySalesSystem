@@ -57,7 +57,10 @@ namespace JewelrySalesSystem.API.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return BadRequest(new
+                {
+                    ErrorMessage = ex.Message
+                });
             }
 
             return BadRequest();
@@ -102,7 +105,10 @@ namespace JewelrySalesSystem.API.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return BadRequest(new
+                {
+                    ErrorMessage = ex.Message
+                });
             }
         }
         #endregion
@@ -133,7 +139,10 @@ namespace JewelrySalesSystem.API.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return BadRequest(new
+                {
+                    ErrorMessage = ex.Message
+                });
             }
 
             return NotFound(new
@@ -181,7 +190,10 @@ namespace JewelrySalesSystem.API.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return BadRequest(new
+                {
+                    ErrorMessage = ex.Message
+                });
             }
         }
         #endregion
@@ -211,7 +223,10 @@ namespace JewelrySalesSystem.API.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return BadRequest(new
+                {
+                    ErrorMessage = ex.Message
+                });
             }
 
             return NotFound(new

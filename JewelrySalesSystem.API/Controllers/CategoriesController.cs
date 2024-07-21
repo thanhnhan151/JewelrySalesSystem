@@ -157,11 +157,14 @@ namespace JewelrySalesSystem.API.Controllers
 
                 await _categoryService.UpdateAsync(updateCategoryRequest);
 
-                return NoContent();
+                return Ok("Added Succesfully!");
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return BadRequest(new
+                {
+                    ErrorMessage = ex.Message
+                });
             }
         }
         #endregion
@@ -196,7 +199,10 @@ namespace JewelrySalesSystem.API.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return BadRequest(new
+                {
+                    ErrorMessage = ex.Message
+                });
             }
         }
         #endregion

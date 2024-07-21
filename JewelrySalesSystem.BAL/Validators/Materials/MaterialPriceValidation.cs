@@ -3,7 +3,7 @@ using JewelrySalesSystem.BAL.Models.Materials;
 
 namespace JewelrySalesSystem.BAL.Validators.Materials
 {
-    public class MaterialPriceValidation : AbstractValidator<MaterialPrice>
+    public class MaterialPriceValidation : AbstractValidator<CreateMaterialPrice>
     {
         public MaterialPriceValidation()
         {

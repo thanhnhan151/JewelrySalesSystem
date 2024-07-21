@@ -111,10 +111,10 @@ namespace JewelrySalesSystem.API.Controllers
         /// Sample request:
         /// 
         ///     {
-        ///       "materialName": "Vàng 16K",
+        ///       "materialName": "Gold SJC",
         ///       "materialPrice": {
-        ///          "buyPrice": 11,
-        ///          "sellPrice": 11
+        ///          "buyPrice": 7600000,
+        ///          "sellPrice": 7800000
         ///        }            
         ///     }
         ///         
@@ -137,7 +137,10 @@ namespace JewelrySalesSystem.API.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return BadRequest(new
+                {
+                    ErrorMessage = ex.Message
+                });
             }
         }
         #endregion
@@ -210,7 +213,10 @@ namespace JewelrySalesSystem.API.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return BadRequest(new
+                {
+                    ErrorMessage = ex.Message
+                });
             }
         }
         #endregion
@@ -299,7 +305,10 @@ namespace JewelrySalesSystem.API.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return BadRequest(new
+                {
+                    ErrorMessage = ex.Message
+                });
             }
         }
         #endregion

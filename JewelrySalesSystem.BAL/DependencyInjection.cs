@@ -3,7 +3,6 @@ using JewelrySalesSystem.BAL.Interfaces;
 using JewelrySalesSystem.BAL.Mappings;
 using JewelrySalesSystem.BAL.Models.Categories;
 using JewelrySalesSystem.BAL.Models.Gems;
-using JewelrySalesSystem.BAL.Models.MaterialPriceList;
 using JewelrySalesSystem.BAL.Models.Materials;
 using JewelrySalesSystem.BAL.Models.Products;
 using JewelrySalesSystem.BAL.Models.ProductTypes;
@@ -17,8 +16,6 @@ using JewelrySalesSystem.BAL.Validators.Product;
 using JewelrySalesSystem.BAL.Validators.ProductType;
 using JewelrySalesSystem.BAL.Validators.Role;
 using JewelrySalesSystem.BAL.Validators.User;
-using JewelrySalesSystem.DAL.Interfaces;
-using JewelrySalesSystem.DAL.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JewelrySalesSystem.BAL
@@ -93,7 +90,7 @@ namespace JewelrySalesSystem.BAL
             //changes here
             services.AddScoped<IValidator<CreateMaterialRequest>, AddMaterialsValidation>();
 
-            services.AddScoped<IValidator<MaterialPrice>, MaterialPriceValidation>();
+            services.AddScoped<IValidator<CreateMaterialPrice>, MaterialPriceValidation>();
 
             services.AddScoped<IValidator<CreateProductRequest>, AddProductValidation>();
 

@@ -53,7 +53,10 @@ namespace JewelrySalesSystem.API.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return BadRequest(new
+                {
+                    ErrorMessage = ex.Message
+                });
             }
         }
         #endregion

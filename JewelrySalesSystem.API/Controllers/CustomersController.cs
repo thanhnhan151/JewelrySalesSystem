@@ -151,7 +151,6 @@ namespace JewelrySalesSystem.API.Controllers
         }
         #endregion
 
-
         #region Update Customer
         /// <summary>
         /// Add a customer in the system
