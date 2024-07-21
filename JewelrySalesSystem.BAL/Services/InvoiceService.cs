@@ -95,7 +95,7 @@ namespace JewelrySalesSystem.BAL.Services
 
                                 break;
                         }
-                        existedProduct.Quantity -= item.Quantity;
+                        //existedProduct.Quantity -= item.Quantity;
                         _unitOfWork.Products.UpdateEntity(existedProduct);
                     }
                 }
@@ -198,7 +198,7 @@ namespace JewelrySalesSystem.BAL.Services
 
                     if (existedProduct != null)
                     {
-                        switch (existedProduct.ProductTypeId)
+                        switch (existedProduct.ProductTypeId)   
                         {
                             case 2:
                                 var material = await _unitOfWork.Materials.GetByNameWithIncludeAsync(existedProduct.ProductName);

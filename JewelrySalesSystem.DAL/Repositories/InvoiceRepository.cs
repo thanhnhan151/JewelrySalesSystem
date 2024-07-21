@@ -169,7 +169,7 @@ namespace JewelrySalesSystem.DAL.Repositories
             existingInvoice.WarrantyId = invoice.WarrantyId;
             existingInvoice.InvoiceStatus = invoice.InvoiceStatus;
             existingInvoice.Total = invoice.Total;
-            existingInvoice.TotalWithDiscount = invoice.Total * (100 - existingInvoice.PerDiscount);
+            existingInvoice.TotalWithDiscount = invoice.Total * (100 - existingInvoice.PerDiscount) / 100;
             //existingInvoice.PerDiscount = invoice.PerDiscount;
             //existingInvoice.IsActive = invoice.IsActive;
             //existingInvoice.InvoiceType = invoice.InvoiceType;
@@ -219,6 +219,16 @@ namespace JewelrySalesSystem.DAL.Repositories
                 if (result.InvoiceStatus.Equals("Pending"))
                 {
                     result.InvoiceStatus = "Processing";
+                    var invoiceDetails = await _context.InvoiceDetails.Where(id => id.InvoiceId == result.InvoiceId).ToListAsync();
+                    foreach (var detail in invoiceDetails)
+                    {
+                        var product = await _context.Products.FindAsync(detail.ProductId);
+                        if (product != null)
+                        {
+                            product.Quantity -= detail.Quantity;
+                            _context.Products.Update(product);
+                        }
+                    }
                 }
                 else if (result.InvoiceStatus.Equals("Processing"))
                 {
