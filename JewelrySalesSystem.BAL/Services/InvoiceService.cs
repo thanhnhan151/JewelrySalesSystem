@@ -21,14 +21,14 @@ namespace JewelrySalesSystem.BAL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        
+
         public InvoiceService(
             IUnitOfWork unitOfWork
             , IMapper mapper
             )
         {
             _mapper = mapper;
-            _unitOfWork = unitOfWork;  
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<PaginatedList<GetInvoiceResponse>> PaginationAsync(
@@ -109,9 +109,17 @@ namespace JewelrySalesSystem.BAL.Services
                 Total = createInvoiceRequest.Total,
                 WarrantyId = 1,
                 PerDiscount = createInvoiceRequest.PerDiscount,
-                TotalWithDiscount = createInvoiceRequest.Total - (createInvoiceRequest.Total * createInvoiceRequest.PerDiscount) / 100,
                 InvoiceDetails = invoiceDetails
             };
+
+            if (invoice.PerDiscount > 0)
+            {
+                invoice.TotalWithDiscount = createInvoiceRequest.Total - (createInvoiceRequest.Total * createInvoiceRequest.PerDiscount / 100);
+            }
+            else
+            {
+                invoice.TotalWithDiscount = invoice.Total;
+            }
 
             var customer = await _unitOfWork.Customers.GetCustomerByNameAsync(createInvoiceRequest.CustomerName);
 
@@ -242,18 +250,39 @@ namespace JewelrySalesSystem.BAL.Services
                 }
             }
 
-            var invoice = new Invoice
+            var invoice = await _unitOfWork.Invoices.GetEntityByIdAsync(updateInvoiceRequest.InvoiceId);
+
+            if (invoice != null)
             {
-                InvoiceId = updateInvoiceRequest.InvoiceId,
-                InvoiceStatus = updateInvoiceRequest.InvoiceStatus,
-                OrderDate = DateTime.Now,
-                //UserId = updateInvoiceRequest.UserId,
-                WarrantyId = 1,
-                InvoiceDetails = invoiceDetails,
-                Total = updateInvoiceRequest.Total,
-                //PerDiscount = updateInvoiceRequest.PerDiscount,
-                //TotalWithDiscount = updateInvoiceRequest.Total - (updateInvoiceRequest.Total * updateInvoiceRequest.PerDiscount) / 100
-            };
+                invoice.InvoiceStatus = updateInvoiceRequest.InvoiceStatus;
+                invoice.InvoiceDetails = invoiceDetails;
+                invoice.Total = updateInvoiceRequest.Total;
+
+                if (invoice.PerDiscount > 0)
+                {
+                    invoice.TotalWithDiscount = updateInvoiceRequest.Total - (updateInvoiceRequest.Total * invoice.PerDiscount / 100);
+                }
+                else
+                {
+                    invoice.TotalWithDiscount = updateInvoiceRequest.Total;
+                }
+
+                await _unitOfWork.Invoices.UpdateInvoice(invoice);
+                await _unitOfWork.CompleteAsync();
+            }
+
+            //var invoice = new Invoice
+            //{
+            //    InvoiceId = updateInvoiceRequest.InvoiceId,
+            //    InvoiceStatus = updateInvoiceRequest.InvoiceStatus,
+            //    OrderDate = DateTime.Now,
+            //    //UserId = updateInvoiceRequest.UserId,
+            //    WarrantyId = 1,
+            //    InvoiceDetails = invoiceDetails,
+            //    Total = updateInvoiceRequest.Total,
+            //    PerDiscount = 0,
+            //    TotalWithDiscount = updateInvoiceRequest.Total
+            //};
 
             //var customer = await _unitOfWork.Customers.GetCustomerByNameAsync(updateInvoiceRequest.CustomerName);
 
@@ -273,10 +302,6 @@ namespace JewelrySalesSystem.BAL.Services
             //        await ProcessPointByPerDiscount((int)updateInvoiceRequest.PerDiscount, customer.CustomerId, updateInvoiceRequest.InvoiceStatus);                    
             //    }
             //}
-
-            await _unitOfWork.Invoices.UpdateInvoice(invoice);
-
-            await _unitOfWork.CompleteAsync();
 
             return updateInvoiceRequest;
         }
@@ -401,7 +426,7 @@ namespace JewelrySalesSystem.BAL.Services
                                         //ProductPrice = existedProduct.ProductPrice
                                         //ProductPrice = buyMaterialPrice.BuyPrice * item.Quantity * 375 / 100,
                                         ProductPrice = buyMaterialPrice.BuyPrice * item.Quantity,
-                                    });;
+                                    }); ;
                                     //countProductHasMaterial++;
                                 }
 
@@ -416,7 +441,7 @@ namespace JewelrySalesSystem.BAL.Services
                                     Quantity = item.Quantity,
                                     //ProductPrice = existedProduct.ProductPrice,
                                     ProductPrice = (float)(materialPrice.BuyPrice * materialInProduct.Weight * item.Quantity / 375),
-                                    
+
 
                                 });
                                 break;
@@ -451,7 +476,7 @@ namespace JewelrySalesSystem.BAL.Services
                 //}
             }
 
-            foreach(var item in invoiceDetails)
+            foreach (var item in invoiceDetails)
             {
                 total += item.ProductPrice;
             }
@@ -1004,14 +1029,14 @@ namespace JewelrySalesSystem.BAL.Services
             }
         }
 
-        public async Task<float> GetMonthlyRevenueAsync( int month , int year)
+        public async Task<float> GetMonthlyRevenueAsync(int month, int year)
         {
             var invoices = await _unitOfWork.Invoices.GetMonthlyRevenue(month, year);
-           var total = invoices.Sum(invoice => invoice.Total);
+            var total = invoices.Sum(invoice => invoice.Total);
             return total;
         }
 
-        public async Task<int> GetTransactionCountAsync( int month, int year)
+        public async Task<int> GetTransactionCountAsync(int month, int year)
         {
             var invoices = await _unitOfWork.Invoices.GetMonthlyRevenue(month, year);
             return invoices.Count();
@@ -1019,7 +1044,7 @@ namespace JewelrySalesSystem.BAL.Services
 
         public async Task<float> GetDailyRevenueAsync(int day, int month, int year)
         {
-            var invoices = await _unitOfWork.Invoices.GetDailyRevenue(day,month, year);
+            var invoices = await _unitOfWork.Invoices.GetDailyRevenue(day, month, year);
             var total = invoices.Sum(invoice => invoice.Total);
             return total;
         }
@@ -1031,16 +1056,16 @@ namespace JewelrySalesSystem.BAL.Services
             var year = currentDate.Year;
 
             var currentMonthProfit = await GetMonthlyRevenueAsync(month, year);
-            
-            var previousMonthProfit = await GetMonthlyRevenueAsync(month-1, year);
-;
+
+            var previousMonthProfit = await GetMonthlyRevenueAsync(month - 1, year);
+            ;
 
             if (previousMonthProfit == 0)
             {
                 return currentMonthProfit > 0 ? 100 : -100;
             }
 
-            float profitChange = (float)((currentMonthProfit - previousMonthProfit) /(previousMonthProfit * 0.01));
+            float profitChange = (float)((currentMonthProfit - previousMonthProfit) / (previousMonthProfit * 0.01));
             return profitChange;
         }
 
@@ -1083,7 +1108,7 @@ namespace JewelrySalesSystem.BAL.Services
                 throw new Exception($"Invoice with id {warrantyId} not found.");
             }
 
-            
+
             MigraDocCore.DocumentObjectModel.Document doc = new();
             Section sec = doc.AddSection();
 
@@ -1168,10 +1193,10 @@ namespace JewelrySalesSystem.BAL.Services
             Paragraph quantityParagraph = cell.AddParagraph("Warranty End Date");
             quantityParagraph.Format.Font.Bold = true;
             quantityParagraph.Format.Alignment = ParagraphAlignment.Center;
-           
+
             foreach (var item in invoice.InvoiceDetails)
             {
-                if(item.Product.ProductTypeId == 3)
+                if (item.Product.ProductTypeId == 3)
                 {
                     row2 = table2.AddRow();
                     row2.Cells[0].AddParagraph($"{count}");
@@ -1182,7 +1207,7 @@ namespace JewelrySalesSystem.BAL.Services
                     row2.Cells[2].Format.Alignment = ParagraphAlignment.Center;
                     count++;
                 }
-               
+
             }
 
             doc.LastSection.Add(table2);
@@ -1196,7 +1221,7 @@ namespace JewelrySalesSystem.BAL.Services
             Column column3 = table3.AddColumn(MigraDocCore.DocumentObjectModel.Unit.FromCentimeter(8));
             column3 = table3.AddColumn(MigraDocCore.DocumentObjectModel.Unit.FromCentimeter(8));
             Row row3 = table3.AddRow();
-            
+
             row3.Cells[1].AddParagraph("Salesman");
             //row2.Cells[1].Format.Font.Name = "Times New Roman";
             //row2.Cells[1].Format.Font.Size = 13;

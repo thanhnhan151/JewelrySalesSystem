@@ -163,13 +163,13 @@ namespace JewelrySalesSystem.DAL.Repositories
             var existingInvoice = await _dbSet
                 .Include(i => i.InvoiceDetails)
                 .FirstOrDefaultAsync(i => i.InvoiceId == invoice.InvoiceId) ?? throw new Exception($"Invoice with id {invoice.InvoiceId} not found.");
-            existingInvoice.OrderDate = invoice.OrderDate;
+            //existingInvoice.OrderDate = invoice.OrderDate;
             //existingInvoice.CustomerId = invoice.CustomerId;
             //existingInvoice.UserId = invoice.UserId;
-            existingInvoice.WarrantyId = invoice.WarrantyId;
+            //existingInvoice.WarrantyId = invoice.WarrantyId;
             existingInvoice.InvoiceStatus = invoice.InvoiceStatus;
             existingInvoice.Total = invoice.Total;
-            existingInvoice.TotalWithDiscount = invoice.Total * (100 - existingInvoice.PerDiscount);
+            existingInvoice.TotalWithDiscount = invoice.TotalWithDiscount;
             //existingInvoice.PerDiscount = invoice.PerDiscount;
             //existingInvoice.IsActive = invoice.IsActive;
             //existingInvoice.InvoiceType = invoice.InvoiceType;
@@ -207,7 +207,6 @@ namespace JewelrySalesSystem.DAL.Repositories
             }
 
             _dbSet.Update(existingInvoice);
-            await _context.SaveChangesAsync();
         }
 
         public async Task ChangeInvoiceStatus(int id)
