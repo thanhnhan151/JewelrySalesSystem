@@ -18,5 +18,6 @@ namespace JewelrySalesSystem.BAL.Interfaces
         Task<GetWarrantyResponse?>GetWarrantyById(int id);
 
         Task<CreateWarrantyRequest> AddNewWarranty(CreateWarrantyRequest createWarrantyRequest);
+        Task<byte[]> GenerateReturnPolicyPdf();
     }
 }

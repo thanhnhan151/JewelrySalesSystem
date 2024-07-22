@@ -147,5 +147,13 @@ namespace JewelrySalesSystem.API.Controllers
         }
         #endregion
 
+        [HttpGet("policy/pdf")]
+        public async Task<IActionResult> GetPolicyPdf()
+        {
+            var pdfBytes = await _warrantyService.GenerateReturnPolicyPdf();
+
+            // Return PDF as File Content
+            return File(pdfBytes, "application/pdf", "policy.pdf");
+        }
     }
 }
