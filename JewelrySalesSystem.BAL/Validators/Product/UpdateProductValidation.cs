@@ -1,5 +1,4 @@
-﻿
-using FluentValidation;
+﻿using FluentValidation;
 using JewelrySalesSystem.BAL.Models.Products;
 using JewelrySalesSystem.DAL.Infrastructures;
 
@@ -29,10 +28,10 @@ namespace JewelrySalesSystem.BAL.Validators.Product
             RuleFor(p => p.FeaturedImage)
                 .NotEmpty().WithMessage("Featured Image is required!");
 
-            RuleFor(p => p.CounterId)
-                .NotEmpty().WithMessage("Counter ID is required")
-                .MustAsync(async (counterId, cancellation) => await AlreadyExistId(counterId, "CounterId"))
-                .WithMessage("Counter ID does not exist!");
+            //RuleFor(p => p.CounterId)
+            //    .NotEmpty().WithMessage("Counter ID is required")
+            //    .MustAsync(async (counterId, cancellation) => await AlreadyExistId(counterId, "CounterId"))
+            //    .WithMessage("Counter ID does not exist!");
         }
 
         private async Task<bool> CheckDuplicateAsync(string productName)
