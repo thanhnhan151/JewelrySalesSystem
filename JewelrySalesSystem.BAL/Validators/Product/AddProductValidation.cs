@@ -31,19 +31,19 @@ namespace JewelrySalesSystem.BAL.Validators.Product
                 .NotEmpty().WithMessage("Featured Image is required!");
 
 
-            RuleFor(p => p.CategoryId)
-                .NotEmpty().WithMessage("Category ID is required!")
-                .MustAsync(async (categoryId, cancellation) => await AlreadyExistId(categoryId, "CategoryId"))
-                .WithMessage("Category ID does not exist!");
+            //RuleFor(p => p.CategoryId)
+            //    .NotEmpty().WithMessage("Category ID is required!")
+            //    .MustAsync(async (categoryId, cancellation) => await AlreadyExistId(categoryId, "CategoryId"))
+            //    .WithMessage("Category ID does not exist!");
 
             //RuleFor(p => p.ProductTypeId)
             //    .NotEmpty().WithMessage("Product Type ID is required!")
             //    .MustAsync(async (productTypeId, cancellation) => await AlreadyExitId(productTypeId, "ProductTypeId"))
             //    .WithMessage("Product Type ID does not exit!");
-            RuleFor(p => p.CounterId)
-                .NotEmpty().WithMessage("Counter ID is required")
-                .MustAsync(async (counterId, cancellation) => await AlreadyExistId(counterId, "CounterId"))
-                .WithMessage("Counter ID does not exist!");
+            //RuleFor(p => p.CounterId)
+            //    .NotEmpty().WithMessage("Counter ID is required")
+            //    .MustAsync(async (counterId, cancellation) => await AlreadyExistId(counterId, "CounterId"))
+            //    .WithMessage("Counter ID does not exist!");
 
             RuleFor(p => p.GenderId)
                 .NotEmpty().WithMessage("Gender ID is required!")
