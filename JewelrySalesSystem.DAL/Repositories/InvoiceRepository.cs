@@ -224,6 +224,11 @@ namespace JewelrySalesSystem.DAL.Repositories
                         var product = await _context.Products.FindAsync(detail.ProductId);
                         if (product != null)
                         {
+                            if (product.Quantity < detail.Quantity)
+                            {
+                                throw new Exception();
+
+                            }
                             product.Quantity -= detail.Quantity;
                             _context.Products.Update(product);
                         }
